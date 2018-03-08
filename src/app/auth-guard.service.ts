@@ -5,7 +5,6 @@ import { CanActivate } from '@angular/router';
 import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
 import * as _ from 'lodash';
 
-
 @Injectable()
 export class AuthGuard implements CanActivate {
   public token: string;
