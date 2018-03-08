@@ -1,0 +1,56 @@
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+    <span class="breadcrumb-item active">สิทธิ์การใช้งาน</span>
+</nav>
+
+<button class="btn btn-success btn-sm" (click)="openModal()">
+  <clr-icon shape="plus"></clr-icon> เพิ่มรายการ
+</button>
+<clr-datagrid [clrDgLoading]="loading">
+    <clr-dg-column [clrDgField]="'group_name'">ชื่อสิทธิ์การใช้งาน</clr-dg-column>
+    <clr-dg-column [clrDgField]="'group_id'">รหัสสิทธิ์การใช้งาน</clr-dg-column>
+    <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+    <clr-dg-row *clrDgItems="let right of rights" [clrDgItem]="user">
+        <clr-dg-action-overflow>
+            <button class="action-item" (click)="edit(right)">
+        <clr-icon shape="note"></clr-icon>
+        แก้ไขข้อมูล
+        </button>
+            <button class="action-item" (click)="remove(right)">
+        <clr-icon shape="trash" class="is-error"></clr-icon>
+        ลบข้อมูล
+        </button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{right.right_name}}</clr-dg-cell>
+        <clr-dg-cell>{{right.right_code}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openModalRight" [clrModalStaticBackdrop]="true" [clrModalSize]="'md'" [clrModalClosable]="false">
+    <h3 class="modal-title">เพิ่ม/แก้ไขสิทธิ์การใช้งาน</h3>
+    <div class="modal-body">
+
+        <form>
+            <section class="form-block">
+                <div class="form-group">
+                    <label for="aForm_1" class="required">ชื่อสิทธิ์การใช้งาน</label>
+                    <input type="text" id="rightName" name="rightName" size="45" [(ngModel)]="rightName">
+                </div>
+                <div class="form-group">
+                    <label for="aForm_1" class="required">รหัสสิทธิ์การใช้งาน</label>
+                    <input type="text" id="rightCode" name="rightCode" size="45" [(ngModel)]="rightCode">
+                </div>
+            </section>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" [disabled]="!rightName || !rightCode" (click)="save()">บันทึก</button>
+        <button type="button" class="btn btn-md btn-danger-outline" (click)="openModalRight = false">ปิด</button>
+    </div>
+</clr-modal>

@@ -1,0 +1,100 @@
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+  <span class="breadcrumb-item active">ตั้งค่าวันหยุด</span>
+</nav>
+
+<h4 class="text-primary">ตั้งค่าวันหยุด</h4>
+<button class="btn btn-success btn-sm" (click)="onClickAdd()">
+    <clr-icon shape="plus"></clr-icon> เพิ่มรายการ
+</button>
+
+<clr-datagrid [clrDgLoading]="loading">
+  <clr-dg-column [clrDgField]="'date'">วันที่</clr-dg-column>
+  <clr-dg-column [clrDgField]="'detail'">รายละเอียด</clr-dg-column>
+  <clr-dg-column [clrDgField]="'type'">ประเภทวันหยุด</clr-dg-column>
+  <clr-dg-column >ทำซ้ำ</clr-dg-column>
+  <clr-dg-column>ใช้งาน</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let day of days;let idx=index">
+      <clr-dg-action-overflow>
+          <button class="action-item" (click)="showEditModal(day)">
+            <clr-icon shape="note"></clr-icon>
+            แก้ไขข้อมูล
+          </button>
+          <button class="action-item" (click)="delete(day.id,idx)">
+              <clr-icon shape="trash" class="is-error"></clr-icon>
+              ลบ
+            </button>
+        </clr-dg-action-overflow>
+      <clr-dg-cell>
+          {{day.date | dateHoliday}}
+        <!-- <div *ngIf="day.startdate === day.enddate">{{day.startdate | dateHoliday}}</div> -->
+        <!-- <div *ngIf="day.startdate !== day.enddate">{{day.startdate | dateHoliday}} - {{day.enddate | dateHoliday}}</div> -->
+      </clr-dg-cell>
+      <clr-dg-cell>{{day.detail}}</clr-dg-cell>
+      <clr-dg-cell>{{day.type}}</clr-dg-cell>
+      <clr-dg-cell>
+        <clr-icon shape="check" *ngIf="day.is_year === 1"></clr-icon>
+        <clr-icon shape="times" *ngIf="day.is_year === 0"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell  >
+        <div class="toggle-switch">
+          <input type="checkbox" id="toggle_{{idx}}" [checked]="day.is_active === 1" (change)="switchActive($event,day.id)">
+          <label for="toggle_{{idx}}"></label>
+        </div>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{days.length}} day</clr-dg-footer>
+</clr-datagrid>
+
+
+
+<clr-modal [(clrModalOpen)]="addModal"  [clrModalSize]="'md'" [clrModalClosable]="false" [clrModalStaticBackdrop]="true"	style="height: 50%">
+  <h3 class="modal-title">เพิ่มวันหยุด</h3>
+  <div class="modal-body">
+      <section class="form-block">
+        <div class="row" style="line-height:2rem">
+          <div class="col-md-3">วันที่</div>
+          <div class="col-md-9">
+            <my-date-picker-th name="date" [options]="myDatePickerOptions" [(ngModel)]="date" required></my-date-picker-th>
+          </div>
+         <!-- <div class="col-md-5"></div> -->
+          <!-- <div class="col-md-1" style="text-align: center"> ถึง </div> -->
+          <!-- <div class="col-md-4">
+            <my-date-picker-th name="endDate"  [options]="myDatePickerOptions" [(ngModel)]="endDate" required></my-date-picker-th>
+          </div> -->
+          <div class="col-md-3">รายละเอียด</div>
+          <div class="col-md-9">
+            <input type="text" class="form-control wfix" [(ngModel)]="detail" placeholder="เช่น วันหยุดสิ้นปี"></div>
+          <div class="col-md-3">ประเภทวันหยุด</div>
+          <div class="col-md-9" >
+            <div class="select" style="line-height: 1rem; ">
+              <select [(ngModel)]="type" name="type">
+                <option *ngFor="let item of types"  [value]="item.type">{{item.type}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">ทำซ้ำ</div>
+          <div class="col-md-9">
+            <div class="toggle-switch">
+                <input type="checkbox" id="loop" name="loop" [(ngModel)]="loop">
+                <label for="loop"></label>
+            </div>
+          </div>
+          <div class="col-md-3">ใช้งาน</div>
+          <div class="col-md-9">
+            <div class="toggle-switch">
+                <input type="checkbox" id="active" name="active" [(ngModel)]="active">
+                <label for="active"></label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="addHoliday()">บันทึก</button>
+      <button type="button" class="btn btn-danger-outline" (click)="addModal = false">ยกเลิก</button>
+      
+  </div>
+</clr-modal>

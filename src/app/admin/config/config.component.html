@@ -1,0 +1,22 @@
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+    <span class="breadcrumb-item active">ค่าเบื้องต้น</span>
+</nav>
+
+<clr-datagrid [clrDgLoading]="loading">
+    <clr-dg-column [clrDgField]="'action_name'">เรื่อง</clr-dg-column>
+    <clr-dg-column [clrDgField]="'comment'">รายละเอียด</clr-dg-column>
+    <clr-dg-column>ค่าเริ่มต้น</clr-dg-column>
+    <clr-dg-column>ค่าที่ต้องการปรับแก้</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let item of settings">
+        <clr-dg-cell>{{item.subject}}</clr-dg-cell>
+        <clr-dg-cell>{{item.describe}}</clr-dg-cell>
+        <clr-dg-cell>{{item.default}}</clr-dg-cell>
+        <clr-dg-cell>
+            <input type="{{item.input}}" name="dataInp" id="dataInp" value="{{item.value}}" (blur)="onBlur($event, item.action_name, item.value, item.form_type)">
+        </clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{settings.length}} items</clr-dg-footer>
+</clr-datagrid>

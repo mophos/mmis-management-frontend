@@ -1,0 +1,72 @@
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+  <span class="breadcrumb-item active">จัดการ Serial</span>
+</nav>
+<div class="wid99">
+  <clr-datagrid [clrDgLoading]="loading" [style.height.%]="80" [style.width.%]="100">
+    <clr-dg-column  [clrDgField]="'comment'">รายการ Serial</clr-dg-column>
+    <clr-dg-column [style.width.px]="200">รูปแบบ Serial</clr-dg-column>
+    <clr-dg-column [style.width.px]="200">ตัวอย่าง Serial</clr-dg-column>
+    <clr-dg-column [style.width.px]="200">ค่าเริ่มต้น
+      <br> Running Number</clr-dg-column>
+    <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+    <clr-dg-row *clrDgItems="let s of serials" [clrDgItem]="s">
+      <clr-dg-action-overflow>
+        <button class="action-item" (click)="showEditModal(s)">
+          <clr-icon shape="note"></clr-icon>
+          แก้ไขข้อมูล
+        </button>
+      </clr-dg-action-overflow>
+      <clr-dg-cell>{{s.comment}}</clr-dg-cell>
+      <clr-dg-cell>{{s.serial_code}}</clr-dg-cell>
+      <clr-dg-cell>{{s.serial_format}}</clr-dg-cell>
+      <clr-dg-cell>{{s.sr_no}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} จาก {{pagination.totalItems}} รายการ
+      <clr-dg-pagination #pagination [clrDgPageSize]="15"></clr-dg-pagination>
+    </clr-dg-footer>
+  </clr-datagrid>
+</div>
+<clr-modal [(clrModalOpen)]="openModal" [clrModalStaticBackdrop]="true" [clrModalSize]="'md'">
+  <h3 class="modal-title">แก้ไข {{comment}}</h3>
+  <div class="modal-body">
+    <form>
+      <section class="form-block">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="formatId" class="required">รูปแบบ Serial</label>
+              <div class="select">
+                <select id="formatId" name="formatId" [(ngModel)]="formatId" (ngModelChange)="onFormatChange($event)">
+                  <option [value]="f.serial_format_id" *ngFor="let f of serialFormats">{{f.serial_code}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="formatExample">ตัวอย่าง Serial</label>
+              <input type="text" id="formatExample" name="formatExample" size="20" [ngModel]="formatExample" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="runningNumber" class="required">ค่าเริ่มต้น <br> Running number</label>
+              <input type="text" id="runningNumber" name="runningNumber" size="14" maxlength="6" [(ngModel)]="runningNumber" umNumberOnly>
+            </div>
+          </div>
+        </div>
+      </section>
+      <p>PREFIX = รหัสนำหน้า, YY = ปี พ.ศ., ## = Running nuber</p>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-outline" (click)="openModal = false">ยกเลิก</button>
+    <button type="button" class="btn btn-sm btn-primary" [disabled]="!comment || !formatId || !runningNumber" (click)="save()">บันทึก</button>
+  </div>
+</clr-modal>

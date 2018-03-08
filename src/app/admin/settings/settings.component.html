@@ -1,0 +1,66 @@
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+    <span class="breadcrumb-item active">ข้อมูลสถานพยาบาล</span>
+</nav>
+
+<div class="card">
+    <div class="card-header">
+        ข้อมูลสถานพยาบาล
+    </div>
+    <div class="card-block">
+        <div class="card-text">
+            <form>
+                <section class="form-block">
+                    <div class="form-group">
+                        <label for="hospcode" class="required">รหัสหน่วยบริการ</label>
+                        <input type="text" id="hospcode" name="hospcode" [(ngModel)]="hospcode" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="hospname" class="required">ชื่อหน่วยบริการ</label>
+                        <input type="text" id="hospname" name="hospname" [(ngModel)]="hospname" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="managerName" class="required">ชื่อผู้อำนวยการ</label>
+                        <input type="text" id="managerName" name="managerName" [(ngModel)]="managerName" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="required">ที่อยู่</label>
+                        <textarea id="address" name="address" [(ngModel)]="address" rows="3" style="width: 333px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="taxId">อำเภอ</label>
+                        <input type="text" id="ampur" name="ampur" [(ngModel)]="ampur" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="taxId">จังหวัด</label>
+                        <input type="text" id="province" name="province" [(ngModel)]="province" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="taxId">เลขผู้เสียภาษี</label>
+                        <input type="text" id="taxId" name="taxId" [(ngModel)]="taxId" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">เบอร์โทรศัพท์</label>
+                        <input type="text" id="telephone" name="telephone" [(ngModel)]="telephone" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="fax">เบอร์แฟกซ์</label>
+                        <input type="text" id="fax" name="fax" [(ngModel)]="fax" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="fax">Latitude</label>
+                        <input type="text" id="lat" name="lat" [(ngModel)]="lat" size="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="fax">Longitude</label>
+                        <input type="text" id="lng" name="lng" [(ngModel)]="lng" size="45">
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button  class="btn btn-sm btn-success" (click)="saveSetting()" [disabled]="!hospcode || !hospname || !address || !managerName">บันทึก</button>
+    </div>
+
+</div>

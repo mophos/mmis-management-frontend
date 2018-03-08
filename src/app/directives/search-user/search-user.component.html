@@ -1,0 +1,11 @@
+<input [disabled]=changData autocomplete="off" type="text" [(ngModel)]="query" name="query" (keyup)="onClearSelected($event)" 
+style="width: 100%;" placeholder="ค้นหาผู้ขอสิทธิ์..."  
+agxTypeahead 
+[taUrl]="userApiUrl" 
+taApi="http" 
+[taItemTpl]="itemTpl" 
+(taSelected)="handleResultSelected($event)">
+
+<ng-template #itemTpl let-result>
+  {{ result.result.fullname }}
+</ng-template>

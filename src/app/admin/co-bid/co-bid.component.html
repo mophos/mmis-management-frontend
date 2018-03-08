@@ -1,0 +1,61 @@
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+    <span class="breadcrumb-item active">การจัดซื้อร่วม</span>
+</nav>
+
+<h4 class="text-primary">รายละเอียดจัดซื้อร่วม</h4>
+<button class="btn btn-success btn-sm" (click)="onClickAdd()">
+    <clr-icon shape="add-text"></clr-icon> เพิ่ม
+</button>
+<clr-datagrid [clrDgLoading]="loading">
+    <clr-dg-column style="width: 80px;" [clrDgField]="'bid_id'">รหัส</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name_name'">รายละเอียด</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let row of rows">
+        <clr-dg-action-overflow>
+            <button class="action-item" (click)="onClickEdit(row)">แก้ไข</button>
+            <button class="action-item" (click)="onClickDelete(row)">ลบ</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell style="width: 10px;">{{row.bid_id}}</clr-dg-cell>
+        <clr-dg-cell>{{row.bid_name}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        {{pagination.totalItems}} รายการ
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<!-- เพิ่ม/แก้ไข -->
+<clr-modal [(clrModalOpen)]="modalInput" [clrModalClosable]="true" [clrModalSize]="'md'">
+    <h3 class="modal-title">รายละเอียดการจัดซื้อร่วม</h3>
+    <div class="modal-body">
+
+        <div class="form-group row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <label class="required" for="bidId">รหัสรายการ</label>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <input type="text" name="bidId" [(ngModel)]="bidId" placeholder="" size="10">
+            </div>
+        </div>
+        <br/>
+        <div class="form-group row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <label class="required" for="bidName">รายละเอียด</label>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <input type="text" name="bidName" [(ngModel)]="bidName" placeholder="" size="50">
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="modal-footer">
+        <button class="btn btn-md btn-info" [disabled]="!bidId || !bidName" (click)="onClickSave()">
+        บันทึก
+    </button>
+        <button type="button" class="btn btn-md btn-danger-outline" (click)="modalInput=false">
+        ปิดหน้าต่าง
+    </button>
+    </div>
+</clr-modal>

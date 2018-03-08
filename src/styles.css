@@ -1,0 +1,95 @@
+.main-container .content-container .content-area {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 5px 5px 5px 15px;
+}
+.datagrid {
+    margin-top: 0;
+}
+
+.card {
+    margin-top: 10px;
+}
+
+.float-left {
+  float: left !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+
+.breadcrumb {
+  padding: 0.75rem 0.75rem;
+  margin-bottom: 0.2rem;
+  list-style: none;
+  background-color: #eceeef;
+  border-radius: 0.25rem;
+}
+
+.breadcrumb::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.breadcrumb-item {
+  float: left;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  display: inline-block;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  color: #636c72;
+  content: "/";
+}
+
+.breadcrumb-item + .breadcrumb-item:hover::before {
+  text-decoration: underline;
+}
+
+.breadcrumb-item + .breadcrumb-item:hover::before {
+  text-decoration: none;
+}
+
+.breadcrumb-item.active {
+  color: #636c72;
+}
+
+.hidden {
+  display: none;
+}
+
+.datagrid .datagrid-row-actions clr-icon {
+    height: 14px;
+    vertical-align: middle;
+}
+
+form .form-group {
+    margin-bottom: 0px;
+}
+
+chart {
+  display: block;
+  padding: 10px;
+}
+
+.datagrid-cell .btn.btn-link {
+   margin: 0;
+   padding: 0;
+}
+
+form .form-group, .form .form-group {
+  padding-left: 120px;
+}
+
+form .form-group>label:first-child, form .form-group>span:first-child, .form .form-group>label:first-child, .form .form-group>span:first-child {
+  width: 120px; 
+}
+.wid99{
+  width: 99%;
+}

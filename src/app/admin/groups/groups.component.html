@@ -1,0 +1,54 @@
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+    <span class="breadcrumb-item active">กลุ่มผู้ใช้งาน</span>
+</nav>
+
+<button class="btn btn-success btn-sm" (click)="openModalGroup = true">
+    <clr-icon shape="plus"></clr-icon> เพิ่มรายการ
+</button>
+<clr-datagrid [clrDgLoading]="loading" [style.height.%]="80">
+    <clr-dg-column [clrDgField]="'group_name'">ชื่อกลุ่มผู้ใช้งาน</clr-dg-column>
+    <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+    <clr-dg-row *clrDgItems="let group of groups" [clrDgItem]="user">
+        <clr-dg-action-overflow>
+            <button class="action-item" (click)="edit(group)">
+        <clr-icon shape="note"></clr-icon>
+        แก้ไขข้อมูล
+        </button>
+            <button class="action-item" (click)="remove(group)">
+        <clr-icon shape="trash" class="is-error"></clr-icon>
+        ลบข้อมูล
+        </button>
+            <button class="action-item" [routerLink]="['/admin/groups/assing', group.group_id]">
+        <clr-icon shape="tasks" class="is-success"></clr-icon>
+        กำหนดข้อมูลสิทธิ์การใช้งาน
+        </button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{group.group_name}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openModalGroup" [clrModalStaticBackdrop]="true" [clrModalSize]="'md'" [clrModalClosable]="false">
+    <h3 class="modal-title">เพิ่ม/แก้ไขกลุ่มผู้ใช้งาน</h3>
+    <div class="modal-body">
+
+        <form>
+            <section class="form-block">
+                <div class="form-group">
+                    <label for="aForm_1" class="required">ชื่อกลุ่มผู้ใช้งาน</label>
+                    <input type="text" id="groutName" size="45" name="groupName" [(ngModel)]="groupName">
+                </div>
+            </section>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" [disabled]="!groupName" (click)="saveGroup()">บันทึก</button>
+        <button type="button" class="btn btn-md btn-danger-outline" (click)="openModalGroup = false">ปิด</button>
+    </div>
+</clr-modal>

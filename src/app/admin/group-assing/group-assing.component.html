@@ -1,0 +1,47 @@
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+  <a class="breadcrumb-item" href="javascript://" routerLink="/admin/groups">กลุ่มผู้ใช้งาน</a>
+  <span class="breadcrumb-item active">กำหนดข้อมูลสิทธิ์การใช้งาน</span>
+</nav>
+
+<div class="card">
+  <div class="card-header">
+      กำหนดข้อมูลสิทธิ์การใช้งาน
+  </div>
+  <div class="card-block">
+    <div class="card-text">
+      <form>
+        <section class="form-block">
+          <div class="form-group row">
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+              <label class="required" for="fullname">ชื่อกลุ่มผู้ใช้งาน</label>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+              <input class="form-control" disabled type="text" [(ngModel)]="groupName" name="groupName" id="groupName">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+              <label for="aForm_4" class="required">สิทธิ์การใช้งาน</label>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+              <clr-datagrid [style.height.px]="300" [(clrDgSelected)]="selectedRights">
+                <clr-dg-column>รายการสิทธิ์</clr-dg-column>
+                <clr-dg-row *clrDgItems="let r of rights" [clrDgItem]="r">
+                  <clr-dg-cell>{{r.right_name}} (<code>{{r.right_code}}</code>)</clr-dg-cell>
+                </clr-dg-row>
+              </clr-datagrid>
+            </div>
+          </div>
+
+        </section>
+      </form>
+    </div>
+  </div>
+  <div class="card-footer">
+    <button [clrLoading]="submitLoading" class="btn btn-sm btn-success" (click)="saveRights()" [disabled]="!groupId || !groupName || !selectedRights.length">บันทึก</button>
+    <button class="btn btn-sm btn-outline-danger" [disabled]="submitLoading" routerLink="/admin/groups">ยกเลิก</button>
+  </div>
+
+</div>

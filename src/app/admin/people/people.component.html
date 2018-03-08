@@ -1,0 +1,76 @@
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+    <span class="breadcrumb-item active">ข้อมูลเจ้าหน้าที่</span>
+</nav>
+
+<button class="btn btn-success btn-sm" (click)="showModal()">
+    <clr-icon shape="plus"></clr-icon> เพิ่มรายการ
+</button>
+<clr-datagrid [clrDgLoading]="loading" [style.height.%]="80">
+    <clr-dg-column [style.width.px]="120" [clrDgField]="'title_name'">คำนำหน้า</clr-dg-column>
+    <clr-dg-column [clrDgField]="'fname'">ชื่อ</clr-dg-column>
+    <clr-dg-column [clrDgField]="'lname'">สกุล</clr-dg-column>
+    <clr-dg-column [clrDgField]="'position_name'">ตำแหน่ง</clr-dg-column>
+    <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+    <clr-dg-row *clrDgItems="let p of people" [clrDgItem]="p">
+        <clr-dg-action-overflow>
+            <button class="action-item" (click)="showEditModal(p)">
+                <clr-icon shape="note"></clr-icon>
+                แก้ไขข้อมูล
+            </button>
+            <button class="action-item" (click)="remove(p)">
+                <clr-icon shape="trash" class="is-error"></clr-icon>
+                ลบข้อมูล
+            </button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{p.title_name}}</clr-dg-cell>
+        <clr-dg-cell>{{p.fname}}</clr-dg-cell>
+        <clr-dg-cell>{{p.lname}}</clr-dg-cell>
+        <clr-dg-cell>{{p.position_name}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} จาก {{pagination.totalItems}} รายการ
+        <clr-dg-pagination #pagination [clrDgPageSize]="15"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="openModal" [clrModalStaticBackdrop]="true" [clrModalSize]="'md'">
+    <h3 class="modal-title">เพิ่ม/แก้ไขข้อมูลเจ้าหน้าที่</h3>
+    <div class="modal-body">
+
+        <form>
+            <section class="form-block">
+                <div class="form-group">
+                    <label for="selects_1" class="required">คำนำหน้า</label>
+                    <div class="select">
+                        <select id="titleId" name="titleId" [(ngModel)]="titleId">
+                            <option [value]="t.title_id" *ngFor="let t of titles">{{t.title_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="aForm_1" class="required">ชื่อ</label>
+                    <input type="text" id="fname" name="fname" size="45" [(ngModel)]="fname">
+                </div>
+                <div class="form-group">
+                    <label for="aForm_1" class="required">สกุล</label>
+                    <input type="text" id="lname" name="lname" size="45" [(ngModel)]="lname">
+                </div>
+                <div class="form-group">
+                    <label for="positionId" class="required">ตำแหน่ง</label>
+                    <div class="select">
+                        <select id="positionId" name="positionId" [(ngModel)]="positionId">
+                            <option [value]="p.position_id" *ngFor="let p of positions">{{p.position_name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-md btn-primary" [disabled]="!fname || !lname || !positionId || !titleId" (click)="save()">บันทึก</button>
+        <button type="button" class="btn btn-md btn-danger-outline" (click)="openModal = false">ปิด</button>
+    </div>
+</clr-modal>
