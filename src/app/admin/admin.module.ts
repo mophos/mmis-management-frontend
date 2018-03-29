@@ -49,6 +49,9 @@ import { DateHolidayPipe } from './date-holiday.pipe';
 import { ProductGroupService } from 'app/admin/product-groups';
 import { ApproveComponent } from './approve/approve.component';
 import { DirectivesModule } from "../directives/directives.module";
+import { ReportComponent } from './report/report.component';
+import { ReportService } from './report.service';
+import { HtmlPreviewComponent } from './helper/html-preview/html-preview.component';
 // import { AgxTypeaheadModule } from '@siteslave/agx-typeahead';
 
 @NgModule({
@@ -87,7 +90,9 @@ import { DirectivesModule } from "../directives/directives.module";
     NumberOnlyDirective,
     HolidayComponent,
     DateHolidayPipe,
-    ApproveComponent
+    ApproveComponent,
+    ReportComponent,
+    HtmlPreviewComponent
   ],
   providers: [
     AuthGuard,
@@ -105,7 +110,8 @@ import { DirectivesModule } from "../directives/directives.module";
     SerialService,
     HolidayService,
     ProductGroupService,
-    ApproveService
+    ApproveService,
+    ReportService
   ]
 })
 export class AdminModule { }
