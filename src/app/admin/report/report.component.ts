@@ -14,6 +14,8 @@ export class ReportComponent implements OnInit {
   loading = false;
 
   list: any = [];
+  listPo: any = [];
+  listEgp: any = [];
 
   isActive: any;
 
@@ -34,6 +36,11 @@ export class ReportComponent implements OnInit {
     let rs = await this.reportService.getReport();
     if (rs.ok) {
       this.list = rs.rows;
+      await this.clearList();
+      this.list.forEach(v => {
+        if(v.report_type === 'PO') this.listPo.push(v);
+        if(v.report_type === 'EGP') this.listEgp.push(v);
+      });
       this.loading = false;
     } else {
       this.loading = false;
@@ -41,7 +48,26 @@ export class ReportComponent implements OnInit {
     }
   }
 
-  switchActive(event: any, l: any) {
+  async clearList(){
+    this.listPo = [];
+    this.listEgp = [];
+  }
+
+  switchActivePo(event: any, l: any) {
+    this.loading = true;
+    this.reportService.setActive(l.id, event.target.checked ? 'Y' : 'N', l.report_type)
+      .then((results: any) => {
+        this.loading = false;
+        this.alertService.success();
+        this.getList();
+      })
+      .catch((error) => {
+        this.loading = false;
+        this.alertService.error(error);
+      })
+  }
+
+  switchActiveEgp(event: any, l: any) {
     this.loading = true;
     this.reportService.setActive(l.id, event.target.checked ? 'Y' : 'N', l.report_type)
       .then((results: any) => {
@@ -56,6 +82,7 @@ export class ReportComponent implements OnInit {
   }
 
   showReport(id) {
+    console.log(id)
     const reportUrl = this.apiUrl + `/report/purchase-order/${id}?token=${this.token}`;
     this.htmlPreview.showReport(reportUrl);
   }
