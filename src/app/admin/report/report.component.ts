@@ -16,6 +16,7 @@ export class ReportComponent implements OnInit {
   list: any = [];
   listPo: any = [];
   listEgp: any = [];
+  listP10: any = [];
 
   isActive: any;
 
@@ -40,6 +41,7 @@ export class ReportComponent implements OnInit {
       this.list.forEach(v => {
         if(v.report_type === 'PO') this.listPo.push(v);
         if(v.report_type === 'EGP') this.listEgp.push(v);
+        if(v.report_type === 'P10') this.listP10.push(v);
       });
       this.loading = false;
     } else {
@@ -51,6 +53,7 @@ export class ReportComponent implements OnInit {
   async clearList(){
     this.listPo = [];
     this.listEgp = [];
+    this.listP10 = [];
   }
 
   switchActivePo(event: any, l: any) {
@@ -68,6 +71,20 @@ export class ReportComponent implements OnInit {
   }
 
   switchActiveEgp(event: any, l: any) {
+    this.loading = true;
+    this.reportService.setActive(l.id, event.target.checked ? 'Y' : 'N', l.report_type)
+      .then((results: any) => {
+        this.loading = false;
+        this.alertService.success();
+        this.getList();
+      })
+      .catch((error) => {
+        this.loading = false;
+        this.alertService.error(error);
+      })
+  }
+
+  switchActiveP10(event: any, l: any) {
     this.loading = true;
     this.reportService.setActive(l.id, event.target.checked ? 'Y' : 'N', l.report_type)
       .then((results: any) => {
