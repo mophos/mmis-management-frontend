@@ -54,4 +54,28 @@ EGP
     </clr-dg-cell>
   </clr-dg-row>
 </clr-datagrid>
+<br>
+ใบขออนุมัติซื้อ
+<clr-datagrid [clrDgLoading]="loading">
+  <clr-dg-column style="width: 30px;">ลำดับ</clr-dg-column>
+  <clr-dg-column>ชื่อรายงาน</clr-dg-column>
+  <clr-dg-column>ตัวอย่างรายงาน</clr-dg-column>
+  <clr-dg-column style="width: 20px;">ใช้งาน</clr-dg-column>
+
+  <clr-dg-row *ngFor="let l of listP10; let idx=index;">
+    <clr-dg-cell>{{idx+1}}</clr-dg-cell>
+    <clr-dg-cell>{{l.report_name}}</clr-dg-cell>
+    <clr-dg-cell>
+      <button class="btn btn-primary btn-sm" (click)="showReport(l.id)">
+        <clr-icon shape="printer"></clr-icon> แสดงตัวอย่าง
+      </button>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <div class="toggle-switch">
+        <input type="checkbox" id="orderP10{{idx}}" [checked]="l.is_active==='Y'" (change)="switchActiveP10($event,l)">
+        <label for="orderP10{{idx}}"></label>
+      </div>
+    </clr-dg-cell>
+  </clr-dg-row>
+</clr-datagrid>
 <wm-html-preview #htmlPreview></wm-html-preview>
