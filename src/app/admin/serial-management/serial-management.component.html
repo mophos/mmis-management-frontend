@@ -54,10 +54,16 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="form-group">
               <label for="runningNumber" class="required">ค่าเริ่มต้น <br> Running number</label>
               <input type="text" id="runningNumber" name="runningNumber" size="14" maxlength="6" [(ngModel)]="runningNumber" umNumberOnly>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="srPrefix" class="required">Prefix</label>
+              <input type="text" id="srPrefix" name="srPrefix" size="14" maxlength="6" [(ngModel)]="srPrefix">
             </div>
           </div>
         </div>
