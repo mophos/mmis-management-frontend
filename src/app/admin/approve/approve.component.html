@@ -50,13 +50,13 @@
             <section class="form-block">
                 <div class="form-group">
                     <label for="selects_1" class="required">สิทธิ์การอนุมัติ</label>
-                    <div class="select" >
+                    <div class="select">
                         <select [disabled]=changData id="action_name" name="action_name" [(ngModel)]="action_name">
                             <option [value]="m.module_name" *ngFor="let m of modules">{{m.detail}}</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group" >
+                <div class="form-group">
                     <label for="selects_2" class="required">ผู้ขอสิทธิ์</label>
                     <um-search-user [changData]=changData #wmSearchUser [clearOnSelected]="false" (onSelect)="onUserSelected($event)"></um-search-user>
                 </div>
@@ -80,8 +80,8 @@
         </form>
     </div>
     <div class="modal-footer" style="padding-top: 0px;">
-        <button type="button" class="btn btn-md btn-primary" [disabled]="!action_name || (password.length <= 3 || password == '' ) || (password != password2 || password2 == '' )|| !user_id"
+        <button type="button" class="btn btn-primary" [disabled]="!action_name || (password.length <= 3 || password == '' ) || (password != password2 || password2 == '' )|| !user_id"
             (click)="save()">บันทึก</button>
-        <button type="button" class="btn btn-md btn-danger-outline" (click)="close()">ปิด</button>
+        <button type="button" class="btn btn-danger-outline" (click)="close()">ปิด</button>
     </div>
 </clr-modal>
