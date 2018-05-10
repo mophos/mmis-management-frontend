@@ -69,29 +69,29 @@ export class ApproveComponent implements OnInit {
     this.titel = 'เพิ่ม'
     this.changData = false
     this.openModal = true;
-    // this.getModules()
+    this.getModules()
   }
 
-  // getModules() {
-  //   this.loading = true;
-  //   this.approveService.getSysModule()
-  //     .then((result: any) => {
-  //       if (result.ok) {
-  //         this.modules = result.rows;
-  //         if (this.modules) this.action_name = this.modules[0].module_name
-  //       } else {
-  //         console.log(result.error);
-  //         this.alertService.error();
-  //       }
-  //       this.ref.detectChanges();
-  //       this.loading = false;
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //       this.loading = false;
-  //       this.alertService.serverError();
-  //     })
-  // }
+  getModules() {
+    this.loading = true;
+    this.approveService.getSysModule()
+      .then((result: any) => {
+        if (result.ok) {
+          this.modules = result.rows;
+          if (this.modules) this.action_name = this.modules[0].module_name
+        } else {
+          console.log(result.error);
+          this.alertService.error();
+        }
+        this.ref.detectChanges();
+        this.loading = false;
+      })
+      .catch(error => {
+        console.log(error);
+        this.loading = false;
+        this.alertService.serverError();
+      })
+  }
 
   getUsers() {
     // this.loading = true;
