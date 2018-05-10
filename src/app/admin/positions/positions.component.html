@@ -44,7 +44,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-outline" (click)="openModal = false">ยกเลิก</button>
-        <button type="button" class="btn btn-sm btn-primary" [disabled]="!positionName" (click)="save()">บันทึก</button>
+        <button type="button" class="btn btn-primary" [disabled]="!positionName" (click)="save()">บันทึก</button>
+        <button type="button" class="btn btn-danger-outline" (click)="openModal = false">ยกเลิก</button>
     </div>
 </clr-modal>
