@@ -4,14 +4,15 @@
 </nav>
 
 <button class="btn btn-success btn-sm" (click)="showModal()">
-    <clr-icon shape="plus"></clr-icon> เพิ่มตำแหน่ง
+    <clr-icon shape="plus"></clr-icon> เพิ่มรายการ
 </button>
 <clr-datagrid [clrDgLoading]="loading" [style.height.%]="80">
-    <clr-dg-column [style.width.%]="95" [clrDgField]="'position_name'">ตำแหน่ง</clr-dg-column>
+    <clr-dg-column [style.width.%]="90" [clrDgField]="'position_name'">ตำแหน่ง</clr-dg-column>
+    <clr-dg-column></clr-dg-column>
     <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
 
     <clr-dg-row *clrDgItems="let position of positions" [clrDgItem]="position">
-        <clr-dg-action-overflow>
+        <!-- <clr-dg-action-overflow>
             <button class="action-item" (click)="edit(position)">
         <clr-icon shape="note"></clr-icon>
         แก้ไขข้อมูล
@@ -20,8 +21,18 @@
         <clr-icon shape="trash" class="is-error"></clr-icon>
         ลบข้อมูล
         </button>
-        </clr-dg-action-overflow>
+        </clr-dg-action-overflow> -->
         <clr-dg-cell>{{position.position_name}}</clr-dg-cell>
+        <clr-dg-cell>
+            <div class="btn-group btn-primary">
+              <button title="แก้ไข" class="btn btn-sm btn-success wm-small-btn"  (click)="edit(position)">
+                <clr-icon shape="note"></clr-icon>
+              </button>
+              <button title="ลบ" class="btn btn-sm btn-danger wm-small-btn" (click)="remove(position)">
+                <clr-icon shape="trash"></clr-icon>
+              </button>
+            </div>
+          </clr-dg-cell>
     </clr-dg-row>
 
     <clr-dg-footer>
@@ -45,6 +56,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" [disabled]="!positionName" (click)="save()">บันทึก</button>
-        <button type="button" class="btn btn-danger-outline" (click)="openModal = false">ยกเลิก</button>
+        <button type="button" class="btn btn-danger-outline" (click)="openModal = false">ปิด</button>
     </div>
 </clr-modal>

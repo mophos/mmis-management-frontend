@@ -93,3 +93,6 @@ form .form-group>label:first-child, form .form-group>span:first-child, .form .fo
 .wid99{
   width: 99%;
 }
+.wm-small-btn {
+  min-width: 0px;margin: 0 0px 0 0;
+}
