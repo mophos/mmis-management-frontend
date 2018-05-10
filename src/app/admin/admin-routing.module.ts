@@ -22,6 +22,7 @@ import { BudgetTypeComponent } from './budget-type/budget-type.component';
 import { HolidayComponent } from 'app/admin/holiday/holiday.component';
 import { PageNotFoundComponent } from 'app/page-not-found/page-not-found.component';
 import { ApproveComponent } from './approve/approve.component';
+import { ReportComponent } from './report/report.component';
 
 const routes: Routes = [
   {
@@ -48,7 +49,8 @@ const routes: Routes = [
       { path: 'budget-type', component: BudgetTypeComponent },
       { path: 'config', component: ConfigComponent },
       { path: 'serial', component: SerialManagementComponent },
-      { path: 'holiday', component: HolidayComponent }
+      { path: 'holiday', component: HolidayComponent },
+      { path: 'report', component: ReportComponent }
     ]
   }
 ];

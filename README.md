@@ -1,1 +1,1 @@
-# MMIS Management Frontend [![Build Status](https://travis-ci.org/mophos/mmis-management-frontend.svg?branch=develop)](https://travis-ci.org/mophos/mmis-management-frontend)
+# MMIS Management Frontend [![Build Status](https://travis-ci.org/mophos/mmis-management-frontend.svg?branch=develop)](https://travis-ci.org/mophos/mmis-management-frontend) [![Build status](https://ci.appveyor.com/api/projects/status/goaiovxth004lmkk?svg=true)](https://ci.appveyor.com/project/siteslave/mmis-management-frontend)
