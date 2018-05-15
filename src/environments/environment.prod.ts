@@ -10,7 +10,7 @@ export const environment = {
   planningUrl: '/planning/#/',
   inventoryUrl: '/inventory/#/',
   materialsUrl: '/material/#/',
-  umUrl: '#',
+  umUrl: '/',
   contractsUrl: '/contracts/#/',
   reportUrl: '/reports/#/',
 };
