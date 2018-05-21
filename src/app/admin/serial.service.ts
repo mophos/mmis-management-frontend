@@ -46,11 +46,12 @@ export class SerialService {
     });
   }
 
-  updateSerial(type, formatId, runningNumber) {
+  updateSerial(type, formatId, runningNumber, srPrefix) {
     return new Promise((resolve, reject) => {
       this.authHttp.put(`${this.apiUrl}/serial/${type}`, {
         formatId: formatId,
-        runningNumber: runningNumber
+        runningNumber: runningNumber,
+        srPrefix: srPrefix
       })
         .map(res => res.json())
         .subscribe(data => {

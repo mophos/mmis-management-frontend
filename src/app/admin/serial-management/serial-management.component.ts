@@ -17,6 +17,7 @@ export class SerialManagementComponent implements OnInit {
   formatId: string;
   formatExample: string;
   runningNumber: number;
+  srPrefix: number;
   loading = false;
   openModal = false;
 
@@ -67,6 +68,7 @@ export class SerialManagementComponent implements OnInit {
     this.formatId = serial.serial_format_id;
     this.formatExample = serial.serial_format;
     this.runningNumber = serial.sr_no;
+    this.srPrefix = serial.sr_prefix;
     this.openModal = true;
   }
 
@@ -76,7 +78,7 @@ export class SerialManagementComponent implements OnInit {
 
   async save() {
     try {
-      let rs: any = await this.serialService.updateSerial(this.type, this.formatId, this.runningNumber);
+      let rs: any = await this.serialService.updateSerial(this.type, this.formatId, this.runningNumber, this.srPrefix);
       if (rs.ok) {
         this.alertService.success();
         this.getSerial();
