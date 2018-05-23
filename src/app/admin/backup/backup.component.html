@@ -14,7 +14,7 @@
   <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
 
   <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="i">
-    <clr-dg-cell>{{ item.backup_date | toThaiDate }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.backup_date }}</clr-dg-cell>
     <clr-dg-cell>{{ item.backup_path }}</clr-dg-cell>
     <clr-dg-cell style="text-align: center;">
       <div class="btn-group btn-primary">
