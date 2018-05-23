@@ -1,0 +1,37 @@
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" href="javascript://" routerLink="/admin">หน้าหลัก</a>
+  <span class="breadcrumb-item active">สำรองข้อมูล</span>
+</nav>
+
+<button class="btn btn-success btn-sm" (click)="doBackup()">
+  <clr-icon shape="plus"></clr-icon> สำรองข้อมูล
+</button>
+
+<clr-datagrid [style.height.%]="80">
+  <clr-dg-column [clrDgField]="'backup_date'" style="width: 200px;">วันที่</clr-dg-column>
+  <clr-dg-column [clrDgField]="'backup_path'">ไฟล์</clr-dg-column>
+  <clr-dg-column style="width: 120px;">#</clr-dg-column>
+  <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
+
+  <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="i">
+    <clr-dg-cell>{{ item.backup_date | toThaiDate }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.backup_path }}</clr-dg-cell>
+    <clr-dg-cell style="text-align: center;">
+      <div class="btn-group btn-primary">
+        <button class="btn btn-sm btn-danger wm-small-btn" (click)="removeFile(item)">
+          <clr-icon shape="trash"></clr-icon>
+        </button>
+        <button class="btn btn-sm btn-success wm-small-btn" (click)="downloadFile(item)">
+          <clr-icon shape="download"></clr-icon>
+        </button>
+      </div>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
+    <clr-dg-pagination #pagination [clrDgPageSize]="20"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<um-loading #loading></um-loading>
