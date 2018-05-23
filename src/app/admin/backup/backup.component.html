@@ -10,7 +10,7 @@
 <clr-datagrid [style.height.%]="80">
   <clr-dg-column [clrDgField]="'backup_date'" style="width: 200px;">วันที่</clr-dg-column>
   <clr-dg-column [clrDgField]="'backup_path'">ไฟล์</clr-dg-column>
-  <clr-dg-column style="width: 120px;">#</clr-dg-column>
+  <clr-dg-column style="width: 350px;">#</clr-dg-column>
   <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
 
   <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="i">
@@ -19,10 +19,13 @@
     <clr-dg-cell style="text-align: center;">
       <div class="btn-group btn-primary">
         <button class="btn btn-sm btn-danger wm-small-btn" (click)="removeFile(item)">
-          <clr-icon shape="trash"></clr-icon>
+          delete
         </button>
         <button class="btn btn-sm btn-success wm-small-btn" (click)="downloadFile(item)">
-          <clr-icon shape="download"></clr-icon>
+          download
+        </button>
+        <button class="btn btn-sm btn-success wm-small-btn" disabled>
+          Restore
         </button>
       </div>
     </clr-dg-cell>
