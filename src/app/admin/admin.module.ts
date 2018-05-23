@@ -52,6 +52,7 @@ import { DirectivesModule } from "../directives/directives.module";
 import { ReportComponent } from './report/report.component';
 import { ReportService } from './report.service';
 import { HtmlPreviewComponent } from './helper/html-preview/html-preview.component';
+import { BackupComponent } from './backup/backup.component';
 // import { AgxTypeaheadModule } from '@siteslave/agx-typeahead';
 
 @NgModule({
@@ -92,7 +93,8 @@ import { HtmlPreviewComponent } from './helper/html-preview/html-preview.compone
     DateHolidayPipe,
     ApproveComponent,
     ReportComponent,
-    HtmlPreviewComponent
+    HtmlPreviewComponent,
+    BackupComponent
   ],
   providers: [
     AuthGuard,

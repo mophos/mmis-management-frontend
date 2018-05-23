@@ -1,117 +1,117 @@
 <clr-main-container>
-    <clr-header class="header-6">
-        <div class="branding">
-            <a class="nav-link">
-                <img src="./assets/images/logo-MMIS.png" style="width: 100px; height: 70px; padding-right: 5px;" alt="mmis logo">
-                <span class="title">MMIS System Management</span>
-            </a>
-        </div>
-        <div class="header-nav">
-            <a class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" href="javascript://" (click)="goHome()">
-                <clr-icon shape="home"></clr-icon>
-                <span class="tooltip-content">Home</span>
-            </a>
-            <a href="{{env.purchasingUrl}}" *ngIf="Purchasing" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" role="tooltip"
-                aria-haspopup="true">
-                <clr-icon shape="shopping-cart"></clr-icon>
-                <span class="tooltip-content">Purchasing</span>
-            </a>
-            <a href="{{env.planningUrl}}" *ngIf="Planning" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" role="tooltip"
-                aria-haspopup="true">
-                <clr-icon shape="event"></clr-icon>
-                <span class="tooltip-content">Planning</span>
-            </a>
-            <a href="{{env.inventoryUrl}}" *ngIf="Inventory || InventoryWarehouse" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right"
-                role="tooltip" aria-haspopup="true">
-                <clr-icon shape="data-cluster"></clr-icon>
-                <span class="tooltip-content">Inventory</span>
-            </a>
-            <a href="{{env.materialsUrl}}" *ngIf="Materials" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" role="tooltip"
-                aria-haspopup="true">
-                <clr-icon shape="storage"></clr-icon>
-                <span class="tooltip-content">Materials</span>
-            </a>
-            <a href="{{env.contractsUrl}}" *ngIf="Contracts" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" role="tooltip"
-                aria-haspopup="true">
-                <clr-icon shape="scroll"></clr-icon>
-                <span class="tooltip-content">Contracts</span>
-            </a>
-            <a href="{{env.umUrl}}" routerLink="{{env.umUrl}}" routerLinkActive="active" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right"
-                role="tooltip" aria-haspopup="true">
-                <clr-icon shape="cog"></clr-icon>
-                <span class="tooltip-content">Administrator</span>
-            </a>
-        </div>
-        <div class="header-actions">
-            <clr-dropdown>
-                <button class="nav-text" clrDropdownTrigger>
-                    {{ fullname }}
-                    <clr-icon shape="caret down"></clr-icon>
-                </button>
-                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-                    <a (click)="downloadManual()" clrDropdownItem>คู่มือ</a>
-                    <a href="javascript://" (click)="openChangePasswordModal()" clrDropdownItem>เปลี่ยนรหัสผ่าน</a>
-                    <a (click)="logout()" clrDropdownItem>ออกจากระบบ</a>
-                </clr-dropdown-menu>
-            </clr-dropdown>
-        </div>
-    </clr-header>
+  <clr-header class="header-6">
+    <div class="branding">
+      <a class="nav-link">
+        <img src="./assets/images/logo-MMIS.png" style="width: 100px; height: 70px; padding-right: 5px;" alt="mmis logo">
+        <span class="title">MMIS System Management</span>
+      </a>
+    </div>
+    <div class="header-nav">
+      <a class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" href="javascript://" (click)="goHome()">
+        <clr-icon shape="home"></clr-icon>
+        <span class="tooltip-content">Home</span>
+      </a>
+      <a href="{{env.purchasingUrl}}" *ngIf="Purchasing" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" role="tooltip"
+        aria-haspopup="true">
+        <clr-icon shape="shopping-cart"></clr-icon>
+        <span class="tooltip-content">Purchasing</span>
+      </a>
+      <a href="{{env.planningUrl}}" *ngIf="Planning" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" role="tooltip"
+        aria-haspopup="true">
+        <clr-icon shape="event"></clr-icon>
+        <span class="tooltip-content">Planning</span>
+      </a>
+      <a href="{{env.inventoryUrl}}" *ngIf="Inventory || InventoryWarehouse" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right"
+        role="tooltip" aria-haspopup="true">
+        <clr-icon shape="data-cluster"></clr-icon>
+        <span class="tooltip-content">Inventory</span>
+      </a>
+      <a href="{{env.materialsUrl}}" *ngIf="Materials" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" role="tooltip"
+        aria-haspopup="true">
+        <clr-icon shape="storage"></clr-icon>
+        <span class="tooltip-content">Materials</span>
+      </a>
+      <a href="{{env.contractsUrl}}" *ngIf="Contracts" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right" role="tooltip"
+        aria-haspopup="true">
+        <clr-icon shape="scroll"></clr-icon>
+        <span class="tooltip-content">Contracts</span>
+      </a>
+      <a href="{{env.umUrl}}" routerLink="{{env.umUrl}}" routerLinkActive="active" class=" nav-link nav-icon tooltip tooltip-md tooltip-bottom-right"
+        role="tooltip" aria-haspopup="true">
+        <clr-icon shape="cog"></clr-icon>
+        <span class="tooltip-content">Administrator</span>
+      </a>
+    </div>
+    <div class="header-actions">
+      <clr-dropdown>
+        <button class="nav-text" clrDropdownTrigger>
+          {{ fullname }}
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <a (click)="downloadManual()" clrDropdownItem>คู่มือ</a>
+          <a href="javascript://" (click)="openChangePasswordModal()" clrDropdownItem>เปลี่ยนรหัสผ่าน</a>
+          <a (click)="logout()" clrDropdownItem>ออกจากระบบ</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  </clr-header>
 
-    <div class="content-container">
-        <div class="content-area">
-            <router-outlet></router-outlet>
-        </div>
+  <div class="content-container">
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
 
-        <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [(clrVerticalNavCollapsed)]="collapsed">
-            <clr-vertical-nav-group routerLinkActive="active">
-                <a clrVerticalNavLink routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                    <clr-icon shape="user" clrVerticalNavIcon></clr-icon>จัดการผู้ใช้งานระบบ
-                </a>
-                <clr-vertical-nav-group-children *clrIfExpanded="false">
-                    <a clrVerticalNavLink routerLink="./users" routerLinkActive="active">
-                        <clr-icon shape="user" clrVerticalNavIcon></clr-icon> ข้อมูลผู้ใช้งาน</a>
-                    <a clrVerticalNavLink routerLink="./groups" routerLinkActive="active">
-                        <clr-icon shape="users" clrVerticalNavIcon></clr-icon> กลุ่มผู้ใช้งาน</a>
-                    <a clrVerticalNavLink routerLink="./rights" routerLinkActive="active">
-                        <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon> สิทธิ์การใช้งาน</a>
-                    <a clrVerticalNavLink routerLink="./approve" routerLinkActive="active">
-                        <clr-icon shape="approve" clrVerticalNavIcon></clr-icon> สิทธิ์การอนุมัติ</a>
-                </clr-vertical-nav-group-children>
-            </clr-vertical-nav-group>
+    <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [(clrVerticalNavCollapsed)]="collapsed">
+      <clr-vertical-nav-group routerLinkActive="active">
+        <a clrVerticalNavLink routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+          <clr-icon shape="user" clrVerticalNavIcon></clr-icon>จัดการผู้ใช้งานระบบ
+        </a>
+        <clr-vertical-nav-group-children *clrIfExpanded="false">
+          <a clrVerticalNavLink routerLink="./users" routerLinkActive="active">
+            <clr-icon shape="user" clrVerticalNavIcon></clr-icon> ข้อมูลผู้ใช้งาน</a>
+          <a clrVerticalNavLink routerLink="./groups" routerLinkActive="active">
+            <clr-icon shape="users" clrVerticalNavIcon></clr-icon> กลุ่มผู้ใช้งาน</a>
+          <a clrVerticalNavLink routerLink="./rights" routerLinkActive="active">
+            <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon> สิทธิ์การใช้งาน</a>
+          <a clrVerticalNavLink routerLink="./approve" routerLinkActive="active">
+            <clr-icon shape="approve" clrVerticalNavIcon></clr-icon> สิทธิ์การอนุมัติ</a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
 
-            <clr-vertical-nav-group routerLinkActive="active">
-                <a clrVerticalNavLink routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                    <clr-icon shape="tag" clrVerticalNavIcon></clr-icon>ข้อมูลทั่วไป
-                </a>
-                <clr-vertical-nav-group-children *clrIfExpanded="false">
-                    <a clrVerticalNavLink routerLink="./settings" routerLinkActive="active">
-                        <clr-icon shape="home" clrVerticalNavIcon></clr-icon> ข้อมูลสถานพยาบาล</a>
-                    <a clrVerticalNavLink routerLink="./people" routerLinkActive="active">
-                        <clr-icon shape="user" clrVerticalNavIcon></clr-icon> ข้อมูลเจ้าหน้าที่</a>
-<!--                     <a clrVerticalNavLink routerLink="./purchasing-officer" routerLinkActive="active">
+      <clr-vertical-nav-group routerLinkActive="active">
+        <a clrVerticalNavLink routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+          <clr-icon shape="tag" clrVerticalNavIcon></clr-icon>ข้อมูลทั่วไป
+        </a>
+        <clr-vertical-nav-group-children *clrIfExpanded="false">
+          <a clrVerticalNavLink routerLink="./settings" routerLinkActive="active">
+            <clr-icon shape="home" clrVerticalNavIcon></clr-icon> ข้อมูลสถานพยาบาล</a>
+          <a clrVerticalNavLink routerLink="./people" routerLinkActive="active">
+            <clr-icon shape="user" clrVerticalNavIcon></clr-icon> ข้อมูลเจ้าหน้าที่</a>
+          <!--                     <a clrVerticalNavLink routerLink="./purchasing-officer" routerLinkActive="active">
                         <clr-icon shape="user" clrVerticalNavIcon></clr-icon> ข้อมูลเจ้าหน้าที่พัสดุ</a> -->
-                    <a clrVerticalNavLink routerLink="./titles" routerLinkActive="active">
-                        <clr-icon shape="list" clrVerticalNavIcon></clr-icon> คำนำหน้า</a>
-                    <a clrVerticalNavLink routerLink="./positions" routerLinkActive="active">
-                        <clr-icon shape="window-restore" clrVerticalNavIcon></clr-icon> ตำแหน่ง</a>
-                </clr-vertical-nav-group-children>
-            </clr-vertical-nav-group>
+          <a clrVerticalNavLink routerLink="./titles" routerLinkActive="active">
+            <clr-icon shape="list" clrVerticalNavIcon></clr-icon> คำนำหน้า</a>
+          <a clrVerticalNavLink routerLink="./positions" routerLinkActive="active">
+            <clr-icon shape="window-restore" clrVerticalNavIcon></clr-icon> ตำแหน่ง</a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
 
-            <clr-vertical-nav-group routerLinkActive="active">
-                <a clrVerticalNavLink routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                    <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>ข้อมูลพื้นฐานระบบ
-                </a>
-                <clr-vertical-nav-group-children *clrIfExpanded="false">
-                    <a clrVerticalNavLink routerLink="./config" routerLinkActive="active">
-                        <clr-icon shape="cog" clrVerticalNavIcon></clr-icon> ค่าเบื้องต้น</a>
-                    <a clrVerticalNavLink routerLink="./holiday" routerLinkActive="active">
-                        <clr-icon shape="cog" clrVerticalNavIcon></clr-icon> ตั้งค่าวันหยุด</a>
-                    <a clrVerticalNavLink routerLink="./report" routerLinkActive="active">
-                        <clr-icon shape="cog" clrVerticalNavIcon></clr-icon> ตั้งค่ารายงาน</a>
-                    <a clrVerticalNavLink routerLink="./serial" routerLinkActive="active">
-                        <clr-icon shape="slider" clrVerticalNavIcon></clr-icon> จัดการ Serial
-                    </a>
-                    <!-- <a clrVerticalNavLink routerLink="./type-bid" routerLinkActive="active">
+      <clr-vertical-nav-group routerLinkActive="active">
+        <a clrVerticalNavLink routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+          <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>ข้อมูลพื้นฐานระบบ
+        </a>
+        <clr-vertical-nav-group-children *clrIfExpanded="false">
+          <a clrVerticalNavLink routerLink="./config" routerLinkActive="active">
+            <clr-icon shape="cog" clrVerticalNavIcon></clr-icon> ค่าเบื้องต้น</a>
+          <a clrVerticalNavLink routerLink="./holiday" routerLinkActive="active">
+            <clr-icon shape="cog" clrVerticalNavIcon></clr-icon> ตั้งค่าวันหยุด</a>
+          <a clrVerticalNavLink routerLink="./report" routerLinkActive="active">
+            <clr-icon shape="cog" clrVerticalNavIcon></clr-icon> ตั้งค่ารายงาน</a>
+          <a clrVerticalNavLink routerLink="./serial" routerLinkActive="active">
+            <clr-icon shape="slider" clrVerticalNavIcon></clr-icon> จัดการ Serial
+          </a>
+          <!-- <a clrVerticalNavLink routerLink="./type-bid" routerLinkActive="active">
                         <clr-icon shape="window-restore" clrVerticalNavIcon></clr-icon> วิธีการจัดซื้อ
                     </a>
                     <a clrVerticalNavLink routerLink="./co-bid" routerLinkActive="active">
@@ -123,12 +123,22 @@
                     <a clrVerticalNavLink routerLink="./budget-source" routerLinkActive="active">
                         <clr-icon shape="window-restore" clrVerticalNavIcon></clr-icon> แหล่งงบประมาณ
                     </a> -->
-                </clr-vertical-nav-group-children>
-            </clr-vertical-nav-group>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
 
-        </clr-vertical-nav>
+      <clr-vertical-nav-group routerLinkActive="active">
+        <a clrVerticalNavLink routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+          <clr-icon shape="tools" clrVerticalNavIcon></clr-icon>เครื่องมือ
+        </a>
+        <clr-vertical-nav-group-children *clrIfExpanded="false">
+          <a clrVerticalNavLink routerLink="/admin/backup" routerLinkActive="active">
+            <clr-icon shape="tools" clrVerticalNavIcon></clr-icon> สำรองข้อมูล</a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
 
-        <!--nav class="sidenav" [clr-nav-level]="1">
+    </clr-vertical-nav>
+
+    <!--nav class="sidenav" [clr-nav-level]="1">
 
             <section class="sidenav-content">
                 <clr-tree-node [clrTreeNodeExpanded]="true">
@@ -191,7 +201,7 @@
 
         </nav-->
 
-    </div>
+  </div>
 
 </clr-main-container>
 

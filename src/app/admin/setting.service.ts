@@ -67,7 +67,7 @@ export class SettingService {
     });
   }
 
-// PurchasingOfficer =====================================
+  // PurchasingOfficer =====================================
   selectData(tableName, selectText, whereText, groupBy, orderText) {
     return new Promise((resolve, reject) => {
       this.authHttp.post(`${this.apiContract}/selectData`, {
@@ -77,7 +77,7 @@ export class SettingService {
         groupBy: groupBy,
         orderText: orderText,
         tokenKey: this.tokenKey
-      } )
+      })
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -91,7 +91,7 @@ export class SettingService {
       this.authHttp.post(`${this.apiContract}/getPurchasingOfficer`, {
         tokenKey: this.tokenKey,
         ref: ref
-      } )
+      })
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -107,7 +107,7 @@ export class SettingService {
         tokenKey: this.tokenKey,
         ref: ref,
         data: formInput,
-      } )
+      })
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -122,7 +122,7 @@ export class SettingService {
       this.authHttp.post(`${this.apiContract}/deletePurchasingOfficer`, {
         tokenKey: this.tokenKey,
         ref: ref
-      } )
+      })
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -132,13 +132,13 @@ export class SettingService {
     });
   }
 
-// type bid =====================================
+  // type bid =====================================
   deleteTypeBid(ref) {
     return new Promise((resolve, reject) => {
       this.authHttp.post(`${this.apiContract}/delete-type-bid`, {
         tokenKey: this.tokenKey,
         ref: ref
-      } )
+      })
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -154,7 +154,7 @@ export class SettingService {
         tokenKey: this.tokenKey,
         data: data,
         ref: ref
-      } )
+      })
         .map(res => res.json())
         .subscribe(res => {
           resolve(res);
@@ -169,7 +169,7 @@ export class SettingService {
       this.authHttp.post(`${this.apiContract}/delete-bid-process`, {
         tokenKey: this.tokenKey,
         ref: ref
-      } )
+      })
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -185,7 +185,7 @@ export class SettingService {
         tokenKey: this.tokenKey,
         data: data,
         ref: ref
-      } )
+      })
         .map(res => res.json())
         .subscribe(res => {
           resolve(res);
@@ -195,6 +195,28 @@ export class SettingService {
     });
   }
 
+  async backupDatabase() {
+    let rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/save`)
+      .toPromise();
+    return rs.json();
+  }
 
+  async getBackupList() {
+    let rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/list`)
+      .toPromise();
+    return rs.json();
+  }
+
+  async downloadBackupFile(backupId: any) {
+    let rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/download/${backupId}`)
+      .toPromise();
+    return rs.json();
+  }
+
+  async removeBackupFile(backupId: any) {
+    let rs: any = await this.authHttp.delete(`${this.apiUrl}/settings/backup/remove/${backupId}`)
+      .toPromise();
+    return rs.json();
+  }
 
 }
