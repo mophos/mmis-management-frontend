@@ -48,7 +48,7 @@ import { HolidayService } from 'app/admin/holiday.service';
 import { DateHolidayPipe } from './date-holiday.pipe';
 import { ProductGroupService } from 'app/admin/product-groups';
 import { ApproveComponent } from './approve/approve.component';
-import { DirectivesModule } from "../directives/directives.module";
+import { DirectivesModule } from '../directives/directives.module';
 import { ReportComponent } from './report/report.component';
 import { ReportService } from './report.service';
 import { HtmlPreviewComponent } from './helper/html-preview/html-preview.component';

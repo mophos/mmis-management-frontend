@@ -1,0 +1,11 @@
+<input autocomplete="off" type="text" value={{query}} [(ngModel)]="query" name="query" (keyup)="onClearSelected($event)" 
+style="width: 100%;" placeholder="ค้นหาชื่อ..."  
+agxTypeahead 
+[taUrl]="userApiUrl" 
+taApi="http" 
+[taItemTpl]="itemTpl" 
+(taSelected)="handleResultSelected($event)">
+
+<ng-template #itemTpl let-result>
+  {{ result.result.fullname }}
+</ng-template>

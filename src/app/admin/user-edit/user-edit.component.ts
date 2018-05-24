@@ -3,7 +3,8 @@ import { GroupService } from './../group.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from './../../alert.service';
 import { UserService } from './../user.service';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { AutocompletePeopleComponent } from '../../directives/autocomplete-people/autocomplete-people.component';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -14,7 +15,7 @@ import { ProductGroupService } from 'app/admin/product-groups';
   templateUrl: './user-edit.component.html'
 })
 export class UserEditComponent implements OnInit {
-
+  @ViewChild('people') public people: AutocompletePeopleComponent;
   warehouseId: string;
   groupId: string;
   username: string;
@@ -23,7 +24,6 @@ export class UserEditComponent implements OnInit {
   submitLoading = false;
   loadingPeople = true;
   isActive = false;
-  selectedPeople: any;
   peopleId: string;
   openPeopleModal = false;
   startDate: any;
@@ -36,17 +36,28 @@ export class UserEditComponent implements OnInit {
     editableDateField: false,
     showClearDateBtn: true
   };
-
-  selectedRights: any = [];
-  warehouses: any = [];
-  rights: any = [];
-  groups: any = [];
-  peoples: any = [];
-
   userId: string;
   selectedProductGroups: any = [];
   productGroups: any = [];
 
+  peoples: any = [];
+  selectedRights: any = [];
+  warehouses: any = [];
+  rights: any = [];
+  rights_po: any = [];
+  rights_wm: any = [];
+  rights_bm: any = [];
+  rights_um: any = [];
+  rights_cm: any = [];
+  rights_mm: any = [];
+  groups: any = [];
+  selectedPeople: any;
+  allUM = false;
+  allPO = false;
+  allWM = false;
+  allBM = false;
+  allCM = false;
+  allMM = false;
   constructor(
     private userService: UserService,
     private alertService: AlertService,
@@ -59,13 +70,32 @@ export class UserEditComponent implements OnInit {
     this.userId = this.route.snapshot.params.userId;
   }
 
-  ngOnInit() {
-    this.getData();
+  async ngOnInit() {
+    await this.getRights();
+    await this.getWarehosues();
+    await this.getGroups();
+    await this.getProductGroups();
+    await this.getData();
+  }
+
+  getWarehosues() {
+    this.userService.getWarehousesList()
+      .then((result: any) => {
+        if (result.ok) {
+          this.warehouses = result.rows;
+        } else {
+          this.alertService.error();
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.alertService.serverError();
+      });
   }
 
   async getProductGroups() {
     try {
-      let rs: any = await this.productGroupService.list();
+      const rs: any = await this.productGroupService.list();
       if (rs.ok) {
         this.productGroups = rs.rows;
       } else {
@@ -80,16 +110,57 @@ export class UserEditComponent implements OnInit {
     this.selectedRights = [];
     this.groupService.getRights(this.groupId)
       .then((result: any) => {
-        // console.log(result.rights);
         if (result.ok) {
-          _.forEach(this.rights, (v: any) => {
-            // console.log(v.group_id, this.groupId);
-            _.forEach(result.rows, (x: any) => {
-              if (v.right_id === x.right_id) {
-                this.selectedRights.push(v);
-              }
-            })
+          console.log(result.rows);
+          this.rights_bm.forEach(r => {
+            const idx = _.findIndex(result.rows, { 'right_id': r.right_id })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
           });
+          this.rights_wm.forEach(r => {
+            const idx = _.findIndex(result.rows, { 'right_id': r.right_id })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+          this.rights_mm.forEach(r => {
+            const idx = _.findIndex(result.rows, { 'right_id': r.right_id })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+          this.rights_um.forEach(r => {
+            const idx = _.findIndex(result.rows, { 'right_id': r.right_id })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+          this.rights_cm.forEach(r => {
+            const idx = _.findIndex(result.rows, { 'right_id': r.right_id })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+          this.rights_po.forEach(r => {
+            const idx = _.findIndex(result.rows, { 'right_id': r.right_id })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+
         }
       })
       .catch(error => {
@@ -98,24 +169,24 @@ export class UserEditComponent implements OnInit {
       })
   }
 
+  getGroups() {
+    this.userService.getGroupsList()
+      .then((result: any) => {
+        if (result.ok) {
+          this.groups = result.rows;
+        } else {
+          this.alertService.error();
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.alertService.serverError();
+      });
+  }
+
+
   getData() {
-    this.userService.getWarehousesList()
-      .then((result: any) => {
-        this.warehouses = result.rows;
-        return this.userService.getGroupsList()
-      })
-      .then((result: any) => {
-        this.groups = result.rows;
-        return this.userService.getRightsList()
-      })
-      .then((result: any) => {
-        this.rights = result.rows;
-        return this.productGroupService.list();
-      })
-      .then((result: any) => {
-        this.productGroups = result.rows;
-        return this.userService.getDetail(this.userId)
-      })
+    this.userService.getDetail(this.userId)
       .then((result: any) => {
         if (result.ok) {
           if (result.detail) {
@@ -123,6 +194,7 @@ export class UserEditComponent implements OnInit {
             this.username = result.detail.username;
             this.password = null;
             this.fullname = result.detail.fullname;
+            this.people.setQuery(this.fullname);
             this.groupId = result.detail.group_id;
             this.warehouseId = result.detail.warehouse_id;
             this.isActive = result.detail.is_active === 'Y' ? true : false;
@@ -147,38 +219,92 @@ export class UserEditComponent implements OnInit {
 
             if (result.detail.access_right) {
               const _rights = result.detail.access_right.split(',');
-
-              for (const v of this.rights) {
-                  for (const x of _rights) {
-                    if (x === v.right_code) {
-                      this.selectedRights.push(v);
-                    }
-                  }
+              const _objRight = [];
+              _rights.forEach(r => {
+                const objRight = {
+                  'right_code': r
                 }
+                _objRight.push(objRight)
+              });
+
+              this.rights_bm.forEach(r => {
+                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+                if (idx > -1) {
+                  r.check = true;
+                } else {
+                  r.check = false;
+                }
+              });
+              this.rights_wm.forEach(r => {
+                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+                if (idx > -1) {
+                  r.check = true;
+                } else {
+                  r.check = false;
+                }
+              });
+              this.rights_mm.forEach(r => {
+                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+                if (idx > -1) {
+                  r.check = true;
+                } else {
+                  r.check = false;
+                }
+              });
+              this.rights_um.forEach(r => {
+                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+                if (idx > -1) {
+                  r.check = true;
+                } else {
+                  r.check = false;
+                }
+              });
+              this.rights_cm.forEach(r => {
+                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+                if (idx > -1) {
+                  r.check = true;
+                } else {
+                  r.check = false;
+                }
+              });
+              this.rights_po.forEach(r => {
+                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+                if (idx > -1) {
+                  r.check = true;
+                } else {
+                  r.check = false;
+                }
+              });
 
             }
 
-              if (result.detail.generic_type_id) {
-                const _pg = result.detail.generic_type_id.split(',');
-                // this.productGroups.forEach(v => {
-                for (const v of this.productGroups) {
-                  for (const x of _pg) {
-                    if (+x === +v.generic_type_id) {
-                      this.selectedProductGroups.push(v);
-                    }
-                  }
+            if (result.detail.generic_type_id) {
+              const _pg = result.detail.generic_type_id.split(',');
+              const _objpg = [];
+              _pg.forEach(r => {
+                const objPg = {
+                  'generic_type_id': +r
                 }
-              }
+                _objpg.push(objPg)
+              });
+              this.productGroups.forEach(p => {
+                const idx = _.findIndex(_objpg, { 'generic_type_id': +p.generic_type_id });
 
-            } else {
-              this.alertService.error('ไม่พบรายการที่ต้องการแก้ไข');
-              this.router.navigate(['/admin/users']);
+                if (idx > -1) {
+                  this.selectedProductGroups.push(p);
+                }
+              });
             }
+
           } else {
-            this.alertService.error();
+            this.alertService.error('ไม่พบรายการที่ต้องการแก้ไข');
             this.router.navigate(['/admin/users']);
           }
-        })
+        } else {
+          this.alertService.error();
+          this.router.navigate(['/admin/users']);
+        }
+      })
       .catch(error => {
         console.log(error);
         this.alertService.serverError();
@@ -206,21 +332,16 @@ export class UserEditComponent implements OnInit {
       });
   }
 
-  setPeople() {
-    this.fullname = `${this.selectedPeople.title_name} ${this.selectedPeople.fname} ${this.selectedPeople.lname}`;
-    this.peopleId = this.selectedPeople.people_id;
-    this.openPeopleModal = false;
-  }
-
   async saveUser() {
-    let productGroups = [];
+    await this.groupRight();
+    const productGroups = [];
     let productGroupData = null;
 
-    let adminRight = 'WM_ADMIN';
-    let subStockAdminRight = 'WM_WAREHOUSE_ADMIN';
+    const adminRight = 'WM_ADMIN';
+    const subStockAdminRight = 'WM_WAREHOUSE_ADMIN';
 
-    let idxA = _.findIndex(this.selectedRights, { right_code: adminRight });
-    let idxS = _.findIndex(this.selectedRights, { right_code: subStockAdminRight });
+    const idxA = _.findIndex(this.selectedRights, { right_code: adminRight });
+    const idxS = _.findIndex(this.selectedRights, { right_code: subStockAdminRight });
 
     if (idxA > -1 && idxS > -1) {
       this.alertService.error('ไม่สามารถกำหนดสิทธิ์ WM_ADMIN และ WM_WAREHOUSE_ADMIN ในคนเดียวกันได้');
@@ -276,5 +397,154 @@ export class UserEditComponent implements OnInit {
     }
 
   }
+  getRights() {
+    this.getRightPO();
+    this.getRightWM();
+    this.getRightMM();
+    this.getRightBM();
+    this.getRightCM();
+    this.getRightUM();
+  }
 
+  async getRightPO() {
+    try {
+      const rs: any = await this.userService.getRight('PO');
+      if (rs.ok) {
+        this.rights_po = rs.rows;
+      }
+    } catch (error) {
+      this.alertService.error(JSON.stringify(error))
+    }
+  }
+
+  async getRightWM() {
+    try {
+      const rs: any = await this.userService.getRight('WM');
+      if (rs.ok) {
+        this.rights_wm = rs.rows;
+      }
+    } catch (error) {
+      this.alertService.error(JSON.stringify(error))
+    }
+  }
+
+  async getRightBM() {
+    try {
+      const rs: any = await this.userService.getRight('BM');
+      if (rs.ok) {
+        this.rights_bm = rs.rows;
+      }
+    } catch (error) {
+      this.alertService.error(JSON.stringify(error))
+    }
+  }
+
+  async getRightCM() {
+    try {
+      const rs: any = await this.userService.getRight('CM');
+      if (rs.ok) {
+        this.rights_cm = rs.rows;
+      }
+    } catch (error) {
+      this.alertService.error(JSON.stringify(error))
+    }
+  }
+
+  async getRightMM() {
+    try {
+      const rs: any = await this.userService.getRight('MM');
+      if (rs.ok) {
+        this.rights_mm = rs.rows;
+      }
+    } catch (error) {
+      this.alertService.error(JSON.stringify(error))
+    }
+  }
+
+  async getRightUM() {
+    try {
+      const rs: any = await this.userService.getRight('UM');
+      if (rs.ok) {
+        this.rights_um = rs.rows;
+      }
+    } catch (error) {
+      this.alertService.error(JSON.stringify(error))
+    }
+  }
+
+  groupRight() {
+    this.selectedRights = [];
+    this.rights_bm.forEach(e => {
+      if (e.check === true) {
+        this.selectedRights.push(e);
+      }
+    });
+    this.rights_cm.forEach(e => {
+      if (e.check === true) {
+        this.selectedRights.push(e);
+      }
+    });
+    this.rights_mm.forEach(e => {
+      if (e.check === true) {
+        this.selectedRights.push(e);
+      }
+    });
+    this.rights_wm.forEach(e => {
+      if (e.check === true) {
+        this.selectedRights.push(e);
+      }
+    });
+    this.rights_um.forEach(e => {
+      if (e.check === true) {
+        this.selectedRights.push(e);
+      }
+    });
+    this.rights_po.forEach(e => {
+      if (e.check === true) {
+        this.selectedRights.push(e);
+      }
+    });
+    console.log(this.selectedRights);
+
+  }
+  onPeopleSelected(e) {
+    console.log(e);
+    this.selectedPeople = e.people_id;
+  }
+  checkAllUM() {
+    this.allUM = !this.allUM;
+    this.rights_um.forEach(r => {
+      r.check = this.allUM;
+    });
+  }
+  checkAllWM() {
+    this.allWM = !this.allWM;
+    this.rights_wm.forEach(r => {
+      r.check = this.allWM;
+    });
+  }
+  checkAllMM() {
+    this.allMM = !this.allMM;
+    this.rights_mm.forEach(r => {
+      r.check = this.allMM;
+    });
+  }
+  checkAllCM() {
+    this.allCM = !this.allCM;
+    this.rights_cm.forEach(r => {
+      r.check = this.allCM;
+    });
+  }
+  checkAllBM() {
+    this.allBM = !this.allBM;
+    this.rights_bm.forEach(r => {
+      r.check = this.allBM;
+    });
+  }
+  checkAllPO() {
+    this.allPO = !this.allPO;
+    this.rights_po.forEach(r => {
+      r.check = this.allPO;
+    });
+  }
 }

@@ -153,4 +153,17 @@ export class UserService {
     }).toPromise();
     return res.json()
   }
+
+  getRight(module: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.get(`${this.apiUrl}/users/rights/module?module=${module}`)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
 }
