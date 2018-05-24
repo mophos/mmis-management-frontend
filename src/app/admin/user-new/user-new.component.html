@@ -186,32 +186,3 @@
   </div>
 
 </div>
-
-<clr-modal [(clrModalOpen)]="openPeopleModal" [clrModalClosable]="false" [clrModalSize]="'lg'">
-  <h3 class="modal-title">เลือกเจ้าหน้าที่</h3>
-  <div class="modal-body">
-    <clr-datagrid [clrDgLoading]="loadingPeople" [(clrDgSingleSelected)]="selectedPeople">
-      <clr-dg-column [style.width.%]="10">คำนำหน้า</clr-dg-column>
-      <clr-dg-column [style.width.%]="25" [clrDgField]="'fname'">ชื่อ</clr-dg-column>
-      <clr-dg-column [style.width.%]="25" [clrDgField]="'lname'">สกุล</clr-dg-column>
-      <clr-dg-column [style.width.%]="35" [clrDgField]="'position'">ตำแหน่ง</clr-dg-column>
-      <clr-dg-placeholder>ไม่พบชื่อเจ้าหน้าที่!</clr-dg-placeholder>
-      <clr-dg-row *clrDgItems="let p of peoples" [clrDgItem]="p">
-        <clr-dg-cell>{{p.title_name}}</clr-dg-cell>
-        <clr-dg-cell>{{p.fname}}</clr-dg-cell>
-        <clr-dg-cell>{{p.lname}}</clr-dg-cell>
-        <clr-dg-cell>{{p.position_name}}</clr-dg-cell>
-      </clr-dg-row>
-
-      <clr-dg-footer>
-        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
-        <clr-dg-pagination #pagination [clrDgPageSize]="8"></clr-dg-pagination>
-      </clr-dg-footer>
-    </clr-datagrid>
-
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" [disabled]="!selectedPeople" (click)="setPeople()">ตกลง</button>
-    <button type="button" class="btn btn-outline-danger" (click)="openPeopleModal = false">ยกเลิก</button>
-  </div>
-</clr-modal>

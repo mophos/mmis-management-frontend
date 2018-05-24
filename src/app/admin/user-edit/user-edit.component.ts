@@ -511,4 +511,40 @@ export class UserEditComponent implements OnInit {
     console.log(e);
     this.selectedPeople = e.people_id;
   }
+  checkAllUM() {
+    this.allUM = !this.allUM;
+    this.rights_um.forEach(r => {
+      r.check = this.allUM;
+    });
+  }
+  checkAllWM() {
+    this.allWM = !this.allWM;
+    this.rights_wm.forEach(r => {
+      r.check = this.allWM;
+    });
+  }
+  checkAllMM() {
+    this.allMM = !this.allMM;
+    this.rights_mm.forEach(r => {
+      r.check = this.allMM;
+    });
+  }
+  checkAllCM() {
+    this.allCM = !this.allCM;
+    this.rights_cm.forEach(r => {
+      r.check = this.allCM;
+    });
+  }
+  checkAllBM() {
+    this.allBM = !this.allBM;
+    this.rights_bm.forEach(r => {
+      r.check = this.allBM;
+    });
+  }
+  checkAllPO() {
+    this.allPO = !this.allPO;
+    this.rights_po.forEach(r => {
+      r.check = this.allPO;
+    });
+  }
 }
