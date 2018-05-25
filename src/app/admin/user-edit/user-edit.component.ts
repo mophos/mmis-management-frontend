@@ -74,8 +74,12 @@ export class UserEditComponent implements OnInit {
     await this.getRights();
     await this.getWarehosues();
     await this.getGroups();
-    await this.getProductGroups();
-    await this.getData();
+    await this.getProductGroups()
+      .then((result) => {
+        this.getData();
+      }).catch((err) => {
+
+      });
   }
 
   getWarehosues() {
