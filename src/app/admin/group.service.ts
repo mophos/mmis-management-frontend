@@ -20,7 +20,7 @@ export class GroupService {
           reject(error);
         });
     });
-  }  
+  }
 
   save(groupName: string) {
     return new Promise((resolve, reject) => {
@@ -34,7 +34,7 @@ export class GroupService {
           reject(error);
         });
     });
-  }  
+  }
 
   getRights(groupId: string) {
     return new Promise((resolve, reject) => {
@@ -46,12 +46,13 @@ export class GroupService {
           reject(error);
         });
     });
-  }  
+  }
 
-  saveRights(rights: any[], groupId: string) {
+  saveRights(rights: any[], groupId: string, groupName: string) {
     return new Promise((resolve, reject) => {
       this.authHttp.put(`${this.apiUrl}/groups/rights/${groupId}`, {
-        rights: rights
+        rights: rights,
+        groupName: groupName
       })
         .map(res => res.json())
         .subscribe(data => {
@@ -60,7 +61,7 @@ export class GroupService {
           reject(error);
         });
     });
-  }  
+  }
 
 
   update(groupId: any, groupName: string) {
@@ -88,5 +89,5 @@ export class GroupService {
         });
     });
   }
-  
+
 }
