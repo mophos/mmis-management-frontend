@@ -7,27 +7,37 @@
     <clr-icon shape="plus"></clr-icon> เพิ่มรายการ
 </button>
 <clr-datagrid [clrDgLoading]="loading" [style.height.%]="80">
-    <clr-dg-column [clrDgField]="'group_name'">ชื่อกลุ่มผู้ใช้งาน</clr-dg-column>
+    <clr-dg-column [clrDgField]="'group_name'" [style.width.%]="75">ชื่อกลุ่มผู้ใช้งาน</clr-dg-column>
+    <clr-dg-column></clr-dg-column>
     <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
 
     <clr-dg-row *clrDgItems="let group of groups" [clrDgItem]="user">
-        <clr-dg-action-overflow>
+        <!-- <clr-dg-action-overflow>
             <button class="action-item" (click)="edit(group)">
-        <clr-icon shape="note"></clr-icon>
-        แก้ไขข้อมูล
-        </button>
+                <clr-icon shape="note"></clr-icon>
+                แก้ไขข้อมูล
+            </button>
             <button class="action-item" (click)="remove(group)">
-        <clr-icon shape="trash" class="is-error"></clr-icon>
-        ลบข้อมูล
-        </button>
+                <clr-icon shape="trash" class="is-error"></clr-icon>
+                ลบข้อมูล
+            </button>
             <button class="action-item" [routerLink]="['/admin/groups/assing', group.group_id]">
-        <clr-icon shape="tasks" class="is-success"></clr-icon>
-        กำหนดข้อมูลสิทธิ์การใช้งาน
-        </button>
-        </clr-dg-action-overflow>
+                <clr-icon shape="tasks" class="is-success"></clr-icon>
+                กำหนดข้อมูลสิทธิ์การใช้งาน
+            </button>
+        </clr-dg-action-overflow> -->
         <clr-dg-cell>{{group.group_name}}</clr-dg-cell>
+        <clr-dg-cell style="text-align: center;">
+            <div class="btn-group btn-primary">
+                <button title="แก้ไข" class="btn btn-sm btn-success wm-small-btn" [routerLink]="['/admin/groups/assing', group.group_id]">
+                    <clr-icon shape="note"></clr-icon>
+                </button>
+                <button title="ลบ" class="btn btn-sm btn-danger wm-small-btn" (click)="remove(group)">
+                    <clr-icon shape="trash"></clr-icon>
+                </button>
+            </div>
+        </clr-dg-cell>
     </clr-dg-row>
-
     <clr-dg-footer>
         {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} รายการ
         <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
