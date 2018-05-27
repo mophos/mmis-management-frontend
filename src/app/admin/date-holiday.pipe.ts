@@ -14,7 +14,7 @@ export class DateHolidayPipe implements PipeTransform {
       //   return thaiDate;
       // } else {
       let thaiDate;
-      if (moment(value).get('year') == 2000) {
+      if (moment(value).get('year') === 2000) {
         thaiDate = `${moment(value).format('DD MMMM ')}`;
       } else {
         thaiDate = `${moment(value).format('DD MMMM ')}${moment(value).get('year') + 543}`;

@@ -28,7 +28,7 @@ export class BackupComponent implements OnInit {
   async getBackup() {
     this.loading.show();
     try {
-      let rs: any = await this.settingService.getBackupList();
+      const rs: any = await this.settingService.getBackupList();
       if (rs.ok) {
         this.loading.hide();
         this.items = rs.rows;
@@ -44,7 +44,7 @@ export class BackupComponent implements OnInit {
     this.alertService.confirm('ต้องการสำรองข้อมูล ใช่หรือไม่')
       .then(async () => {
         this.loading.show();
-        let rs: any = await this.settingService.backupDatabase();
+        const rs: any = await this.settingService.backupDatabase();
         this.loading.hide();
         console.log(rs);
         if (rs.ok) {
@@ -62,7 +62,7 @@ export class BackupComponent implements OnInit {
   removeFile(i: any) {
     this.alertService.confirm(`ต้องการลบไฟล์นี้ ใช่หรือไม่? [${i.backup_path}]`)
       .then(async () => {
-        let rs: any = await this.settingService.removeBackupFile(i.backup_id);
+        const rs: any = await this.settingService.removeBackupFile(i.backup_id);
         if (rs.ok) {
           this.alertService.success();
           this.getBackup();
@@ -76,7 +76,7 @@ export class BackupComponent implements OnInit {
   }
 
   async downloadFile(i: any) {
-    let url: any = `${this.apiUrl}/settings/backup/download/${i.backup_id}?token=${this.token}`;
+    const url: any = `${this.apiUrl}/settings/backup/download/${i.backup_id}?token=${this.token}`;
     window.open(url, '_blank');
   }
 

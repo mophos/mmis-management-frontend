@@ -34,14 +34,20 @@ export class ReportComponent implements OnInit {
 
   async getList() {
     this.loading = true;
-    let rs = await this.reportService.getReport();
+    const rs = await this.reportService.getReport();
     if (rs.ok) {
       this.list = rs.rows;
       await this.clearList();
       this.list.forEach(v => {
-        if(v.report_type === 'PO') this.listPo.push(v);
-        if(v.report_type === 'EGP') this.listEgp.push(v);
-        if(v.report_type === 'P10') this.listP10.push(v);
+        if (v.report_type === 'PO') {
+          this.listPo.push(v);
+        }
+        if (v.report_type === 'EGP') {
+          this.listEgp.push(v);
+        }
+        if (v.report_type === 'P10') {
+          this.listP10.push(v);
+        }
       });
       this.loading = false;
     } else {
@@ -50,7 +56,7 @@ export class ReportComponent implements OnInit {
     }
   }
 
-  async clearList(){
+  async clearList() {
     this.listPo = [];
     this.listEgp = [];
     this.listP10 = [];

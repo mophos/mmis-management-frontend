@@ -126,5 +126,5 @@
     <button [clrLoading]="submitLoading" class="btn btn-sm btn-success" (click)="saveRights()" [disabled]="!groupId || !groupName">บันทึก</button>
     <button class="btn btn-sm btn-outline-danger" [disabled]="submitLoading" routerLink="/admin/groups">ยกเลิก</button>
   </div>
-
 </div>
+<um-loading #loading></um-loading>

@@ -35,8 +35,8 @@ export class CoBidComponent implements OnInit {
     this.modalInput = true;
     this.bidId = 0;
     this.bidRef = 0;
-    this.rows.forEach(element => {
-      this.bidId = element.bid_id > this.bidId ? element.bid_id : this.bidId;
+    this.rows.forEach(e => {
+      this.bidId = e.bid_id > this.bidId ? e.bid_id : this.bidId;
     });
     this.bidId++;
     this.bidName = '';

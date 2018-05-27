@@ -35,7 +35,7 @@ export class SerialManagementComponent implements OnInit {
   async getSerial() {
     this.loading = true;
     try {
-      let rs: any = await this.serialService.getSerial();
+      const rs: any = await this.serialService.getSerial();
       if (rs.ok) {
         this.serials = rs.rows;
       } else {
@@ -51,7 +51,7 @@ export class SerialManagementComponent implements OnInit {
 
   async getSerialFormat() {
     try {
-      let rs: any = await this.serialService.getSerialFormat();
+      const rs: any = await this.serialService.getSerialFormat();
       if (rs.ok) {
         this.serialFormats = rs.rows;
       } else {
@@ -73,12 +73,12 @@ export class SerialManagementComponent implements OnInit {
   }
 
   onFormatChange(event) {
-    this.formatExample = this.serialFormats.filter(value => value.serial_format_id == event)[0].serial_format;
+    this.formatExample = this.serialFormats.filter(value => value.serial_format_id === event)[0].serial_format;
   }
 
   async save() {
     try {
-      let rs: any = await this.serialService.updateSerial(this.type, this.formatId, this.runningNumber, this.srPrefix);
+      const rs: any = await this.serialService.updateSerial(this.type, this.formatId, this.runningNumber, this.srPrefix);
       if (rs.ok) {
         this.alertService.success();
         this.getSerial();

@@ -1,3 +1,4 @@
+import { LoadingComponent } from './../../modals/loading/loading.component';
 import { IMyOptions } from 'mydatepicker-th';
 import { GroupService } from './../group.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,6 +16,7 @@ import { ProductGroupService } from 'app/admin/product-groups';
   templateUrl: './user-edit.component.html'
 })
 export class UserEditComponent implements OnInit {
+  @ViewChild('loading') loading: LoadingComponent;
   @ViewChild('people') public people: AutocompletePeopleComponent;
   warehouseId: string;
   groupId: string;
@@ -71,6 +73,7 @@ export class UserEditComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.loading.show();
     await this.getRights();
     await this.getWarehosues();
     await this.getGroups();
@@ -80,6 +83,7 @@ export class UserEditComponent implements OnInit {
       }).catch((err) => {
 
       });
+    this.loading.hide();
   }
 
   getWarehosues() {
@@ -359,14 +363,14 @@ export class UserEditComponent implements OnInit {
       }
 
       if (this.startDate && this.peopleId && this.groupId && this.warehouseId && this.selectedRights.length) {
-        let rights = [];
+        const rights = [];
         this.selectedRights.forEach(v => {
           rights.push(v.right_code);
         });
 
-        let _rights = rights.join(',');
+        const _rights = rights.join(',');
 
-        let data = {
+        const data = {
           peopleId: this.peopleId,
           password: this.password,
           startDate: this.startDate ? `${this.startDate.date.year}-${this.startDate.date.month}-${this.startDate.date.day}` : '0000-00-00',
@@ -380,7 +384,7 @@ export class UserEditComponent implements OnInit {
 
         this.submitLoading = true;
         try {
-          let rs: any = await this.userService.updateUser(data, this.userId);
+          const rs: any = await this.userService.updateUser(data, this.userId);
           if (rs.ok) {
             this.alertService.success();
             this.router.navigate(['/admin/users']);

@@ -29,7 +29,7 @@ export class LoginPageComponent implements OnInit {
   ngOnInit() {
     this.isLoading = false;
     if (sessionStorage.getItem('token')) {
-      let token = sessionStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const decodedToken = this.jwtHelper.decodeToken(token);
       // hide spinner
       this.isLoading = false;

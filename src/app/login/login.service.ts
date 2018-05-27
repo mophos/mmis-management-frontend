@@ -24,5 +24,5 @@ export class LoginService {
           reject(error);
         });
     });
-  }  
+  }
 }

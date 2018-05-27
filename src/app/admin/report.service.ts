@@ -10,12 +10,12 @@ export class ReportService {
   ) { }
 
   async getReport() {
-    let rs: any = await this.authHttp.get(`${this.apiUrl}/report`).toPromise();
+    const rs: any = await this.authHttp.get(`${this.apiUrl}/report`).toPromise();
     return rs.json();
   }
 
   async setActive(id, active, type) {
-    let rs: any = await this.authHttp.put(`${this.apiUrl}/report/active/${id}/${active}/${type}`, {}).toPromise();
+    const rs: any = await this.authHttp.put(`${this.apiUrl}/report/active/${id}/${active}/${type}`, {}).toPromise();
     return rs.json();
   }
 }

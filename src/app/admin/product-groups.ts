@@ -11,8 +11,7 @@ export class ProductGroupService {
   ) { }
 
   async list() {
-    let rs: any = await this.authHttp.get(`${this.apiUrl}/product-groups`).toPromise();
+    const rs: any = await this.authHttp.get(`${this.apiUrl}/product-groups`).toPromise();
     return rs.json();
-  }  
-  
+  }
 }

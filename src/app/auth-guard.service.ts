@@ -22,7 +22,6 @@ export class AuthGuard implements CanActivate {
       } else {
         const decodedToken = this.jwtHelper.decodeToken(token);
         const accessRight = decodedToken.accessRight;
-       
         if (accessRight) {
           const rights = accessRight.split(',');
           let isAdmin = false;

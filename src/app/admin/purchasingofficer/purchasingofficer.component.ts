@@ -22,7 +22,7 @@ export class PurchasingofficerComponent implements OnInit {
     showClearDateBtn: false
   };
   txtMonthAbbr = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
-      'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
   officerTypes: any[];
   officers: any[];
   peoples: any[];
@@ -66,26 +66,26 @@ export class PurchasingofficerComponent implements OnInit {
 
   getOfficer() {
     this.officers = [];
-      this.settingService.getPurchasingOfficer(0)
-        .then((results: any) => {
-          console.log({ results: results });
-          if (results.ok) {
-            this.officers = results.rows;
-            this.officers.forEach((element, index) => {
-              this.officers[index]['ico'] = element.isactive === 1 ?
-                'Y' : 'N';
-            });
-            // console.log(this.officers);
-            // resolve(this.officers);
-          } else {
-            console.log(results.error);
-            // reject(results.error);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          // reject();
-        });
+    this.settingService.getPurchasingOfficer(0)
+      .then((results: any) => {
+        console.log({ results: results });
+        if (results.ok) {
+          this.officers = results.rows;
+          this.officers.forEach((e, index) => {
+            this.officers[index]['ico'] = e.isactive === 1 ?
+              'Y' : 'N';
+          });
+          // console.log(this.officers);
+          // resolve(this.officers);
+        } else {
+          console.log(results.error);
+          // reject(results.error);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // reject();
+      });
   }
 
   getOfficerTypes() {
@@ -146,14 +146,14 @@ export class PurchasingofficerComponent implements OnInit {
 
   onClickDelete(row) {
     this.alertService.confirm('ยืนยันการลบข้อมูล?')
-        .then(() => {
-          this.settingService.deletePurchasingOfficer(row.p_id)
-            .then((resolve: any) => {
-              this.getOfficer();
-            })
-            .catch(error => {
-              this.alertService.serverError();
-            });
+      .then(() => {
+        this.settingService.deletePurchasingOfficer(row.p_id)
+          .then((resolve: any) => {
+            this.getOfficer();
+          })
+          .catch(error => {
+            this.alertService.serverError();
+          });
       });
   }
 

@@ -1,8 +1,9 @@
+import { LoadingComponent } from './../../modals/loading/loading.component';
 import { UserService } from './../user.service';
 import { GroupService } from './../group.service';
 import { AlertService } from './../../alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 
 @Component({
@@ -12,6 +13,7 @@ import * as _ from 'lodash';
 })
 export class GroupAssingComponent implements OnInit {
 
+  @ViewChild('loading') loading: LoadingComponent;
   selectedRights: any = [];
   rights: any = [];
   groupId: string;
@@ -43,42 +45,19 @@ export class GroupAssingComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.loading.show();
     await this.getRights();
     await this.getData();
+    this.loading.hide();
   }
 
   getRights() {
-    // this.groupService.getRights(this.groupId)
-    //   .then((result: any) => {
-    //     if (result.ok) {
-    //       if (result.groupName) {
-    //         let _groupRights = result.rows;
-    //         this.rights = result.rights;
-    //         this.groupName = result.groupName;
-
-    //         this.rights.forEach(v => {
-    //           _groupRights.forEach(x => {
-    //             if (x.right_id === v.right_id) {
-    //               this.selectedRights.push(v);
-    //             }
-    //           });
-    //         });
-    //       } else {
-    //         this.router.navigate(['/admin/groups']);
-    //       }
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     this.alertService.serverError();
-    //   });
     this.getRightPO();
     this.getRightWM();
     this.getRightMM();
     this.getRightBM();
     this.getRightCM();
     this.getRightUM();
-
   }
 
   getData() {
