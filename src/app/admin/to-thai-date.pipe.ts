@@ -14,5 +14,4 @@ export class ToThaiDatePipe implements PipeTransform {
       return '-';
     }
   }
-
 }

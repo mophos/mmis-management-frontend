@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { AuthHttp } from 'angular2-jwt';
 import 'rxjs/add/operator/map';
+import { constants } from 'os';
 
 @Injectable()
 export class SettingService {
@@ -196,25 +197,25 @@ export class SettingService {
   }
 
   async backupDatabase() {
-    let rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/save`)
+    const rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/save`)
       .toPromise();
     return rs.json();
   }
 
   async getBackupList() {
-    let rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/list`)
+    const rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/list`)
       .toPromise();
     return rs.json();
   }
 
   async downloadBackupFile(backupId: any) {
-    let rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/download/${backupId}`)
+    const rs: any = await this.authHttp.get(`${this.apiUrl}/settings/backup/download/${backupId}`)
       .toPromise();
     return rs.json();
   }
 
   async removeBackupFile(backupId: any) {
-    let rs: any = await this.authHttp.delete(`${this.apiUrl}/settings/backup/remove/${backupId}`)
+    const rs: any = await this.authHttp.delete(`${this.apiUrl}/settings/backup/remove/${backupId}`)
       .toPromise();
     return rs.json();
   }

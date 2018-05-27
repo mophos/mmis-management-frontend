@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
 import { JwtHelper, AuthHttp } from 'angular2-jwt';
-import { FormsModule } from "@angular/forms";
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'um-autocomplete-people',
   templateUrl: './autocomplete-people.component.html',

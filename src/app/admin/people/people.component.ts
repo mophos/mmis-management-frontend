@@ -88,15 +88,13 @@ export class PeopleComponent implements OnInit {
 
   save() {
     if (this.titleId && this.positionId && this.fname && this.lname) {
-      let data = {
+      const data = {
         titleId: this.titleId,
         positionId: this.positionId,
         fname: this.fname,
         lname: this.lname
       }
-
       let promise;
-      
       if (this.peopleId) {
         promise = this.peopleService.update(this.peopleId, data);
       } else {

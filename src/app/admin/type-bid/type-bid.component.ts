@@ -35,8 +35,8 @@ export class TypeBidComponent implements OnInit {
     this.modalInput = true;
     this.bidId = 0;
     this.bidRef = 0;
-    this.rows.forEach(element => {
-      this.bidId = element.id > this.bidId ? element.id : this.bidId;
+    this.rows.forEach(e => {
+      this.bidId = e.id > this.bidId ? e.id : this.bidId;
     });
     this.bidId++;
     this.bidName = '';
@@ -51,14 +51,14 @@ export class TypeBidComponent implements OnInit {
 
   onClickDelete(row) {
     this.alertService.confirm('ยืนยันการลบข้อมูล?')
-        .then(() => {
-          this.settingService.deleteBidProcess(row.id)
-            .then((resolve: any) => {
-              this.getRows();
-            })
-            .catch(error => {
-              this.alertService.serverError();
-            });
+      .then(() => {
+        this.settingService.deleteBidProcess(row.id)
+          .then((resolve: any) => {
+            this.getRows();
+          })
+          .catch(error => {
+            this.alertService.serverError();
+          });
       });
   }
 

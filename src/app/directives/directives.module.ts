@@ -14,7 +14,7 @@ import { AutocompletePeopleComponent } from './autocomplete-people/autocomplete-
     FormsModule,
     AgxTypeaheadModule
   ],
-  exports:[
+  exports: [
     SearchUserComponent,
     AutocompletePeopleComponent
   ]

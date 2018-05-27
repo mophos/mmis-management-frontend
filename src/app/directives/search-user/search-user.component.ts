@@ -1,7 +1,7 @@
 
 import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
 import { JwtHelper, AuthHttp } from 'angular2-jwt';
-import { FormsModule } from "@angular/forms";
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'um-search-user',
   templateUrl: './search-user.component.html',

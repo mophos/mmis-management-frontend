@@ -55,7 +55,7 @@ export class ChangePasswordModalComponent implements OnInit {
     this.onSuccess.emit(true);
     this.open = false;
     this.password = '';
-    this.password2 ='';
+    this.password2 = '';
   }
 
 }

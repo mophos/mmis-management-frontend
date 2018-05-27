@@ -52,8 +52,8 @@ export class PeopleService {
         data: data
       })
         .map(res => res.json())
-        .subscribe(data => {
-          resolve(data);
+        .subscribe(d => {
+          resolve(d);
         }, error => {
           reject(error);
         });
@@ -66,8 +66,8 @@ export class PeopleService {
         data: data
       })
         .map(res => res.json())
-        .subscribe(data => {
-          resolve(data);
+        .subscribe(d => {
+          resolve(d);
         }, error => {
           reject(error);
         });

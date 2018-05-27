@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { ApproveService } from "./../approve.service";
+import { ApproveService } from './../approve.service';
 import { AlertService } from './../../alert.service';
 @Component({
   selector: 'um-approve',
@@ -78,7 +78,9 @@ export class ApproveComponent implements OnInit {
       .then((result: any) => {
         if (result.ok) {
           this.modules = result.rows;
-          if (this.modules) this.action_name = this.modules[0].module_name
+          if (this.modules) {
+            this.action_name = this.modules[0].module_name;
+          }
         } else {
           console.log(result.error);
           this.alertService.error();
@@ -134,12 +136,12 @@ export class ApproveComponent implements OnInit {
   }
 
   save() {
-    let moduleSet = this.modules.find((element) => {
-      return element.module_name == this.action_name;
+    const moduleSet = this.modules.find((element) => {
+      return element.module_name === this.action_name;
     });
     console.log([this.user_id, this.action_name, this.password, moduleSet.module_id]);
     if (this.user_id && this.action_name && this.password && moduleSet.module_id) {
-      let data = {
+      const data = {
         module_id: moduleSet.module_id,
         action_name: this.action_name,
         password: this.password,
@@ -147,8 +149,8 @@ export class ApproveComponent implements OnInit {
         username: this.username
       }
       let promise;
-      let ans = this.list.find((element) => {
-        return (element.action_name == data.action_name) && (element.username == data.username);
+      const ans = this.list.find((element) => {
+        return (element.action_name === data.action_name) && (element.username === data.username);
       });
       if (this.changData || ans) {
         promise = this.approveService.update(data);
@@ -178,15 +180,15 @@ export class ApproveComponent implements OnInit {
   remove(list: any) {
 
     if (list.user_id && list.action_name) {
-      let data = {
+      const data = {
         action_name: list.action_name,
         user_id: list.user_id
       }
       this.alertService.confirm('ต้องลบการ' + list.detail + ' ของ User Name: ' + list.username + ' ใช่หรือไม่?')
         .then((result: any) => {
           this.approveService.remove(data)
-            .then((result: any) => {
-              if (result.ok) {
+            .then((results: any) => {
+              if (results.ok) {
                 this.alertService.success();
                 this.getList();
               } else {
