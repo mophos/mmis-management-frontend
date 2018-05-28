@@ -293,7 +293,7 @@ export class UserNewComponent implements OnInit {
     await this.groupRight();
     if (this.username && this.selectedPeople && this.password && this.groupId && this.warehouseId && this.selectedRights.length) {
       const productGroups = [];
-      const productGroupData = null;
+      let productGroupData = null;
 
       const adminRight = 'WM_ADMIN';
       const subStockAdminRight = 'WM_WAREHOUSE_ADMIN';
@@ -310,10 +310,17 @@ export class UserNewComponent implements OnInit {
           rights.push(v.right_code);
         });
 
+        if (this.selectedProductGroups.length) {
+          this.selectedProductGroups.forEach(v => {
+            productGroups.push(v.generic_type_id);
+          });
+          productGroupData = productGroups.join(',');
+        }
+
         const _rights = rights.join(',');
 
         const data = {
-          peopleId: this.selectedPeople.people_id,
+          peopleId: this.selectedPeople,
           username: this.username,
           password: this.password,
           startDate: this.startDate ? `${this.startDate.date.year}-${this.startDate.date.month}-${this.startDate.date.day}` : null,
