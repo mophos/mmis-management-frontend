@@ -64,7 +64,7 @@ export class LayoutComponent implements OnInit {
 
   logout() {
     sessionStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    location.href = this.homeUrl;
   }
 
   openChangePasswordModal() {
