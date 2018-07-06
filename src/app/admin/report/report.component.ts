@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { ReportService } from '../report.service'
 import { AlertService } from '../../alert.service'
-
+import * as _ from 'lodash';
 @Component({
   selector: 'um-report',
   templateUrl: './report.component.html',
@@ -14,10 +14,8 @@ export class ReportComponent implements OnInit {
   loading = false;
 
   list: any = [];
-  listPo: any = [];
-  listEgp: any = [];
-  listP10: any = [];
-
+  opened = false;
+  url: any;
   isActive: any;
 
   constructor(
@@ -37,18 +35,8 @@ export class ReportComponent implements OnInit {
     const rs = await this.reportService.getReport();
     if (rs.ok) {
       this.list = rs.rows;
-      await this.clearList();
-      this.list.forEach(v => {
-        if (v.report_type === 'PO') {
-          this.listPo.push(v);
-        }
-        if (v.report_type === 'EGP') {
-          this.listEgp.push(v);
-        }
-        if (v.report_type === 'P10') {
-          this.listP10.push(v);
-        }
-      });
+      console.log(this.list);
+
       this.loading = false;
     } else {
       this.loading = false;
@@ -56,57 +44,46 @@ export class ReportComponent implements OnInit {
     }
   }
 
-  async clearList() {
-    this.listPo = [];
-    this.listEgp = [];
-    this.listP10 = [];
-  }
-
-  switchActivePo(event: any, l: any) {
-    this.loading = true;
-    this.reportService.setActive(l.id, event.target.checked ? 'Y' : 'N', l.report_type)
-      .then((results: any) => {
+  async switchActive(event: any, detail: any) {
+    try {
+      this.loading = true;
+      let rs: any;
+      if (!event.target.checked) {
+        rs = await this.reportService.setDisActive(detail.report_detail_id);
+      } else {
+        const idx = _.findIndex(this.list, { 'report_id': detail.report_id });
+        if (idx > -1) {
+          for (const v of this.list[idx].details) {
+            if (detail.report_detail_id !== v.report_detail_id) {
+              v.is_active = 'N;'
+            }
+          }
+        }
+        rs = await this.reportService.setActive(detail.report_id, detail.report_detail_id)
+      }
+      if (rs.ok) {
         this.loading = false;
         this.alertService.success();
         this.getList();
-      })
-      .catch((error) => {
+      } else {
         this.loading = false;
-        this.alertService.error(error);
-      })
+        this.alertService.error(rs.error);
+      }
+    } catch (error) {
+      this.loading = false;
+      this.alertService.error(error);
+    }
   }
 
-  switchActiveEgp(event: any, l: any) {
-    this.loading = true;
-    this.reportService.setActive(l.id, event.target.checked ? 'Y' : 'N', l.report_type)
-      .then((results: any) => {
-        this.loading = false;
-        this.alertService.success();
-        this.getList();
-      })
-      .catch((error) => {
-        this.loading = false;
-        this.alertService.error(error);
-      })
-  }
-
-  switchActiveP10(event: any, l: any) {
-    this.loading = true;
-    this.reportService.setActive(l.id, event.target.checked ? 'Y' : 'N', l.report_type)
-      .then((results: any) => {
-        this.loading = false;
-        this.alertService.success();
-        this.getList();
-      })
-      .catch((error) => {
-        this.loading = false;
-        this.alertService.error(error);
-      })
-  }
-
-  showReport(id) {
-    console.log(id)
-    const reportUrl = this.apiUrl + `/report/purchase-order/${id}?token=${this.token}`;
-    this.htmlPreview.showReport(reportUrl);
+  showReport(name) {
+    const url = name.split(',');
+    this.url = [];
+    url.forEach(v => {
+      this.url.push(this.apiUrl + `/report_picture/${v}`);
+    });
+    console.log(this.url);
+    
+    // this.url = this.apiUrl + `/report_picture/${name}`;
+    this.opened = true;
   }
 }
