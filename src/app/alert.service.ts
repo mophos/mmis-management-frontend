@@ -24,10 +24,18 @@ export class AlertService {
     const option: SweetAlertOptions = {
       title: title,
       text: text,
+      timer: 1000,
       type: 'success',
       confirmButtonText: 'ตกลง'
     };
-    swal(option);
+    swal(option)
+      .then(
+        function () { },
+        // handling the promise rejection
+        function (dismiss) {
+          if (dismiss === 'timer') { }
+        }
+      )
 
   }
 
@@ -54,7 +62,7 @@ export class AlertService {
       confirmButtonText: 'ใช่, ดำเนินการ!',
       cancelButtonText: 'ยกเลิก'
     };
-     return swal(option);
+    return swal(option);
   }
 
   info(text: string, title = 'คำแนะนำ') {
