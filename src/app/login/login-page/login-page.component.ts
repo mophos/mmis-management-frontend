@@ -19,7 +19,8 @@ export class LoginPageComponent implements OnInit {
   isLoading = false;
   isError = false;
   errorMessage: string;
-
+  warehouses = [];
+  warehouseId: any;
   constructor(
     private loginService: LoginService,
     private router: Router,
@@ -60,7 +61,7 @@ export class LoginPageComponent implements OnInit {
 
   doLogin() {
     this.isLoading = true;
-    this.loginService.doLogin(this.username, this.password)
+    this.loginService.doLogin(this.username, this.password, this.warehouseId)
       .then((result: any) => {
         if (result.ok) {
           const token = result.token;
@@ -90,4 +91,16 @@ export class LoginPageComponent implements OnInit {
         this.alertService.error(JSON.stringify(error));
       });
   }
+
+  async selectWarehouse(event) {
+    const rs: any = await this.loginService.searchWarehouse(this.username);
+    if (rs.ok) {
+      this.warehouses = rs.rows;
+      this.warehouseId = rs.rows[0].warehouse_id;
+    } else {
+      this.warehouses = [];
+      this.warehouseId = null;
+    }
+  }
+
 }
