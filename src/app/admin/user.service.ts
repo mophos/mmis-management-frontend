@@ -59,10 +59,11 @@ export class UserService {
     });
   }
 
-  saveUser(data: any) {
+  saveUser(data: any, rights) {
     return new Promise((resolve, reject) => {
       this.authHttp.post(`${this.apiUrl}/users`, {
-        data: data
+        data: data,
+        rights: rights
       })
         .map(res => res.json())
         .subscribe(d => {
@@ -73,10 +74,11 @@ export class UserService {
     });
   }
 
-  updateUser(data: any, userId: string) {
+  updateUser(data: any, rights, userId: string) {
     return new Promise((resolve, reject) => {
       this.authHttp.put(`${this.apiUrl}/users/${userId}`, {
-        data: data
+        data: data,
+        rights: rights
       })
         .map(res => res.json())
         .subscribe(d => {
