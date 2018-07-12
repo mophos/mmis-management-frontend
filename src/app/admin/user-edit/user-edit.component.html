@@ -68,6 +68,18 @@
                 </select>
               </div>
             </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <div class="radio-inline">
+                  <input type="radio" name="warehouseCheck"  (change)="checkWarehouse1()" id="checkrads_11">
+                  <label for="checkrads_11">คลังใหญ่</label>
+                </div>
+                <div class="radio-inline">
+                  <input type="radio" name="warehouseCheck" (change)="checkWarehouse2()" id="checkrads_12" checked>
+                  <label for="checkrads_12">หน่วยเบิก</label>
+                </div>
+              </div>
+            </div>
             <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
               <button (click)="addWarehouse()" [disabled]="!warehouseId" class="btn btn-sm btn-success">เพิ่มคลังสินค้า</button>
             </div>
@@ -76,16 +88,18 @@
             <div class="col-md-12">
               <clr-datagrid [style.height.px]="300">
                 <clr-dg-column>คลังสินค้า</clr-dg-column>
+                <clr-dg-column>ประเภทคลัง</clr-dg-column>
                 <clr-dg-column></clr-dg-column>
                 <clr-dg-column></clr-dg-column>
                 <clr-dg-row *clrDgItems="let w of warehouses" [clrDgItem]="w">
                   <clr-dg-cell>{{w.warehouse_name}}</clr-dg-cell>
+                  <clr-dg-cell>{{w.warehouse_type}}</clr-dg-cell>
                   <clr-dg-cell>
                     <button (click)="setRight(w)" class="btn btn-sm btn-success">ตั้งค่าสิทธิ์การใช้งาน</button>
                   </clr-dg-cell>
                   <clr-dg-cell>
-                    <button class="btn btn-sm btn-danger" (click)="removeWarehouse(w.warehouse_id)">
-                      <clr-icon shape="trash" ></clr-icon>
+                    <button class="btn btn-sm btn-danger" (click)="removeWarehouse(w)">
+                      <clr-icon shape="trash"></clr-icon>
                     </button>
                   </clr-dg-cell>
                 </clr-dg-row>

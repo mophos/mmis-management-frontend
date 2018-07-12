@@ -19,6 +19,9 @@ export class UserEditComponent implements OnInit {
   @ViewChild('loading') loading: LoadingComponent;
   @ViewChild('people') public people: AutocompletePeopleComponent;
   warehouseId: string;
+  warehouseType;
+  warehouseTypeId;
+  warehouseCheck = 'หน่วยเบิก';
   warehousesList = [];
   groupId: string;
   username: string;
@@ -209,12 +212,12 @@ export class UserEditComponent implements OnInit {
             this.people.setQuery(this.fullname);
             this.isActive = result.detail.is_active === 'Y' ? true : false;
             this.rights = result.detail.rights;
-            console.log(this.rights);
-
             this.rights.forEach(r => {
               this.warehouses.push({
                 warehouse_id: r.warehouse_id,
-                warehouse_name: r.warehouse_name
+                warehouse_name: r.warehouse_name,
+                warehouse_type: r.warehouse_type,
+                warehouse_type_id: r.warehouse_type_id
               })
             });
             if (moment(result.detail.start_date).isValid()) {
@@ -417,9 +420,9 @@ export class UserEditComponent implements OnInit {
 
   }
 
-  getGenricTypeData(warehouseId) {
+  getGenricTypeData() {
     this.selectedProductGroups = [];
-    const idxR = _.findIndex(this.rights, { 'warehouse_id': warehouseId });
+    const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
     if (idxR > -1) {
       const _genericTypeId = this.rights[idxR].generic_type_id.split(',');
       const _obj = [];
@@ -438,8 +441,9 @@ export class UserEditComponent implements OnInit {
     }
   }
 
-  getRightData(warehouseId) {
-    const idxR = _.findIndex(this.rights, { 'warehouse_id': warehouseId });
+  getRightData() {
+
+    const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
     if (idxR > -1) {
       const _rights = this.rights[idxR].access_right.split(',');
       const _objRight = [];
@@ -499,11 +503,29 @@ export class UserEditComponent implements OnInit {
         }
       });
 
+    } else {
+      this.rights_bm.forEach(r => {
+        r.check = false;
+      });
+      this.rights_wm.forEach(r => {
+        r.check = false;
+      });
+      this.rights_mm.forEach(r => {
+        r.check = false;
+      });
+      this.rights_um.forEach(r => {
+        r.check = false;
+      });
+      this.rights_cm.forEach(r => {
+        r.check = false;
+      });
+      this.rights_po.forEach(r => {
+        r.check = false;
+      });
     }
   }
 
   onPeopleSelected(e) {
-    console.log(e);
     this.selectedPeople = e.people_id;
   }
   checkAllUM() {
@@ -547,20 +569,34 @@ export class UserEditComponent implements OnInit {
   addWarehouse() {
     const idx = _.findIndex(this.warehousesList, { 'warehouse_id': +this.warehouseId });
     if (idx > -1) {
-      this.warehouses.push(this.warehousesList[idx]);
-      this.warehouses = _.uniqBy(this.warehouses, 'warehouse_id')
+      const obj = {
+        'warehouse_id': this.warehousesList[idx].warehouse_id,
+        'warehouse_name': this.warehousesList[idx].warehouse_name,
+        'warehouse_type': this.warehouseCheck,
+        'warehouse_type_id': this.warehouseCheck === 'คลังใหญ่' ? 1 : 2
+      };
+      const idxDup = _.findIndex(this.warehouses, { 'warehouse_id': obj.warehouse_id, 'warehouse_type_id': obj.warehouse_type_id })
+      if (idxDup > -1) {
+      } else {
+        this.warehouses.push(obj);
+      }
     }
-
-    // this.warehouses.push(this.warehouseId)
   }
 
   async setRight(w) {
     this.openModal = true;
     this.warehouseId = w.warehouse_id;
-    const idx = _.findIndex(this.rights, { 'warehouse_id': w.warehouse_id });
-    this.groupId = this.rights[idx].group_id;
-    await this.getRightData(w.warehouse_id);
-    await this.getGenricTypeData(w.warehouse_id)
+    this.warehouseTypeId = w.warehouse_type_id;
+    const idx = _.findIndex(this.rights, { 'warehouse_id': w.warehouse_id, 'warehouse_type_id': w.warehouse_type_id });
+    if (idx > -1) {
+      if (this.rights[idx].group_id) {
+        this.groupId = this.rights[idx].group_id;
+      }
+    } else {
+      this.groupId = null;
+    }
+    await this.getRightData();
+    await this.getGenricTypeData()
   }
 
   async saveRight() {
@@ -577,7 +613,7 @@ export class UserEditComponent implements OnInit {
     if (idxA > -1 && idxS > -1) {
       this.alertService.error('ไม่สามารถกำหนดสิทธิ์ (คลังใหญ่) WM_ADMIN และ คลังย่อย (WM_WAREHOUSE_ADMIN) ใน คลัง เดียวกันได้');
     } else {
-      const idx = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId });
+      const idx = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
       if (idx > -1) {
         this.rights.splice(idx, 1);
       }
@@ -596,23 +632,31 @@ export class UserEditComponent implements OnInit {
 
       const obj = {
         warehouse_id: this.warehouseId,
+        warehouse_type_id: this.warehouseTypeId,
         generic_type_id: genericTypeId,
         access_right: _rights,
         group_id: this.groupId
       }
       this.rights.push(obj);
-      console.log(this.rights);
-
     }
   }
 
-  removeWarehouse(warehouseId) {
-    const idx = _.findIndex(this.warehouses, { 'warehouse_id': warehouseId })
-    console.log(idx);
-
-    if (idx > -1) {
-      this.warehouses.splice(idx, 1);
+  removeWarehouse(w) {
+    const idxW = _.findIndex(this.warehouses, { 'warehouse_id': w.warehouse_id, 'warehouse_type_id': w.warehouse_type_id })
+    const idxR = _.findIndex(this.rights, { 'warehouse_id': w.warehouse_id, 'warehouse_type_id': w.warehouse_type_id })
+    if (idxW > -1) {
+      this.warehouses.splice(idxW, 1);
+    }
+    if (idxR > -1) {
+      this.rights.splice(idxR, 1);
     }
   }
 
+  checkWarehouse1() {
+    this.warehouseCheck = 'คลังใหญ่';
+  }
+
+  checkWarehouse2() {
+    this.warehouseCheck = 'หน่วยเบิก';
+  }
 }
