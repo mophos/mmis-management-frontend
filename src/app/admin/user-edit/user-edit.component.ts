@@ -217,7 +217,8 @@ export class UserEditComponent implements OnInit {
                 warehouse_id: r.warehouse_id,
                 warehouse_name: r.warehouse_name,
                 warehouse_type: r.warehouse_type,
-                warehouse_type_id: r.warehouse_type_id
+                warehouse_type_id: r.warehouse_type_id,
+                is_actived: r.is_actived
               })
             });
             if (moment(result.detail.start_date).isValid()) {
@@ -573,7 +574,8 @@ export class UserEditComponent implements OnInit {
         'warehouse_id': this.warehousesList[idx].warehouse_id,
         'warehouse_name': this.warehousesList[idx].warehouse_name,
         'warehouse_type': this.warehouseCheck,
-        'warehouse_type_id': this.warehouseCheck === 'คลังใหญ่' ? 1 : 2
+        'warehouse_type_id': this.warehouseCheck === 'คลังใหญ่' ? 1 : 2,
+        'is_actived': 'Y'
       };
       const idxDup = _.findIndex(this.warehouses, { 'warehouse_id': obj.warehouse_id, 'warehouse_type_id': obj.warehouse_type_id })
       if (idxDup > -1) {
@@ -658,5 +660,12 @@ export class UserEditComponent implements OnInit {
 
   checkWarehouse2() {
     this.warehouseCheck = 'หน่วยเบิก';
+  }
+
+  changeStatus(e, w) {
+    const idx = _.findIndex(this.rights, { 'warehouse_id': w.warehouse_id, 'warehouse_type': w.warehouse_type });
+    if (idx > -1) {
+      this.rights[idx].is_actived = e.target.checked ? 'Y' : 'N';
+    }
   }
 }

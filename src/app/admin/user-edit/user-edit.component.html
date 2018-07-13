@@ -71,7 +71,7 @@
             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
                 <div class="radio-inline">
-                  <input type="radio" name="warehouseCheck"  (change)="checkWarehouse1()" id="checkrads_11">
+                  <input type="radio" name="warehouseCheck" (change)="checkWarehouse1()" id="checkrads_11">
                   <label for="checkrads_11">คลังใหญ่</label>
                 </div>
                 <div class="radio-inline">
@@ -91,11 +91,18 @@
                 <clr-dg-column>ประเภทคลัง</clr-dg-column>
                 <clr-dg-column></clr-dg-column>
                 <clr-dg-column></clr-dg-column>
-                <clr-dg-row *clrDgItems="let w of warehouses" [clrDgItem]="w">
+                <clr-dg-column></clr-dg-column>
+                <clr-dg-row *clrDgItems="let w of warehouses;let idx=index" [clrDgItem]="w">
                   <clr-dg-cell>{{w.warehouse_name}}</clr-dg-cell>
                   <clr-dg-cell>{{w.warehouse_type}}</clr-dg-cell>
                   <clr-dg-cell>
                     <button (click)="setRight(w)" class="btn btn-sm btn-success">ตั้งค่าสิทธิ์การใช้งาน</button>
+                  </clr-dg-cell>
+                  <clr-dg-cell>
+                    <div class="toggle-switch">
+                      <input type="checkbox" id="status-{{idx}}"  (change)="changeStatus($event,w)" [checked]="w.is_actived === 'Y'">
+                      <label for="status-{{idx}}"></label>
+                    </div>
                   </clr-dg-cell>
                   <clr-dg-cell>
                     <button class="btn btn-sm btn-danger" (click)="removeWarehouse(w)">
