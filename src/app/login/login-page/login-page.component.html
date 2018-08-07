@@ -9,8 +9,8 @@
           type="text" name="login_username" placeholder="ชื่อผู้ใช้งาน">
         <input (keypress)="enterLogin($event)" class="password" [(ngModel)]="password" type="password" name="login_password" placeholder="รหัสผ่าน">
         <div class="select">
-          <select [(ngModel)]="warehouseId" name="warehouseId">
-            <option *ngFor="let w of warehouses" [value]="w.warehouse_id">{{w.warehouse_name}}</option>
+          <select [(ngModel)]="userWarehouseId" name="userWarehouseId">
+            <option *ngFor="let w of warehouses" [value]="w.user_warehouse_id">{{w.warehouse_name}}-{{w.warehouse_type}}</option>
           </select>
         </div>
         <div style="text-align: center">
@@ -21,7 +21,7 @@
             กรุณารอซักครู่...
           </span>
         </div>
-        <button type="button" (click)="doLogin()" class="btn btn-primary" [disabled]="!warehouseId || !username || !password ">เข้าสู่ระบบ</button>
+        <button type="button" (click)="doLogin()" class="btn btn-primary" [disabled]="!userWarehouseId || !username || !password ">เข้าสู่ระบบ</button>
       </div>
     </form>
   </div>

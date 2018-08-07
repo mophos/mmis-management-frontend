@@ -41,8 +41,9 @@
     <div class="card-text">
       <clr-datagrid>
         <clr-dg-column style="width: 30px;">ลำดับ</clr-dg-column>
-        <clr-dg-column>ชื่อรายงาน</clr-dg-column>
+        <clr-dg-column [style.width.%]="50">ชื่อรายงาน</clr-dg-column>
         <clr-dg-column>ตัวอย่างรายงาน</clr-dg-column>
+        <clr-dg-column>จำนวนบรรทัดต่อ 1 หน้า</clr-dg-column>
         <clr-dg-column style="width: 20px;">ใช้งาน</clr-dg-column>
 
         <clr-dg-row *ngFor="let i of l.details; let idx=index;">
@@ -52,6 +53,10 @@
             <button [disabled]="!i.picture" class="btn btn-primary btn-sm" (click)="showReport(i.picture)">
               <clr-icon shape="printer"></clr-icon> แสดงตัวอย่าง
             </button>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <!-- {{i.line}} -->
+            <input type="text" *ngIf="i.line_edit=='Y'" #line [value]="i.line" (keyup)="changeLine(i.report_detail_id,line.value)">
           </clr-dg-cell>
           <clr-dg-cell>
             <div class="toggle-switch">

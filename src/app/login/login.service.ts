@@ -10,13 +10,13 @@ export class LoginService {
     @Inject('API_URL') private apiUrl: string
   ) { }
 
-  doLogin(username: string, password: string, warehouseId) {
+  doLogin(username: string, password: string, userWarehouseId) {
     console.log(this.apiUrl);
     return new Promise((resolve, reject) => {
       this.http.post(`${this.apiUrl}/login`, {
         username: username,
         password: password,
-        warehouseId: warehouseId
+        userWarehouseId: userWarehouseId
       })
         .map(res => res.json())
         .subscribe(data => {
