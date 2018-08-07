@@ -15,12 +15,25 @@ export class ReportService {
   }
 
   async setActive(reportId, reportDetailId) {
-    const rs: any = await this.authHttp.put(`${this.apiUrl}/report/active/${reportId}/${reportDetailId}`, {}).toPromise();
+    const rs: any = await this.authHttp.put(`${this.apiUrl}/report/active`, {
+      reportId: reportId,
+      reportDetailId: reportDetailId
+    }).toPromise();
     return rs.json();
   }
 
   async setDisActive(reportId) {
-    const rs: any = await this.authHttp.put(`${this.apiUrl}/report/disactive/${reportId}`, {}).toPromise();
+    const rs: any = await this.authHttp.put(`${this.apiUrl}/report/disactive`, {
+      reportId: reportId
+    }).toPromise();
+    return rs.json();
+  }
+
+  async setLine(reportDetailId, line) {
+    const rs: any = await this.authHttp.put(`${this.apiUrl}/report/line`, {
+      reportDetailId: reportDetailId,
+      line: line
+    }).toPromise();
     return rs.json();
   }
 }

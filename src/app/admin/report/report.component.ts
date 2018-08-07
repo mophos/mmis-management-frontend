@@ -81,9 +81,16 @@ export class ReportComponent implements OnInit {
     url.forEach(v => {
       this.url.push(this.apiUrl + `/report_picture/${v}`);
     });
-    console.log(this.url);
-    
-    // this.url = this.apiUrl + `/report_picture/${name}`;
     this.opened = true;
+  }
+
+  async changeLine(reportDetailId, value) {
+    try {
+      await this.reportService.setLine(reportDetailId, value)
+    } catch (error) {
+      console.log(error);
+      this.alertService.error(error);
+    }
+
   }
 }
