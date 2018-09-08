@@ -100,7 +100,7 @@
                   </clr-dg-cell>
                   <clr-dg-cell>
                     <div class="toggle-switch">
-                      <input type="checkbox" id="status-{{idx}}"  (change)="changeStatus($event,w)" [checked]="w.is_actived === 'Y'">
+                      <input type="checkbox" id="status-{{idx}}" (change)="changeStatus($event,w)" [checked]="w.is_actived === 'Y'">
                       <label for="status-{{idx}}"></label>
                     </div>
                   </clr-dg-cell>
@@ -126,7 +126,7 @@
 <um-loading #loading></um-loading>
 
 <clr-modal [(clrModalOpen)]="openModal" [clrModalSize]="'xl'" [clrModalClosable]="false">
-  <h3 class="modal-title">สิทธิ์การอนุมัติ</h3>
+  <h3 class="modal-title">สิทธิ์การใช้งาน</h3>
   <div class="modal-body" style="height:500px">
     <div class="row">
       <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">

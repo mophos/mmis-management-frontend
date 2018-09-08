@@ -156,9 +156,9 @@ export class UserService {
     return res.json()
   }
 
-  getRight(module: string) {
+  getRight(module: string, warehouseTypeId = null) {
     return new Promise((resolve, reject) => {
-      this.authHttp.get(`${this.apiUrl}/users/rights/module?module=${module}`)
+      this.authHttp.get(`${this.apiUrl}/users/rights/module?module=${module}&warehouseTypeId=${warehouseTypeId}`)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);

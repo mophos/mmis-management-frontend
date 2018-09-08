@@ -69,11 +69,11 @@ export class UserNewComponent implements OnInit {
 
   ) { }
 
-  ngOnInit() {
-    this.getWarehosues();
-    this.getGroups();
-    this.getRights();
-    this.getProductGroups();
+  async ngOnInit() {
+    await this.getWarehosues();
+    await this.getGroups();
+    // await this.getRights();
+    await this.getProductGroups();
   }
 
   setRightWithGroup(event: any) {
@@ -182,18 +182,18 @@ export class UserNewComponent implements OnInit {
       });
   }
 
-  getRights() {
-    this.getRightPO();
-    this.getRightWM();
-    this.getRightMM();
-    this.getRightBM();
-    this.getRightCM();
-    this.getRightUM();
+  async getRights() {
+    await this.getRightPO();
+    await this.getRightWM();
+    await this.getRightMM();
+    await this.getRightBM();
+    await this.getRightCM();
+    await this.getRightUM();
   }
 
   async getRightPO() {
     try {
-      const rs: any = await this.userService.getRight('PO');
+      const rs: any = await this.userService.getRight('PO', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_po = rs.rows;
       }
@@ -204,9 +204,14 @@ export class UserNewComponent implements OnInit {
 
   async getRightWM() {
     try {
-      const rs: any = await this.userService.getRight('WM');
+      const rs: any = await this.userService.getRight('WM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_wm = rs.rows;
+        this.rights_wm.forEach(r => {
+          if (r.right_code === 'WM_ADMIN' || r.right_code === 'WM_WAREHOUSE_ADMIN') {
+            r.check = true;
+          }
+        });
       }
     } catch (error) {
       this.alertService.error(JSON.stringify(error))
@@ -215,7 +220,7 @@ export class UserNewComponent implements OnInit {
 
   async getRightBM() {
     try {
-      const rs: any = await this.userService.getRight('BM');
+      const rs: any = await this.userService.getRight('BM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_bm = rs.rows;
       }
@@ -226,7 +231,7 @@ export class UserNewComponent implements OnInit {
 
   async getRightCM() {
     try {
-      const rs: any = await this.userService.getRight('CM');
+      const rs: any = await this.userService.getRight('CM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_cm = rs.rows;
       }
@@ -237,7 +242,7 @@ export class UserNewComponent implements OnInit {
 
   async getRightMM() {
     try {
-      const rs: any = await this.userService.getRight('MM');
+      const rs: any = await this.userService.getRight('MM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_mm = rs.rows;
       }
@@ -248,7 +253,7 @@ export class UserNewComponent implements OnInit {
 
   async getRightUM() {
     try {
-      const rs: any = await this.userService.getRight('UM');
+      const rs: any = await this.userService.getRight('UM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_um = rs.rows;
       }
@@ -399,7 +404,6 @@ export class UserNewComponent implements OnInit {
   }
 
   async setRight(w) {
-    this.openModal = true;
     this.warehouseId = w.warehouse_id;
     this.warehouseTypeId = w.warehouse_type_id;
     const idx = _.findIndex(this.rights, { 'warehouse_id': w.warehouse_id, 'warehouse_type_id': w.warehouse_type_id });
@@ -410,8 +414,10 @@ export class UserNewComponent implements OnInit {
     } else {
       this.groupId = null;
     }
+    await this.getRights();
     await this.getRightData();
     await this.getGenricTypeData()
+    this.openModal = true;
   }
 
   getGenricTypeData() {
