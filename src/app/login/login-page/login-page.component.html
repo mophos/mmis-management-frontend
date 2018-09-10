@@ -1,22 +1,28 @@
 <clr-main-container>
-    <div class="login-wrapper">
-      <form class="login">
-        <label class="title">
-              MMIS System Management&#174;
-          </label>
-        <div class="login-group">
-          <input (keypress)="enterLogin($event)" class="username" [(ngModel)]="username" type="text" name="login_username" placeholder="ชื่อผู้ใช้งาน">
-          <input (keypress)="enterLogin($event)" class="password" [(ngModel)]="password" type="password" name="login_password" placeholder="รหัสผ่าน">
-          <div style="text-align: center" >
-            <span class="spinner spinner-inline" *ngIf="isLoading">
-                    <!-- กรุณารอซักครู่... -->
-                </span>
-            <span *ngIf="isLoading">
-                      กรุณารอซักครู่...
-              </span>
-          </div>
-          <button type="button" (click)="doLogin()" class="btn btn-primary" [disabled]="!username || !password ">เข้าสู่ระบบ</button>
+  <div class="login-wrapper">
+    <form class="login">
+      <label class="title">
+        MMIS System Management&#174;
+      </label>
+      <div class="login-group">
+        <input (keypress)="enterLogin($event)" (keyup)="selectWarehouse($event)" autocomplete="off" class="username" [(ngModel)]="username"
+          type="text" name="login_username" placeholder="ชื่อผู้ใช้งาน">
+        <input (keypress)="enterLogin($event)" class="password" [(ngModel)]="password" type="password" name="login_password" placeholder="รหัสผ่าน">
+        <div class="select">
+          <select [(ngModel)]="userWarehouseId" name="userWarehouseId">
+            <option *ngFor="let w of warehouses" [value]="w.user_warehouse_id">{{w.warehouse_name}}-{{w.warehouse_type}}</option>
+          </select>
         </div>
-      </form>
-    </div>
-  </clr-main-container>
+        <div style="text-align: center">
+          <span class="spinner spinner-inline" *ngIf="isLoading">
+            <!-- กรุณารอซักครู่... -->
+          </span>
+          <span *ngIf="isLoading">
+            กรุณารอซักครู่...
+          </span>
+        </div>
+        <button type="button" (click)="doLogin()" class="btn btn-primary" [disabled]="!userWarehouseId || !username || !password ">เข้าสู่ระบบ</button>
+      </div>
+    </form>
+  </div>
+</clr-main-container>

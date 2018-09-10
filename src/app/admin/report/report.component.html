@@ -3,77 +3,80 @@
   <span class="breadcrumb-item active">ตั้งค่ารายงาน</span>
 </nav>
 
-<p>
-  <clr-icon shape="shopping-cart"></clr-icon>
-  Purchasing
-</p>
-ใบสั่งซื้อ
-<clr-datagrid [clrDgLoading]="loading">
-  <clr-dg-column style="width: 30px;">ลำดับ</clr-dg-column>
-  <clr-dg-column>ชื่อรายงาน</clr-dg-column>
-  <clr-dg-column>ตัวอย่างรายงาน</clr-dg-column>
-  <clr-dg-column style="width: 20px;">ใช้งาน</clr-dg-column>
+<!-- <div *ngFor="let i of list">
+  <p>{{i.report_name}}</p>
+  <clr-datagrid >
+    <clr-dg-column style="width: 30px;">ลำดับ</clr-dg-column>
+    <clr-dg-column>ชื่อรายงาน</clr-dg-column>
+    <clr-dg-column>ตัวอย่างรายงาน</clr-dg-column>
+    <clr-dg-column style="width: 20px;">ใช้งาน</clr-dg-column>
+  
+    <clr-dg-row *ngFor="let l of i.details; let idx=index;">
+      <clr-dg-cell>{{idx+1}}</clr-dg-cell>
+      <clr-dg-cell>{{l.report_name}}</clr-dg-cell>
+      <clr-dg-cell>
+        <button class="btn btn-primary btn-sm" (click)="showReport(l.id)">
+          <clr-icon shape="printer"></clr-icon> แสดงตัวอย่าง
+        </button>
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <div class="toggle-switch">
+          <input type="checkbox" id="orderPo{{idx}}" [checked]="l.is_active==='Y'" (change)="switchActivePo($event,l)">
+          <label for="orderPo{{idx}}"></label>
+        </div>
+      </clr-dg-cell>
+    </clr-dg-row>
+  </clr-datagrid>
+</div> -->
 
-  <clr-dg-row *ngFor="let l of listPo; let idx=index;">
-    <clr-dg-cell>{{idx+1}}</clr-dg-cell>
-    <clr-dg-cell>{{l.report_name}}</clr-dg-cell>
-    <clr-dg-cell>
-      <button class="btn btn-primary btn-sm" (click)="showReport(l.id)">
-        <clr-icon shape="printer"></clr-icon> แสดงตัวอย่าง
-      </button>
-    </clr-dg-cell>
-    <clr-dg-cell>
-      <div class="toggle-switch">
-        <input type="checkbox" id="orderPo{{idx}}" [checked]="l.is_active==='Y'" (change)="switchActivePo($event,l)">
-        <label for="orderPo{{idx}}"></label>
-      </div>
-    </clr-dg-cell>
-  </clr-dg-row>
-</clr-datagrid>
-<br> EGP
-<clr-datagrid [clrDgLoading]="loading">
-  <clr-dg-column style="width: 30px;">ลำดับ</clr-dg-column>
-  <clr-dg-column>ชื่อรายงาน</clr-dg-column>
-  <clr-dg-column>ตัวอย่างรายงาน</clr-dg-column>
-  <clr-dg-column style="width: 20px;">ใช้งาน</clr-dg-column>
+<div class="card" *ngFor="let l of list">
+  <div class="card-header">
+    {{l.report_name}}
+    <!-- <span style="font-size: 10pt">{{l.report_name}}</span> -->
+  </div>
+  <div class="card-block">
+    <!-- <div class="card-title">
+          Block
+        </div> -->
+    <div class="card-text">
+      <clr-datagrid>
+        <clr-dg-column style="width: 30px;">ลำดับ</clr-dg-column>
+        <clr-dg-column [style.width.%]="50">ชื่อรายงาน</clr-dg-column>
+        <clr-dg-column>ตัวอย่างรายงาน</clr-dg-column>
+        <clr-dg-column>จำนวนบรรทัดต่อ 1 หน้า</clr-dg-column>
+        <clr-dg-column style="width: 20px;">ใช้งาน</clr-dg-column>
 
-  <clr-dg-row *ngFor="let l of listEgp; let idx=index;">
-    <clr-dg-cell>{{idx+1}}</clr-dg-cell>
-    <clr-dg-cell>{{l.report_name}}</clr-dg-cell>
-    <clr-dg-cell>
-      <button class="btn btn-primary btn-sm" (click)="showReport(l.id)">
-        <clr-icon shape="printer"></clr-icon> แสดงตัวอย่าง
-      </button>
-    </clr-dg-cell>
-    <clr-dg-cell>
-      <div class="toggle-switch">
-        <input type="checkbox" id="orderEgp{{idx}}" [checked]="l.is_active==='Y'" (change)="switchActiveEgp($event,l)">
-        <label for="orderEgp{{idx}}"></label>
-      </div>
-    </clr-dg-cell>
-  </clr-dg-row>
-</clr-datagrid>
-<br> ใบขออนุมัติซื้อ
-<clr-datagrid [clrDgLoading]="loading">
-  <clr-dg-column style="width: 30px;">ลำดับ</clr-dg-column>
-  <clr-dg-column>ชื่อรายงาน</clr-dg-column>
-  <clr-dg-column>ตัวอย่างรายงาน</clr-dg-column>
-  <clr-dg-column style="width: 20px;">ใช้งาน</clr-dg-column>
+        <clr-dg-row *ngFor="let i of l.details; let idx=index;">
+          <clr-dg-cell>{{idx+1}}</clr-dg-cell>
+          <clr-dg-cell>{{i.report_name}}</clr-dg-cell>
+          <clr-dg-cell>
+            <button [disabled]="!i.picture" class="btn btn-primary btn-sm" (click)="showReport(i.picture)">
+              <clr-icon shape="printer"></clr-icon> แสดงตัวอย่าง
+            </button>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <!-- {{i.line}} -->
+            <input type="text" *ngIf="i.line_edit=='Y'" #line [value]="i.line" (keyup)="changeLine(i.report_detail_id,line.value)">
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <div class="toggle-switch">
+              <input type="checkbox" id="switch-{{i.report_detail_id}}" [checked]="i.is_active==='Y'" (change)="switchActive($event,i)">
+              <label for="switch-{{i.report_detail_id}}"></label>
+            </div>
+          </clr-dg-cell>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+  </div>
+</div>
 
-  <clr-dg-row *ngFor="let l of listP10; let idx=index;">
-    <clr-dg-cell>{{idx+1}}</clr-dg-cell>
-    <clr-dg-cell>{{l.report_name}}</clr-dg-cell>
-    <clr-dg-cell>
-      <button class="btn btn-primary btn-sm" (click)="showReport(l.id)">
-        <clr-icon shape="printer"></clr-icon> แสดงตัวอย่าง
-      </button>
-    </clr-dg-cell>
-    <clr-dg-cell>
-      <div class="toggle-switch">
-        <input type="checkbox" id="orderP10{{idx}}" [checked]="l.is_active==='Y'" (change)="switchActiveP10($event,l)">
-        <label for="orderP10{{idx}}"></label>
-      </div>
-    </clr-dg-cell>
-  </clr-dg-row>
-</clr-datagrid>
+<clr-modal [(clrModalOpen)]="opened" [clrModalSize]="'xl'">
+  <div class="modal-body">
+    <div *ngFor="let i of url">
+      <img [src]="i" style="width:100%;">
+
+    </div>
+  </div>
+</clr-modal>
+
 <wm-html-preview #htmlPreview></wm-html-preview>

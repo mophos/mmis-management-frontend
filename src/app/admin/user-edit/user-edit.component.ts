@@ -19,6 +19,10 @@ export class UserEditComponent implements OnInit {
   @ViewChild('loading') loading: LoadingComponent;
   @ViewChild('people') public people: AutocompletePeopleComponent;
   warehouseId: string;
+  warehouseType;
+  warehouseTypeId;
+  warehouseCheck = 'หน่วยเบิก';
+  warehousesList = [];
   groupId: string;
   username: string;
   password: string;
@@ -31,7 +35,7 @@ export class UserEditComponent implements OnInit {
   startDate: any;
   endDate: any;
   peopleUserId: string;
-
+  rights = [];
   myDatePickerOptions: IMyOptions = {
     inline: false,
     dateFormat: 'dd mmm yyyy',
@@ -45,7 +49,6 @@ export class UserEditComponent implements OnInit {
   peoples: any = [];
   selectedRights: any = [];
   warehouses: any = [];
-  rights: any = [];
   rights_po: any = [];
   rights_wm: any = [];
   rights_bm: any = [];
@@ -60,6 +63,8 @@ export class UserEditComponent implements OnInit {
   allBM = false;
   allCM = false;
   allMM = false;
+
+  openModal = false;
   constructor(
     private userService: UserService,
     private alertService: AlertService,
@@ -74,7 +79,7 @@ export class UserEditComponent implements OnInit {
 
   async ngOnInit() {
     this.loading.show();
-    await this.getRights();
+    // await this.getRights();
     await this.getWarehosues();
     await this.getGroups();
     await this.getProductGroups()
@@ -90,7 +95,7 @@ export class UserEditComponent implements OnInit {
     this.userService.getWarehousesList()
       .then((result: any) => {
         if (result.ok) {
-          this.warehouses = result.rows;
+          this.warehousesList = result.rows;
         } else {
           this.alertService.error();
         }
@@ -196,6 +201,8 @@ export class UserEditComponent implements OnInit {
   getData() {
     this.userService.getDetail(this.userId)
       .then((result: any) => {
+        console.log(result);
+
         if (result.ok) {
           if (result.detail) {
             this.peopleId = result.detail.people_id;
@@ -203,9 +210,17 @@ export class UserEditComponent implements OnInit {
             this.password = null;
             this.fullname = result.detail.fullname;
             this.people.setQuery(this.fullname);
-            this.groupId = result.detail.group_id;
-            this.warehouseId = result.detail.warehouse_id;
             this.isActive = result.detail.is_active === 'Y' ? true : false;
+            this.rights = result.detail.rights;
+            this.rights.forEach(r => {
+              this.warehouses.push({
+                warehouse_id: r.warehouse_id,
+                warehouse_name: r.warehouse_name,
+                warehouse_type: r.warehouse_type,
+                warehouse_type_id: r.warehouse_type_id,
+                is_actived: r.is_actived
+              })
+            });
             if (moment(result.detail.start_date).isValid()) {
               this.startDate = {
                 date: {
@@ -223,85 +238,6 @@ export class UserEditComponent implements OnInit {
                   day: moment(result.detail.end_date).get('date')
                 }
               }
-            }
-
-            if (result.detail.access_right) {
-              const _rights = result.detail.access_right.split(',');
-              const _objRight = [];
-              _rights.forEach(r => {
-                const objRight = {
-                  'right_code': r
-                }
-                _objRight.push(objRight)
-              });
-
-              this.rights_bm.forEach(r => {
-                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-                if (idx > -1) {
-                  r.check = true;
-                } else {
-                  r.check = false;
-                }
-              });
-              this.rights_wm.forEach(r => {
-                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-                if (idx > -1) {
-                  r.check = true;
-                } else {
-                  r.check = false;
-                }
-              });
-              this.rights_mm.forEach(r => {
-                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-                if (idx > -1) {
-                  r.check = true;
-                } else {
-                  r.check = false;
-                }
-              });
-              this.rights_um.forEach(r => {
-                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-                if (idx > -1) {
-                  r.check = true;
-                } else {
-                  r.check = false;
-                }
-              });
-              this.rights_cm.forEach(r => {
-                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-                if (idx > -1) {
-                  r.check = true;
-                } else {
-                  r.check = false;
-                }
-              });
-              this.rights_po.forEach(r => {
-                const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-                if (idx > -1) {
-                  r.check = true;
-                } else {
-                  r.check = false;
-                }
-              });
-
-            }
-
-            if (result.detail.generic_type_id) {
-              const _pg = result.detail.generic_type_id.split(',');
-              const _objpg = [];
-              _pg.forEach(r => {
-                const objPg = {
-                  'generic_type_id': +r
-                }
-                _objpg.push(objPg)
-              });
-              this.productGroups.forEach(p => {
-                const idx = _.findIndex(_objpg, { 'generic_type_id': +p.generic_type_id });
-
-                if (idx > -1) {
-                  this.selectedProductGroups.push(p);
-                }
-              });
             }
 
           } else {
@@ -341,82 +277,51 @@ export class UserEditComponent implements OnInit {
   }
 
   async saveUser() {
-    await this.groupRight();
-    const productGroups = [];
-    let productGroupData = null;
 
-    const adminRight = 'WM_ADMIN';
-    const subStockAdminRight = 'WM_WAREHOUSE_ADMIN';
+    if (this.startDate && this.peopleId && this.rights.length) {
 
-    const idxA = _.findIndex(this.selectedRights, { right_code: adminRight });
-    const idxS = _.findIndex(this.selectedRights, { right_code: subStockAdminRight });
+      const data = {
+        peopleId: this.peopleId,
+        password: this.password,
+        startDate: this.startDate ? `${this.startDate.date.year}-${this.startDate.date.month}-${this.startDate.date.day}` : '0000-00-00',
+        endDate: this.endDate ? `${this.endDate.date.year}-${this.endDate.date.month}-${this.endDate.date.day}` : '0000-00-00',
+        isActive: this.isActive ? 'Y' : 'N'
+      }
+      this.submitLoading = true;
+      try {
+        const rs: any = await this.userService.updateUser(data, this.rights, this.userId);
+        if (rs.ok) {
+          this.alertService.success();
+          this.router.navigate(['/admin/users']);
+        } else {
+          console.log(rs.error);
+          this.alertService.error();
+        }
+        this.submitLoading = false;
+      } catch (error) {
+        this.submitLoading = false;
+        console.log(error);
+        this.alertService.error(JSON.stringify(error));
+      }
 
-    if (idxA > -1 && idxS > -1) {
-      this.alertService.error('ไม่สามารถกำหนดสิทธิ์ WM_ADMIN และ WM_WAREHOUSE_ADMIN ในคนเดียวกันได้');
     } else {
-
-      if (this.selectedProductGroups.length) {
-        this.selectedProductGroups.forEach(v => {
-          productGroups.push(v.generic_type_id);
-        });
-        productGroupData = productGroups.join(',');
-      }
-
-      if (this.startDate && this.peopleId && this.groupId && this.warehouseId && this.selectedRights.length) {
-        const rights = [];
-        this.selectedRights.forEach(v => {
-          rights.push(v.right_code);
-        });
-
-        const _rights = rights.join(',');
-
-        const data = {
-          peopleId: this.peopleId,
-          password: this.password,
-          startDate: this.startDate ? `${this.startDate.date.year}-${this.startDate.date.month}-${this.startDate.date.day}` : '0000-00-00',
-          endDate: this.endDate ? `${this.endDate.date.year}-${this.endDate.date.month}-${this.endDate.date.day}` : '0000-00-00',
-          isActive: this.isActive ? 'Y' : 'N',
-          groupId: this.groupId,
-          warehouseId: this.warehouseId,
-          rights: _rights,
-          generic_type_id: productGroupData
-        }
-
-        this.submitLoading = true;
-        try {
-          const rs: any = await this.userService.updateUser(data, this.userId);
-          if (rs.ok) {
-            this.alertService.success();
-            this.router.navigate(['/admin/users']);
-          } else {
-            console.log(rs.error);
-            this.alertService.error();
-          }
-          this.submitLoading = false;
-        } catch (error) {
-          this.submitLoading = false;
-          console.log(error);
-          this.alertService.error(JSON.stringify(error));
-        }
-
-      } else {
-        this.alertService.error('กรุณาระบุข้อมูลให้ครบถ้วน');
-      }
+      this.alertService.error('กรุณาระบุข้อมูลให้ครบถ้วน');
     }
 
+
   }
-  getRights() {
-    this.getRightPO();
-    this.getRightWM();
-    this.getRightMM();
-    this.getRightBM();
-    this.getRightCM();
-    this.getRightUM();
+  async getRights() {
+    await this.getRightPO();
+    await this.getRightWM();
+    await this.getRightMM();
+    await this.getRightBM();
+    await this.getRightCM();
+    await this.getRightUM();
   }
 
   async getRightPO() {
     try {
-      const rs: any = await this.userService.getRight('PO');
+      const rs: any = await this.userService.getRight('PO', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_po = rs.rows;
       }
@@ -427,7 +332,7 @@ export class UserEditComponent implements OnInit {
 
   async getRightWM() {
     try {
-      const rs: any = await this.userService.getRight('WM');
+      const rs: any = await this.userService.getRight('WM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_wm = rs.rows;
       }
@@ -438,7 +343,7 @@ export class UserEditComponent implements OnInit {
 
   async getRightBM() {
     try {
-      const rs: any = await this.userService.getRight('BM');
+      const rs: any = await this.userService.getRight('BM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_bm = rs.rows;
       }
@@ -449,7 +354,7 @@ export class UserEditComponent implements OnInit {
 
   async getRightCM() {
     try {
-      const rs: any = await this.userService.getRight('CM');
+      const rs: any = await this.userService.getRight('CM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_cm = rs.rows;
       }
@@ -460,7 +365,7 @@ export class UserEditComponent implements OnInit {
 
   async getRightMM() {
     try {
-      const rs: any = await this.userService.getRight('MM');
+      const rs: any = await this.userService.getRight('MM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_mm = rs.rows;
       }
@@ -471,7 +376,7 @@ export class UserEditComponent implements OnInit {
 
   async getRightUM() {
     try {
-      const rs: any = await this.userService.getRight('UM');
+      const rs: any = await this.userService.getRight('UM', this.warehouseTypeId);
       if (rs.ok) {
         this.rights_um = rs.rows;
       }
@@ -515,8 +420,117 @@ export class UserEditComponent implements OnInit {
     console.log(this.selectedRights);
 
   }
+
+  getGenricTypeData() {
+    this.selectedProductGroups = [];
+    const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
+    if (idxR > -1) {
+      const _genericTypeId = this.rights[idxR].generic_type_id.split(',');
+      const _obj = [];
+      _genericTypeId.forEach(r => {
+        const objPg = {
+          'generic_type_id': +r
+        }
+        _obj.push(objPg)
+      });
+      this.productGroups.forEach(p => {
+        const idx = _.findIndex(_obj, { 'generic_type_id': +p.generic_type_id });
+        if (idx > -1) {
+          this.selectedProductGroups.push(p);
+        }
+      });
+    }
+  }
+
+  getRightData() {
+
+    const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
+    if (idxR > -1) {
+      const _rights = this.rights[idxR].access_right.split(',');
+      const _objRight = [];
+      _rights.forEach(r => {
+        const objRight = {
+          'right_code': r
+        }
+        _objRight.push(objRight)
+      });
+
+      this.rights_bm.forEach(r => {
+        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+        if (idx > -1) {
+          r.check = true;
+        } else {
+          r.check = false;
+        }
+      });
+      this.rights_wm.forEach(r => {
+        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+        if (idx > -1) {
+          r.check = true;
+        } else {
+          r.check = false;
+        }
+
+        if (r.right_code === 'WM_ADMIN' || r.right_code === 'WM_WAREHOUSE_ADMIN') {
+          r.check = true;
+        }
+      });
+      this.rights_mm.forEach(r => {
+        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+        if (idx > -1) {
+          r.check = true;
+        } else {
+          r.check = false;
+        }
+      });
+      this.rights_um.forEach(r => {
+        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+        if (idx > -1) {
+          r.check = true;
+        } else {
+          r.check = false;
+        }
+      });
+      this.rights_cm.forEach(r => {
+        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+        if (idx > -1) {
+          r.check = true;
+        } else {
+          r.check = false;
+        }
+      });
+      this.rights_po.forEach(r => {
+        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+        if (idx > -1) {
+          r.check = true;
+        } else {
+          r.check = false;
+        }
+      });
+
+    } else {
+      this.rights_bm.forEach(r => {
+        r.check = false;
+      });
+      this.rights_wm.forEach(r => {
+        r.check = false;
+      });
+      this.rights_mm.forEach(r => {
+        r.check = false;
+      });
+      this.rights_um.forEach(r => {
+        r.check = false;
+      });
+      this.rights_cm.forEach(r => {
+        r.check = false;
+      });
+      this.rights_po.forEach(r => {
+        r.check = false;
+      });
+    }
+  }
+
   onPeopleSelected(e) {
-    console.log(e);
     this.selectedPeople = e.people_id;
   }
   checkAllUM() {
@@ -554,5 +568,109 @@ export class UserEditComponent implements OnInit {
     this.rights_po.forEach(r => {
       r.check = this.allPO;
     });
+  }
+
+
+  addWarehouse() {
+    const idx = _.findIndex(this.warehousesList, { 'warehouse_id': +this.warehouseId });
+    if (idx > -1) {
+      const obj = {
+        'warehouse_id': this.warehousesList[idx].warehouse_id,
+        'warehouse_name': this.warehousesList[idx].warehouse_name,
+        'warehouse_type': this.warehouseCheck,
+        'warehouse_type_id': this.warehouseCheck === 'คลังใหญ่' ? 1 : 2,
+        'is_actived': 'Y'
+      };
+      const idxDup = _.findIndex(this.warehouses, { 'warehouse_id': obj.warehouse_id, 'warehouse_type_id': obj.warehouse_type_id })
+      if (idxDup > -1) {
+      } else {
+        this.warehouses.push(obj);
+      }
+    }
+  }
+
+  async setRight(w) {
+    this.warehouseId = w.warehouse_id;
+    this.warehouseTypeId = w.warehouse_type_id;
+    const idx = _.findIndex(this.rights, { 'warehouse_id': w.warehouse_id, 'warehouse_type_id': w.warehouse_type_id });
+    if (idx > -1) {
+      if (this.rights[idx].group_id) {
+        this.groupId = this.rights[idx].group_id;
+      }
+    } else {
+      this.groupId = null;
+    }
+    await this.getRights();
+    await this.getRightData();
+    await this.getGenricTypeData()
+    this.openModal = true;
+  }
+
+  async saveRight() {
+    this.openModal = false;
+    await this.groupRight();
+
+    const productGroups = [];
+    let genericTypeId = null;
+
+    const idxA = _.findIndex(this.selectedRights, { right_code: 'WM_ADMIN' });
+    const idxS = _.findIndex(this.selectedRights, { right_code: 'WM_WAREHOUSE_ADMIN' });
+
+
+    if (idxA > -1 && idxS > -1) {
+      this.alertService.error('ไม่สามารถกำหนดสิทธิ์ (คลังใหญ่) WM_ADMIN และ คลังย่อย (WM_WAREHOUSE_ADMIN) ใน คลัง เดียวกันได้');
+    } else {
+      const idx = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
+      if (idx > -1) {
+        this.rights.splice(idx, 1);
+      }
+      const rights = [];
+      this.selectedRights.forEach(v => {
+        rights.push(v.right_code);
+      });
+      const _rights = rights.join(',');
+
+      if (this.selectedProductGroups.length) {
+        this.selectedProductGroups.forEach(v => {
+          productGroups.push(v.generic_type_id);
+        });
+        genericTypeId = productGroups.join(',');
+      }
+
+      const obj = {
+        warehouse_id: this.warehouseId,
+        warehouse_type_id: this.warehouseTypeId,
+        generic_type_id: genericTypeId,
+        access_right: _rights,
+        group_id: this.groupId
+      }
+      this.rights.push(obj);
+    }
+  }
+
+  removeWarehouse(w) {
+    const idxW = _.findIndex(this.warehouses, { 'warehouse_id': w.warehouse_id, 'warehouse_type_id': w.warehouse_type_id })
+    const idxR = _.findIndex(this.rights, { 'warehouse_id': w.warehouse_id, 'warehouse_type_id': w.warehouse_type_id })
+    if (idxW > -1) {
+      this.warehouses.splice(idxW, 1);
+    }
+    if (idxR > -1) {
+      this.rights.splice(idxR, 1);
+    }
+  }
+
+  checkWarehouse1() {
+    this.warehouseCheck = 'คลังใหญ่';
+  }
+
+  checkWarehouse2() {
+    this.warehouseCheck = 'หน่วยเบิก';
+  }
+
+  changeStatus(e, w) {
+    const idx = _.findIndex(this.rights, { 'warehouse_id': w.warehouse_id, 'warehouse_type': w.warehouse_type });
+    if (idx > -1) {
+      this.rights[idx].is_actived = e.target.checked ? 'Y' : 'N';
+    }
   }
 }
