@@ -573,6 +573,7 @@ export class UserEditComponent implements OnInit {
 
   addWarehouse() {
     const idx = _.findIndex(this.warehousesList, { 'warehouse_id': +this.warehouseId });
+    let dup = false;
     if (idx > -1) {
       const obj = {
         'warehouse_id': this.warehousesList[idx].warehouse_id,
@@ -581,8 +582,14 @@ export class UserEditComponent implements OnInit {
         'warehouse_type_id': this.warehouseCheck === 'คลังใหญ่' ? 1 : 2,
         'is_actived': 'Y'
       };
+      this.warehouses.forEach(e => {
+        if (e.warehouse_id == obj.warehouse_id) {
+          dup = true;
+        }
+      });
       const idxDup = _.findIndex(this.warehouses, { 'warehouse_id': obj.warehouse_id, 'warehouse_type_id': obj.warehouse_type_id })
-      if (idxDup > -1) {
+      if (idxDup > -1 || dup) {
+        this.alertService.error('ไม่สามารถเพิ่มคลังสินค้าซ้ำกันได้');
       } else {
         this.warehouses.push(obj);
       }
