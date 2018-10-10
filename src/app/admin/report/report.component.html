@@ -44,6 +44,7 @@
         <clr-dg-column [style.width.%]="50">ชื่อรายงาน</clr-dg-column>
         <clr-dg-column>ตัวอย่างรายงาน</clr-dg-column>
         <clr-dg-column>จำนวนบรรทัดต่อ 1 หน้า</clr-dg-column>
+        <clr-dg-column *ngIf="l.report_id == 5">แสดงชื่อในการเซ็น</clr-dg-column>
         <clr-dg-column style="width: 20px;">ใช้งาน</clr-dg-column>
 
         <clr-dg-row *ngFor="let i of l.details; let idx=index;">
@@ -57,6 +58,12 @@
           <clr-dg-cell>
             <!-- {{i.line}} -->
             <input type="text" *ngIf="i.line_edit=='Y'" #line [value]="i.line" (keyup)="changeLine(i.report_detail_id,line.value)">
+          </clr-dg-cell>
+          <clr-dg-cell *ngIf="i.report_id == 5">
+            <div class="toggle-switch">
+              <input type="checkbox" id="switch-{{i.report_detail_id}}-sign" [checked]="i.signature==='Y'" (change)="switchSignature($event,i)">
+              <label for="switch-{{i.report_detail_id}}-sign"></label>
+            </div>
           </clr-dg-cell>
           <clr-dg-cell>
             <div class="toggle-switch">

@@ -74,6 +74,30 @@ export class ReportComponent implements OnInit {
       this.alertService.error(error);
     }
   }
+  async switchSignature(event: any, detail: any) {
+    try {
+      this.loading = true;
+      let rs: any;
+      console.log(event.target.checked);
+      
+      if (!event.target.checked) {
+        rs = await this.reportService.setActiveSignature(detail.report_detail_id,'N');
+      } else {
+        rs = await this.reportService.setActiveSignature(detail.report_detail_id,'Y')
+      }
+      if (rs.ok) {
+        this.loading = false;
+        this.alertService.success();
+        this.getList();
+      } else {
+        this.loading = false;
+        this.alertService.error(rs.error);
+      }
+    } catch (error) {
+      this.loading = false;
+      this.alertService.error(error);
+    }
+  }
 
   showReport(name) {
     const url = name.split(',');

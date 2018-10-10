@@ -28,6 +28,13 @@ export class ReportService {
     }).toPromise();
     return rs.json();
   }
+  async setActiveSignature(reportDetailId,status) {
+    const rs: any = await this.authHttp.put(`${this.apiUrl}/report/activeSignature`, {
+      reportDetailId: reportDetailId,
+      status:status
+    }).toPromise();
+    return rs.json();
+  }
 
   async setLine(reportDetailId, line) {
     const rs: any = await this.authHttp.put(`${this.apiUrl}/report/line`, {
