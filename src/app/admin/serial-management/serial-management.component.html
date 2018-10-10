@@ -3,8 +3,18 @@
   <span class="breadcrumb-item active">จัดการ Serial</span>
 </nav>
 <div class="wid99">
+  <div class="row">
+    <div class="col-md-1">
+      <div class="select">
+        <select [(ngModel)]="year" (change)="selectYear()">
+          <option *ngFor="let i of yearList" [value]="i.year">{{i.yearTH}}</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
   <clr-datagrid [clrDgLoading]="loading" [style.height.%]="80" [style.width.%]="100">
-    <clr-dg-column  [clrDgField]="'comment'">รายการ Serial</clr-dg-column>
+    <clr-dg-column [clrDgField]="'comment'">รายการ Serial</clr-dg-column>
     <clr-dg-column [style.width.px]="200">รูปแบบ Serial</clr-dg-column>
     <clr-dg-column [style.width.px]="200">ตัวอย่าง Serial</clr-dg-column>
     <clr-dg-column [style.width.px]="200">ค่าเริ่มต้น
@@ -57,7 +67,8 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="runningNumber" class="required">ค่าเริ่มต้น <br> Running number</label>
-              <input type="text" id="runningNumber" name="runningNumber" size="14" maxlength="6" [(ngModel)]="runningNumber" umNumberOnly>
+              <input type="text" id="runningNumber" name="runningNumber" size="14" maxlength="6" [(ngModel)]="runningNumber"
+                umNumberOnly>
             </div>
           </div>
           <div class="col-md-6">
@@ -68,7 +79,7 @@
           </div>
         </div>
       </section>
-      <p>PREFIX = รหัสนำหน้า, YY = ปี พ.ศ., ## = Running nuber</p>
+      <p>PREFIX = รหัสนำหน้า, YY = ปี พ.ศ., ## = Running nuber,WW = ลำดับคลัง</p>
     </form>
   </div>
   <div class="modal-footer">

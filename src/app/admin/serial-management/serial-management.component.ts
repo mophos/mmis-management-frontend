@@ -2,7 +2,7 @@ import { AlertService } from './../../alert.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SerialService } from './../serial.service';
 import { element } from 'protractor';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'um-serial-management',
@@ -20,7 +20,9 @@ export class SerialManagementComponent implements OnInit {
   srPrefix: number;
   loading = false;
   openModal = false;
-
+  yearList = [];
+  year;
+  warehouseId;
   constructor(
     private serialService: SerialService,
     private alertService: AlertService,
@@ -28,14 +30,28 @@ export class SerialManagementComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getSerial();
+    let year = moment().get('year');
+    const month = moment().get('month') + 1;
+    if (month >= 10) {
+      year += 1;
+    }
+    for (let i = year + 1; i > year - 3; i--) {
+      this.yearList.push({ year: i, yearTH: i + 543 });
+    }
+    this.year = this.yearList[1].year;
+    this.getSerial(this.year);
     this.getSerialFormat();
+
   }
 
-  async getSerial() {
+  async selectYear() {
+    await this.getSerial(this.year);
+
+  }
+  async getSerial(year) {
     this.loading = true;
     try {
-      const rs: any = await this.serialService.getSerial();
+      const rs: any = await this.serialService.getSerial(year);
       if (rs.ok) {
         this.serials = rs.rows;
       } else {
@@ -63,6 +79,7 @@ export class SerialManagementComponent implements OnInit {
   }
 
   showEditModal(serial) {
+    this.warehouseId = serial.warehouse_id;
     this.type = serial.sr_type;
     this.comment = serial.comment;
     this.formatId = serial.serial_format_id;
@@ -78,10 +95,10 @@ export class SerialManagementComponent implements OnInit {
 
   async save() {
     try {
-      const rs: any = await this.serialService.updateSerial(this.type, this.formatId, this.runningNumber, this.srPrefix);
+      const rs: any = await this.serialService.updateSerial(this.type, this.formatId, this.runningNumber, this.srPrefix, this.year, this.warehouseId);
       if (rs.ok) {
         this.alertService.success();
-        this.getSerial();
+        this.getSerial(this.year);
         this.openModal = false;
       } else {
         this.alertService.error();

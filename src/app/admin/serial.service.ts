@@ -10,9 +10,9 @@ export class SerialService {
     private authHttp: AuthHttp
   ) { }
 
-  getSerial() {
+  getSerial(year) {
     return new Promise((resolve, reject) => {
-      this.authHttp.get(`${this.apiUrl}/serial`)
+      this.authHttp.get(`${this.apiUrl}/serial?year=${year}`)
         .map(res => res.json())
         .subscribe(data => {
           resolve(data);
@@ -46,11 +46,13 @@ export class SerialService {
     });
   }
 
-  updateSerial(type, formatId, runningNumber, srPrefix) {
+  updateSerial(type, formatId, runningNumber, srPrefix, year, warehouseId) {
     return new Promise((resolve, reject) => {
       this.authHttp.put(`${this.apiUrl}/serial/${type}`, {
         formatId: formatId,
         runningNumber: runningNumber,
+        year: year,
+        warehouseId: warehouseId,
         srPrefix: srPrefix
       })
         .map(res => res.json())
