@@ -81,17 +81,9 @@ export class ReportComponent implements OnInit {
       console.log(event.target.checked);
       
       if (!event.target.checked) {
-        rs = await this.reportService.setDisActiveSignature(detail.report_detail_id);
+        rs = await this.reportService.setActiveSignature(detail.report_detail_id,'N');
       } else {
-        // const idx = _.findIndex(this.list, { 'report_id': detail.report_id });
-        // if (idx > -1) {
-        //   for (const v of this.list[idx].details) {
-        //     if (detail.report_detail_id !== v.report_detail_id) {
-        //       v.signature = 'N;'
-        //     }
-        //   }
-        // }
-        rs = await this.reportService.setActiveSignature(detail.report_id, detail.report_detail_id)
+        rs = await this.reportService.setActiveSignature(detail.report_id, detail.report_detail_id,'Y')
       }
       if (rs.ok) {
         this.loading = false;
