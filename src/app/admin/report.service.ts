@@ -28,17 +28,11 @@ export class ReportService {
     }).toPromise();
     return rs.json();
   }
-  async setActiveSignature(reportId, reportDetailId) {
+  async setActiveSignature(reportId, reportDetailId,status) {
     const rs: any = await this.authHttp.put(`${this.apiUrl}/report/activeSignature`, {
       reportId: reportId,
-      reportDetailId: reportDetailId
-    }).toPromise();
-    return rs.json();
-  }
-
-  async setDisActiveSignature(reportDetailId) {
-    const rs: any = await this.authHttp.put(`${this.apiUrl}/report/disSignature`, {
-      reportDetailId: reportDetailId
+      reportDetailId: reportDetailId,
+      status:status
     }).toPromise();
     return rs.json();
   }
