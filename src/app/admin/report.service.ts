@@ -28,9 +28,8 @@ export class ReportService {
     }).toPromise();
     return rs.json();
   }
-  async setActiveSignature(reportId, reportDetailId,status) {
+  async setActiveSignature(reportDetailId,status) {
     const rs: any = await this.authHttp.put(`${this.apiUrl}/report/activeSignature`, {
-      reportId: reportId,
       reportDetailId: reportDetailId,
       status:status
     }).toPromise();
