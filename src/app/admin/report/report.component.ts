@@ -83,7 +83,7 @@ export class ReportComponent implements OnInit {
       if (!event.target.checked) {
         rs = await this.reportService.setActiveSignature(detail.report_detail_id,'N');
       } else {
-        rs = await this.reportService.setActiveSignature(detail.report_id, detail.report_detail_id,'Y')
+        rs = await this.reportService.setActiveSignature(detail.report_detail_id,'Y')
       }
       if (rs.ok) {
         this.loading = false;
