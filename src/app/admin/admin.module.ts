@@ -53,6 +53,7 @@ import { ReportComponent } from './report/report.component';
 import { ReportService } from './report.service';
 import { HtmlPreviewComponent } from './helper/html-preview/html-preview.component';
 import { BackupComponent } from './backup/backup.component';
+import { WarehouseComponent } from './warehouse/warehouse.component';
 // import { AgxTypeaheadModule } from '@siteslave/agx-typeahead';
 
 @NgModule({
@@ -94,7 +95,8 @@ import { BackupComponent } from './backup/backup.component';
     ApproveComponent,
     ReportComponent,
     HtmlPreviewComponent,
-    BackupComponent
+    BackupComponent,
+    WarehouseComponent
   ],
   providers: [
     AuthGuard,
