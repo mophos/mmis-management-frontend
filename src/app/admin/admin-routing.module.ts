@@ -24,6 +24,7 @@ import { PageNotFoundComponent } from 'app/page-not-found/page-not-found.compone
 import { ApproveComponent } from './approve/approve.component';
 import { ReportComponent } from './report/report.component';
 import { BackupComponent } from './backup/backup.component';
+import { WarehouseComponent } from './warehouse/warehouse.component'
 
 const routes: Routes = [
   {
@@ -52,7 +53,8 @@ const routes: Routes = [
       { path: 'serial', component: SerialManagementComponent },
       { path: 'holiday', component: HolidayComponent },
       { path: 'report', component: ReportComponent },
-      { path: 'backup', component: BackupComponent }
+      { path: 'backup', component: BackupComponent },
+      { path: 'warehouse', component: WarehouseComponent }
     ]
   }
 ];
