@@ -12,6 +12,8 @@ import { BudgetTypeService } from './budget-type.service';
 import { StandardService } from './standard.service';
 import { UploadingService } from './uploading.service';
 import { ApproveService } from './approve.service';
+import { WarehouseService } from './warehouse.service'
+import { LocationService } from './location.service'
 
 import { ClarityModule } from '@clr/angular';
 import { GroupsComponent } from './groups/groups.component';
@@ -54,6 +56,7 @@ import { ReportService } from './report.service';
 import { HtmlPreviewComponent } from './helper/html-preview/html-preview.component';
 import { BackupComponent } from './backup/backup.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
+import { LocationModalComponent } from './location-modal/location-modal.component';
 // import { AgxTypeaheadModule } from '@siteslave/agx-typeahead';
 
 @NgModule({
@@ -96,7 +99,8 @@ import { WarehouseComponent } from './warehouse/warehouse.component';
     ReportComponent,
     HtmlPreviewComponent,
     BackupComponent,
-    WarehouseComponent
+    WarehouseComponent,
+    LocationModalComponent
   ],
   providers: [
     AuthGuard,
@@ -115,7 +119,9 @@ import { WarehouseComponent } from './warehouse/warehouse.component';
     HolidayService,
     ProductGroupService,
     ApproveService,
-    ReportService
+    ReportService,
+    WarehouseService,
+    LocationService
   ]
 })
 export class AdminModule { }
