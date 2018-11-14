@@ -56,7 +56,6 @@ export class UserEditComponent implements OnInit {
   rights_cm: any = [];
   rights_mm: any = [];
   groups: any = [];
-  selectedPeople: any;
   allUM = false;
   allPO = false;
   allWM = false;
@@ -255,26 +254,6 @@ export class UserEditComponent implements OnInit {
       });
   }
 
-  searchPeople() {
-    this.openPeopleModal = true;
-    this.loadingPeople = true;
-    this.peoples = [];
-    this.userService.getPeoplesList()
-      .then((result: any) => {
-        if (result.ok) {
-          this.peoples = result.rows;
-        } else {
-          console.log(result.error);
-          this.alertService.error();
-        }
-        this.loadingPeople = false;
-      })
-      .catch((error) => {
-        this.loadingPeople = false;
-        console.log(error);
-        this.alertService.serverError();
-      });
-  }
 
   async saveUser() {
 
@@ -531,7 +510,7 @@ export class UserEditComponent implements OnInit {
   }
 
   onPeopleSelected(e) {
-    this.selectedPeople = e.people_id;
+    this.peopleId = e.people_id;
   }
   checkAllUM() {
     this.allUM = !this.allUM;
