@@ -26,7 +26,7 @@ export class WarehouseComponent implements OnInit {
   warehouses: any = [];
   types: any = [];
 
-  isEnableWarehouse = false;
+  isEnableWarehouse = true;
   isReceiveWarehouse = false;
   isUnitIssue = false;
 
@@ -48,7 +48,7 @@ export class WarehouseComponent implements OnInit {
     this.warehouseId = null;
     this.warehouseName = null;
     this.shortCode = null;
-    this.isEnableWarehouse = false;
+    this.isEnableWarehouse = true;
     this.isReceiveWarehouse = false;
     this.isUnitIssue = false;
 
