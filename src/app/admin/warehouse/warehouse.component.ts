@@ -21,6 +21,7 @@ export class WarehouseComponent implements OnInit {
   warehouseId: any;
   warehouseName: string;
   shortCode: string;
+  book: string;
 
   location: string;
   warehouses: any = [];
@@ -73,12 +74,12 @@ export class WarehouseComponent implements OnInit {
     if (this.warehouseName && this.depCode && this.hospcode) {
 
       if (this.isUpdate) {
-        promise = this.warehouseService.update(this.warehouseId, this.warehouseName, this.shortCode, this.location, isActived, isReceive, isUnitIssue, this.hospcode, this.depCode);
+        promise = this.warehouseService.update(this.warehouseId, this.warehouseName, this.shortCode, this.location, isActived, isReceive, isUnitIssue, this.hospcode, this.depCode, this.book);
       } else {
         if (this.shortCode == null) {
           this.shortCode = wid + 1;
         }
-        promise = this.warehouseService.save(this.warehouseName, this.shortCode, this.location, isActived, isReceive, isUnitIssue, this.hospcode, this.depCode);
+        promise = this.warehouseService.save(this.warehouseName, this.shortCode, this.location, isActived, isReceive, isUnitIssue, this.hospcode, this.depCode, this.book);
       }
       promise
         .then((results: any) => {
@@ -134,6 +135,7 @@ export class WarehouseComponent implements OnInit {
     this.location = w.location;
     this.hospcode = w.his_hospcode;
     this.depCode = w.his_warehouse;
+    this.book = w.book;
     this.isUpdate = true;
     this.opened = true;
   }
