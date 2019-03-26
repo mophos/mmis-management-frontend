@@ -135,7 +135,7 @@ export class WarehouseComponent implements OnInit {
     this.location = w.location;
     this.hospcode = w.his_hospcode;
     this.depCode = w.his_warehouse;
-    this.book = w.book;
+    this.book = w.warehouse_book;
     this.isUpdate = true;
     this.opened = true;
   }
