@@ -168,4 +168,17 @@ export class UserService {
     });
   }
 
+  async genericTypeLV1() {
+    const res = await this.authHttp.get(`${this.apiUrl}/users/genericType/lv1`).toPromise();
+    return res.json()
+  }
+  async genericTypeLV2() {
+    const res = await this.authHttp.get(`${this.apiUrl}/users/genericType/lv2`).toPromise();
+    return res.json()
+  }
+  async genericTypeLV3() {
+    const res = await this.authHttp.get(`${this.apiUrl}/users/genericType/lv3`).toPromise();
+    return res.json()
+  }
+
 }
