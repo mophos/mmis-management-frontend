@@ -52,10 +52,11 @@ export class WarehouseComponent implements OnInit {
     this.isEnableWarehouse = true;
     this.isReceiveWarehouse = false;
     this.isUnitIssue = false;
+
     this.location = null;
     this.hospcode = null;
     this.depCode = null;
-    this.book = null;
+
     this.opened = true;
   }
 

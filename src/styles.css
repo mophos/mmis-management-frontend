@@ -96,30 +96,3 @@ form .form-group>label:first-child, form .form-group>span:first-child, .form .fo
 .wm-small-btn {
   min-width: 0px;margin: 0 0px 0 0;
 }
-
-.h4 { 
-  /* display: block; */
-  font-size: 1em;
-  /* margin-top: 1.33em;
-  margin-bottom: 1.33em;
-  margin-left: 0;
-  margin-right: 0; */
-}
-
-h5 { 
-  /* display: block; */
-  font-size: .83em;
-  /* margin-top: 1.67em;
-  margin-bottom: 1.67em;
-  margin-left: 0;
-  margin-right: 0;
-  font-weight: bold; */
-}
-.h6 { 
-  /* display: block; */
-  font-size: .67em;
-  /* margin-top: 2.33em;
-  margin-bottom: 2.33em;
-  margin-left: 0;
-  margin-right: 0; */
-}

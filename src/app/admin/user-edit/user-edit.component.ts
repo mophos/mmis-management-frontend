@@ -43,16 +43,8 @@ export class UserEditComponent implements OnInit {
     showClearDateBtn: true
   };
   userId: string;
-  // selectedProductGroups: any = [];
-  // productGroups: any = [];
-
-  genericTypeLV1 = [];
-  genericTypeLV2 = [];
-  genericTypeLV3 = [];
-
-  selectGenericTypeLV1 = [];
-  selectGenericTypeLV2 = [];
-  selectGenericTypeLV3 = [];
+  selectedProductGroups: any = [];
+  productGroups: any = [];
 
   peoples: any = [];
   selectedRights: any = [];
@@ -89,7 +81,7 @@ export class UserEditComponent implements OnInit {
     // await this.getRights();
     await this.getWarehosues();
     await this.getGroups();
-    await this.getGenericTypes()
+    await this.getProductGroups()
       .then(async (result) => {
         await this.getData();
         await this.loading.hide();
@@ -113,40 +105,11 @@ export class UserEditComponent implements OnInit {
       });
   }
 
-  async getGenericTypes() {
-    await this.getGenericTypeLV1();
-    await this.getGenericTypeLV2();
-    await this.getGenericTypeLV3();
-  }
-  async getGenericTypeLV1() {
+  async getProductGroups() {
     try {
-      const rs: any = await this.userService.genericTypeLV1();
+      const rs: any = await this.productGroupService.list();
       if (rs.ok) {
-        this.genericTypeLV1 = rs.rows;
-      } else {
-        this.alertService.error(rs.error);
-      }
-    } catch (error) {
-      this.alertService.error(JSON.stringify(error));
-    }
-  }
-  async getGenericTypeLV2() {
-    try {
-      const rs: any = await this.userService.genericTypeLV2();
-      if (rs.ok) {
-        this.genericTypeLV2 = rs.rows;
-      } else {
-        this.alertService.error(rs.error);
-      }
-    } catch (error) {
-      this.alertService.error(JSON.stringify(error));
-    }
-  }
-  async getGenericTypeLV3() {
-    try {
-      const rs: any = await this.userService.genericTypeLV3();
-      if (rs.ok) {
-        this.genericTypeLV3 = rs.rows;
+        this.productGroups = rs.rows;
       } else {
         this.alertService.error(rs.error);
       }
@@ -160,6 +123,7 @@ export class UserEditComponent implements OnInit {
     this.groupService.getRights(this.groupId)
       .then((result: any) => {
         if (result.ok) {
+          console.log(result.rows);
           this.rights_bm.forEach(r => {
             const idx = _.findIndex(result.rows, { 'right_id': r.right_id })
             if (idx > -1) {
@@ -236,6 +200,8 @@ export class UserEditComponent implements OnInit {
   getData() {
     this.userService.getDetail(this.userId)
       .then((result: any) => {
+        console.log(result);
+
         if (result.ok) {
           if (result.detail) {
             this.peopleId = result.detail.people_id;
@@ -435,52 +401,23 @@ export class UserEditComponent implements OnInit {
   }
 
   getGenricTypeData() {
-    this.selectGenericTypeLV1 = [];
-    this.selectGenericTypeLV2 = [];
-    this.selectGenericTypeLV3 = [];
+    this.selectedProductGroups = [];
     const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
     if (idxR > -1) {
-      if (this.rights[idxR].generic_type_lv1_id) {
-        const _genericTypeIdLV1 = this.rights[idxR].generic_type_lv1_id.split(',');
-        const _objLV1 = [];
-        _genericTypeIdLV1.forEach(r => {
-          _objLV1.push({ 'generic_type_lv1_id': +r })
-        });
-        this.genericTypeLV1.forEach(p => {
-          const idx = _.findIndex(_objLV1, { 'generic_type_lv1_id': +p.generic_type_lv1_id });
-          if (idx > -1) {
-            this.selectGenericTypeLV1.push(p);
-          }
-        });
-      }
-      if (this.rights[idxR].generic_type_lv2_id) {
-        const _genericTypeIdLV2 = this.rights[idxR].generic_type_lv2_id.split(',');
-        const _objLV2 = [];
-        _genericTypeIdLV2.forEach(r => {
-          _objLV2.push({ 'generic_type_lv2_id': +r })
-        });
-        this.genericTypeLV2.forEach(p => {
-          const idx = _.findIndex(_objLV2, { 'generic_type_lv2_id': +p.generic_type_lv2_id });
-          if (idx > -1) {
-            this.selectGenericTypeLV2.push(p);
-          }
-        });
-      }
-      if (this.rights[idxR].generic_type_lv3_id) {
-        const _genericTypeIdLV3 = this.rights[idxR].generic_type_lv3_id.split(',');
-        const _objLV3 = [];
-        _genericTypeIdLV3.forEach(r => {
-          _objLV3.push({ 'generic_type_lv3_id': +r })
-        });
-
-        this.genericTypeLV3.forEach(p => {
-          const idx = _.findIndex(_objLV3, { 'generic_type_lv3_id': +p.generic_type_lv3_id });
-          if (idx > -1) {
-            this.selectGenericTypeLV3.push(p);
-          }
-        });
-      }
-
+      const _genericTypeId = this.rights[idxR].generic_type_id.split(',');
+      const _obj = [];
+      _genericTypeId.forEach(r => {
+        const objPg = {
+          'generic_type_id': +r
+        }
+        _obj.push(objPg)
+      });
+      this.productGroups.forEach(p => {
+        const idx = _.findIndex(_obj, { 'generic_type_id': +p.generic_type_id });
+        if (idx > -1) {
+          this.selectedProductGroups.push(p);
+        }
+      });
     }
   }
 
@@ -659,12 +596,8 @@ export class UserEditComponent implements OnInit {
     this.openModal = false;
     await this.groupRight();
 
-    const genericTypeLV1 = [];
-    const genericTypeLV2 = [];
-    const genericTypeLV3 = [];
-    let genericTypeLV1Id = null;
-    let genericTypeLV2Id = null;
-    let genericTypeLV3Id = null;
+    const productGroups = [];
+    let genericTypeId = null;
 
     const idxA = _.findIndex(this.selectedRights, { right_code: 'WM_ADMIN' });
     const idxS = _.findIndex(this.selectedRights, { right_code: 'WM_WAREHOUSE_ADMIN' });
@@ -683,31 +616,17 @@ export class UserEditComponent implements OnInit {
       });
       const _rights = rights.join(',');
 
-      if (this.selectGenericTypeLV1.length) {
-        this.selectGenericTypeLV1.forEach(v => {
-          genericTypeLV1.push(v.generic_type_lv1_id);
+      if (this.selectedProductGroups.length) {
+        this.selectedProductGroups.forEach(v => {
+          productGroups.push(v.generic_type_id);
         });
-        genericTypeLV1Id = genericTypeLV1.join(',');
-      }
-      if (this.selectGenericTypeLV2.length) {
-        this.selectGenericTypeLV2.forEach(v => {
-          genericTypeLV2.push(v.generic_type_lv2_id);
-        });
-        genericTypeLV2Id = genericTypeLV2.join(',');
-      }
-      if (this.selectGenericTypeLV3.length) {
-        this.selectGenericTypeLV3.forEach(v => {
-          genericTypeLV3.push(v.generic_type_lv3_id);
-        });
-        genericTypeLV3Id = genericTypeLV3.join(',');
+        genericTypeId = productGroups.join(',');
       }
 
       const obj = {
         warehouse_id: this.warehouseId,
         warehouse_type_id: this.warehouseTypeId,
-        generic_type_lv1_id: genericTypeLV1Id,
-        generic_type_lv2_id: genericTypeLV2Id,
-        generic_type_lv3_id: genericTypeLV3Id,
+        generic_type_id: genericTypeId,
         access_right: _rights,
         group_id: this.groupId
       }
