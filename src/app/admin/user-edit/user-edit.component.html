@@ -16,8 +16,7 @@
               <label class="required" for="fullname">เจ้าหน้าที่</label>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <um-autocomplete-people #people [clearOnSelected]="false" (onSelect)="onPeopleSelected($event)">
-              </um-autocomplete-people>
+              <um-autocomplete-people #people [clearOnSelected]="false" (onSelect)="onPeopleSelected($event)"></um-autocomplete-people>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
               <label>สถานะการใช้งาน</label>
@@ -40,8 +39,7 @@
               <label for="password" class="required">รหัสผ่าน</label>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <input class="form-control" type="password" [(ngModel)]="password" name="password" id="password"
-                placeholder="กรอกรหัสผ่านใหม่ หากต้องการเปลี่ยนรหัสผ่าน">
+              <input class="form-control" type="password" [(ngModel)]="password" name="password" id="password" placeholder="กรอกรหัสผ่านใหม่ หากต้องการเปลี่ยนรหัสผ่าน">
             </div>
           </div>
           <div class="form-group row">
@@ -49,15 +47,13 @@
               <label class="required" for="fullname">วันที่เริ่มใช้งาน</label>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <my-date-picker-th name="startDate" [options]="myDatePickerOptions" [(ngModel)]="startDate">
-              </my-date-picker-th>
+              <my-date-picker-th name="startDate" [options]="myDatePickerOptions" [(ngModel)]="startDate"></my-date-picker-th>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
               <label for="fullname">วันที่หยุดใช้งาน</label>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <my-date-picker-th name="endDate" [options]="myDatePickerOptions" [(ngModel)]="endDate">
-              </my-date-picker-th>
+              <my-date-picker-th name="endDate" [options]="myDatePickerOptions" [(ngModel)]="endDate"></my-date-picker-th>
             </div>
           </div>
 
@@ -85,8 +81,7 @@
               </div>
             </div>
             <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
-              <button (click)="addWarehouse()" [disabled]="!warehouseId"
-                class="btn btn-sm btn-success">เพิ่มคลังสินค้า</button>
+              <button (click)="addWarehouse()" [disabled]="!warehouseId" class="btn btn-sm btn-success">เพิ่มคลังสินค้า</button>
             </div>
           </div>
           <div class="row">
@@ -105,8 +100,7 @@
                   </clr-dg-cell>
                   <clr-dg-cell>
                     <div class="toggle-switch">
-                      <input type="checkbox" id="status-{{idx}}" (change)="changeStatus($event,w)"
-                        [checked]="w.is_actived === 'Y'">
+                      <input type="checkbox" id="status-{{idx}}" (change)="changeStatus($event,w)" [checked]="w.is_actived === 'Y'">
                       <label for="status-{{idx}}"></label>
                     </div>
                   </clr-dg-cell>
@@ -124,8 +118,7 @@
     </div>
   </div>
   <div class="card-footer">
-    <button [clrLoading]="submitLoading" class="btn btn-sm btn-success" (click)="saveUser()"
-      [disabled]="!fullname || !username || !warehouses.length || submitLoading">บันทึก</button>
+    <button [clrLoading]="submitLoading" class="btn btn-sm btn-success" (click)="saveUser()" [disabled]="!fullname || !username || !warehouses.length || submitLoading">บันทึก</button>
     <button class="btn btn-sm btn-outline-danger" [disabled]="submitLoading" routerLink="/admin/users">ยกเลิก</button>
   </div>
 
@@ -147,98 +140,93 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+        <clr-stack-view>
+          <clr-stack-header>สิทธิ์การใช้งาน</clr-stack-header>
+          <clr-stack-block [clrSbExpanded]="true">
+            <clr-stack-label>ตั้งค่าและข้อมูลผู้ใช้</clr-stack-label>
+            <clr-stack-block>
+              <clr-stack-label>
+                <input type="checkbox" id="checkrads_1" (click)="checkAllUM()"> เลือกทั้งหมด
+              </clr-stack-label>
+              <clr-stack-content>
+                <clr-checkbox *ngFor="let item of rights_um" [(clrChecked)]="item.check">
+                  {{ item.right_name }}</clr-checkbox>
+              </clr-stack-content>
+            </clr-stack-block>
+          </clr-stack-block>
 
-    <clr-tabs>
-      <clr-tab>
-        <button clrTabLink id="link1">สิทธิ์การใช้งาน</button>
-        <clr-tab-content id="content1" *clrIfActive>
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <clr-stack-view>
-                <clr-stack-header>สิทธิ์การใช้งาน</clr-stack-header>
-                <clr-stack-block [clrSbExpanded]="true">
-                  <clr-stack-label>ตั้งค่าและข้อมูลผู้ใช้</clr-stack-label>
-                  <clr-stack-block>
-                    <clr-stack-label>
-                      <input type="checkbox" id="checkrads_1" (click)="checkAllUM()"> เลือกทั้งหมด
-                    </clr-stack-label>
-                    <clr-stack-content>
-                      <clr-checkbox *ngFor="let item of rights_um" [(clrChecked)]="item.check">
-                        {{ item.right_name }}</clr-checkbox>
-                    </clr-stack-content>
-                  </clr-stack-block>
-                </clr-stack-block>
+          <clr-stack-block [clrSbExpanded]="true">
+            <clr-stack-label>ข้อมูลพื้นฐานยาและเวชภัณฑ์</clr-stack-label>
+            <clr-stack-content></clr-stack-content>
+            <clr-stack-block>
+              <clr-stack-label>
+                <input type="checkbox" id="checkrads_2" (click)="checkAllMM()"> เลือกทั้งหมด
+              </clr-stack-label>
+              <clr-stack-content>
+                <clr-checkbox *ngFor="let item of rights_mm" [(clrChecked)]="item.check">
+                  {{ item.right_name }}</clr-checkbox>
+              </clr-stack-content>
+            </clr-stack-block>
+          </clr-stack-block>
 
-                <clr-stack-block [clrSbExpanded]="true">
-                  <clr-stack-label>ข้อมูลพื้นฐานยาและเวชภัณฑ์</clr-stack-label>
-                  <clr-stack-content></clr-stack-content>
-                  <clr-stack-block>
-                    <clr-stack-label>
-                      <input type="checkbox" id="checkrads_2" (click)="checkAllMM()"> เลือกทั้งหมด
-                    </clr-stack-label>
-                    <clr-stack-content>
-                      <clr-checkbox *ngFor="let item of rights_mm" [(clrChecked)]="item.check">
-                        {{ item.right_name }}</clr-checkbox>
-                    </clr-stack-content>
-                  </clr-stack-block>
-                </clr-stack-block>
+          <clr-stack-block [clrSbExpanded]="true">
+            <clr-stack-label>จัดการคลังสินค้า</clr-stack-label>
+            <clr-stack-content></clr-stack-content>
+            <clr-stack-block>
+              <clr-stack-label>
+                <input type="checkbox" id="checkrads_3" (click)="checkAllWM()"> เลือกทั้งหมด
+              </clr-stack-label>
+              <clr-stack-content>
+                <clr-checkbox *ngFor="let item of rights_wm" [(clrChecked)]="item.check">
+                  {{ item.right_name }}</clr-checkbox>
+              </clr-stack-content>
+            </clr-stack-block>
+          </clr-stack-block>
+          <clr-stack-block [clrSbExpanded]="true">
+            <clr-stack-label>จัดซื้อ</clr-stack-label>
+            <clr-stack-content></clr-stack-content>
+            <clr-stack-block>
+              <clr-stack-label>
+                <input type="checkbox" id="checkrads_4" (click)="checkAllPO()"> เลือกทั้งหมด
+              </clr-stack-label>
+              <clr-stack-content>
+                <clr-checkbox *ngFor="let item of rights_po" [(clrChecked)]="item.check">
+                  {{ item.right_name }}</clr-checkbox>
+              </clr-stack-content>
+            </clr-stack-block>
+          </clr-stack-block>
+          <clr-stack-block [clrSbExpanded]="true">
+            <clr-stack-label>แผนและงบประมาณ</clr-stack-label>
+            <clr-stack-content></clr-stack-content>
+            <clr-stack-block>
+              <clr-stack-label>
+                <input type="checkbox" id="checkrads_5" (click)="checkAllBM()"> เลือกทั้งหมด
+              </clr-stack-label>
+              <clr-stack-content>
+                <clr-checkbox *ngFor="let item of rights_bm" [(clrChecked)]="item.check">
+                  {{ item.right_name }}</clr-checkbox>
+              </clr-stack-content>
+            </clr-stack-block>
+          </clr-stack-block>
+          <clr-stack-block [clrSbExpanded]="true">
+            <clr-stack-label>สัญญา</clr-stack-label>
+            <clr-stack-content></clr-stack-content>
+            <clr-stack-block>
+              <clr-stack-label>
+                <input type="checkbox" id="checkrads_6" (click)="checkAllCM()"> เลือกทั้งหมด
+              </clr-stack-label>
+              <clr-stack-content>
+                <clr-checkbox *ngFor="let item of rights_cm" [(clrChecked)]="item.check">
+                  {{ item.right_name }}</clr-checkbox>
+              </clr-stack-content>
+            </clr-stack-block>
+          </clr-stack-block>
 
-                <clr-stack-block [clrSbExpanded]="true">
-                  <clr-stack-label>จัดการคลังสินค้า</clr-stack-label>
-                  <clr-stack-content></clr-stack-content>
-                  <clr-stack-block>
-                    <clr-stack-label>
-                      <input type="checkbox" id="checkrads_3" (click)="checkAllWM()"> เลือกทั้งหมด
-                    </clr-stack-label>
-                    <clr-stack-content>
-                      <clr-checkbox *ngFor="let item of rights_wm" [(clrChecked)]="item.check">
-                        {{ item.right_name }}</clr-checkbox>
-                    </clr-stack-content>
-                  </clr-stack-block>
-                </clr-stack-block>
-                <clr-stack-block [clrSbExpanded]="true">
-                  <clr-stack-label>จัดซื้อ</clr-stack-label>
-                  <clr-stack-content></clr-stack-content>
-                  <clr-stack-block>
-                    <clr-stack-label>
-                      <input type="checkbox" id="checkrads_4" (click)="checkAllPO()"> เลือกทั้งหมด
-                    </clr-stack-label>
-                    <clr-stack-content>
-                      <clr-checkbox *ngFor="let item of rights_po" [(clrChecked)]="item.check">
-                        {{ item.right_name }}</clr-checkbox>
-                    </clr-stack-content>
-                  </clr-stack-block>
-                </clr-stack-block>
-                <clr-stack-block [clrSbExpanded]="true">
-                  <clr-stack-label>แผนและงบประมาณ</clr-stack-label>
-                  <clr-stack-content></clr-stack-content>
-                  <clr-stack-block>
-                    <clr-stack-label>
-                      <input type="checkbox" id="checkrads_5" (click)="checkAllBM()"> เลือกทั้งหมด
-                    </clr-stack-label>
-                    <clr-stack-content>
-                      <clr-checkbox *ngFor="let item of rights_bm" [(clrChecked)]="item.check">
-                        {{ item.right_name }}</clr-checkbox>
-                    </clr-stack-content>
-                  </clr-stack-block>
-                </clr-stack-block>
-                <clr-stack-block [clrSbExpanded]="true">
-                  <clr-stack-label>สัญญา</clr-stack-label>
-                  <clr-stack-content></clr-stack-content>
-                  <clr-stack-block>
-                    <clr-stack-label>
-                      <input type="checkbox" id="checkrads_6" (click)="checkAllCM()"> เลือกทั้งหมด
-                    </clr-stack-label>
-                    <clr-stack-content>
-                      <clr-checkbox *ngFor="let item of rights_cm" [(clrChecked)]="item.check">
-                        {{ item.right_name }}</clr-checkbox>
-                    </clr-stack-content>
-                  </clr-stack-block>
-                </clr-stack-block>
-
-              </clr-stack-view>
-            </div>
-            <!-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        </clr-stack-view>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <h4>รายการประเภทของเวชภัณฑ์</h4>
         <clr-datagrid [style.height.px]="300" [(clrDgSelected)]="selectedProductGroups">
           <clr-dg-column>รายการประเภทของเวชภัณฑ์</clr-dg-column>
@@ -248,61 +236,11 @@
             </clr-dg-cell>
           </clr-dg-row>
         </clr-datagrid>
-      </div> -->
-          </div>
-        </clr-tab-content>
-      </clr-tab>
-      <clr-tab>
-        <button clrTabLink id="link2">สิทธิ์การมองเห็นสินค้า</button>
-        <clr-tab-content id="content2">
-          <div class="row">
-            <div class="col-md-4">
-              <h4>หมวดสินค้า(หลัก)</h4>
-              <clr-datagrid [style.height.px]="300" [(clrDgSelected)]="selectGenericTypeLV1">
-                <clr-dg-column>หมวดสินค้า(หลัก)</clr-dg-column>
-                <clr-dg-row *clrDgItems="let pg of genericTypeLV1" [clrDgItem]="pg">
-                  <clr-dg-cell>
-                    {{pg.generic_type_lv1_name}}
-                  </clr-dg-cell>
-                </clr-dg-row>
-              </clr-datagrid>
-            </div>
-            <div class="col-md-4">
-              <h4>หมวดสินค้า(รอง)</h4>
-              <clr-datagrid [style.height.px]="300" [(clrDgSelected)]="selectGenericTypeLV2">
-                <clr-dg-column>หมวดสินค้า(รอง)</clr-dg-column>
-                <clr-dg-row *clrDgItems="let pg of genericTypeLV2" [clrDgItem]="pg">
-                  <clr-dg-cell>
-                    <span class="h4">{{pg.generic_type_lv2_name}}</span>
-                    <br>
-                    <span class="h5">{{pg.generic_type_lv1_name}}</span>
-                  </clr-dg-cell>
-                </clr-dg-row>
-              </clr-datagrid>
-            </div>
-            <div class="col-md-4">
-              <h4>หมวดสินค้า(ย่อย)</h4>
-              <clr-datagrid [style.height.px]="300" [(clrDgSelected)]="selectGenericTypeLV3">
-                <clr-dg-column>หมวดสินค้า(ย่อย)</clr-dg-column>
-                <clr-dg-row *clrDgItems="let pg of genericTypeLV3" [clrDgItem]="pg">
-                  <clr-dg-cell>
-                    <span class="h4">{{pg.generic_type_lv3_name}}</span>
-                    <br>
-                    <span class="h5">{{pg.generic_type_lv1_name}} - {{pg.generic_type_lv2_name}}</span>
-                  </clr-dg-cell>
-                </clr-dg-row>
-              </clr-datagrid>
-            </div>
-          </div>
-        </clr-tab-content>
-      </clr-tab>
-    </clr-tabs>
-
-
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" [disabled]="!selectGenericTypeLV1.length"
-      (click)="saveRight()">บันทึก</button>
+    <button type="button" class="btn btn-success" [disabled]="!selectedProductGroups.length" (click)="saveRight()">บันทึก</button>
     <button type="button" class="btn btn-danger" (click)="openModal = false">ปิด</button>
   </div>
 </clr-modal>
