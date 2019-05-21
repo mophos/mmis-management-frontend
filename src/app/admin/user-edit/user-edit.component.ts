@@ -401,111 +401,124 @@ export class UserEditComponent implements OnInit {
   }
 
   getGenricTypeData() {
-    this.selectedProductGroups = [];
-    const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
-    if (idxR > -1) {
-      const _genericTypeId = this.rights[idxR].generic_type_id.split(',');
-      const _obj = [];
-      _genericTypeId.forEach(r => {
-        const objPg = {
-          'generic_type_id': +r
-        }
-        _obj.push(objPg)
-      });
-      this.productGroups.forEach(p => {
-        const idx = _.findIndex(_obj, { 'generic_type_id': +p.generic_type_id });
-        if (idx > -1) {
-          this.selectedProductGroups.push(p);
-        }
-      });
+    try {
+      this.selectedProductGroups = [];
+      const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
+      if (idxR > -1) {
+        console.log(this.rights[idxR]);
+
+        const _genericTypeId = this.rights[idxR].generic_type_id.split(',');
+        const _obj = [];
+        _genericTypeId.forEach(r => {
+          const objPg = {
+            'generic_type_id': +r
+          }
+          _obj.push(objPg)
+        });
+        this.productGroups.forEach(p => {
+          const idx = _.findIndex(_obj, { 'generic_type_id': +p.generic_type_id });
+          if (idx > -1) {
+            this.selectedProductGroups.push(p);
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      this.alertService.error(error.message);
+
     }
   }
 
   getRightData() {
+    try {
+      const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
+      if (idxR > -1) {
+        if (this.rights[idxR].access_right) {
+          const _rights = this.rights[idxR].access_right.split(',');
+          const _objRight = [];
+          _rights.forEach(r => {
+            const objRight = {
+              'right_code': r
+            }
+            _objRight.push(objRight)
+          });
 
-    const idxR = _.findIndex(this.rights, { 'warehouse_id': this.warehouseId, 'warehouse_type_id': this.warehouseTypeId });
-    if (idxR > -1) {
-      const _rights = this.rights[idxR].access_right.split(',');
-      const _objRight = [];
-      _rights.forEach(r => {
-        const objRight = {
-          'right_code': r
-        }
-        _objRight.push(objRight)
-      });
+          this.rights_bm.forEach(r => {
+            const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+          this.rights_wm.forEach(r => {
+            const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
 
-      this.rights_bm.forEach(r => {
-        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-        if (idx > -1) {
-          r.check = true;
-        } else {
+            if (r.right_code === 'WM_ADMIN' || r.right_code === 'WM_WAREHOUSE_ADMIN') {
+              r.check = true;
+            }
+          });
+          this.rights_mm.forEach(r => {
+            const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+          this.rights_um.forEach(r => {
+            const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+          this.rights_cm.forEach(r => {
+            const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+          this.rights_po.forEach(r => {
+            const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
+            if (idx > -1) {
+              r.check = true;
+            } else {
+              r.check = false;
+            }
+          });
+        }
+      } else {
+        this.rights_bm.forEach(r => {
           r.check = false;
-        }
-      });
-      this.rights_wm.forEach(r => {
-        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-        if (idx > -1) {
-          r.check = true;
-        } else {
+        });
+        this.rights_wm.forEach(r => {
           r.check = false;
-        }
-
-        if (r.right_code === 'WM_ADMIN' || r.right_code === 'WM_WAREHOUSE_ADMIN') {
-          r.check = true;
-        }
-      });
-      this.rights_mm.forEach(r => {
-        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-        if (idx > -1) {
-          r.check = true;
-        } else {
+        });
+        this.rights_mm.forEach(r => {
           r.check = false;
-        }
-      });
-      this.rights_um.forEach(r => {
-        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-        if (idx > -1) {
-          r.check = true;
-        } else {
+        });
+        this.rights_um.forEach(r => {
           r.check = false;
-        }
-      });
-      this.rights_cm.forEach(r => {
-        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-        if (idx > -1) {
-          r.check = true;
-        } else {
+        });
+        this.rights_cm.forEach(r => {
           r.check = false;
-        }
-      });
-      this.rights_po.forEach(r => {
-        const idx = _.findIndex(_objRight, { 'right_code': r.right_code })
-        if (idx > -1) {
-          r.check = true;
-        } else {
+        });
+        this.rights_po.forEach(r => {
           r.check = false;
-        }
-      });
-
-    } else {
-      this.rights_bm.forEach(r => {
-        r.check = false;
-      });
-      this.rights_wm.forEach(r => {
-        r.check = false;
-      });
-      this.rights_mm.forEach(r => {
-        r.check = false;
-      });
-      this.rights_um.forEach(r => {
-        r.check = false;
-      });
-      this.rights_cm.forEach(r => {
-        r.check = false;
-      });
-      this.rights_po.forEach(r => {
-        r.check = false;
-      });
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      this.alertService.error(error);
     }
   }
 
