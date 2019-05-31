@@ -20,6 +20,7 @@ export class SettingsComponent implements OnInit {
   lng: any;
   managerName: string;
   managerPosition: string;
+  managerPositionType: string;
 
   constructor(
     private settingService: SettingService,
@@ -48,6 +49,7 @@ export class SettingsComponent implements OnInit {
             this.lng = hospinfo['lng'];
             this.managerName = hospinfo['managerName'];
             this.managerPosition = hospinfo['managerPosition'];
+            this.managerPositionType = hospinfo['managerPositionType'];
           }
         } else {
           console.log(result.error);
@@ -74,7 +76,8 @@ export class SettingsComponent implements OnInit {
         lat: this.lat,
         lng: this.lng,
         managerName: this.managerName,
-        managerPosition: this.managerPosition
+        managerPosition: this.managerPosition,
+        managerPositionType: this.managerPositionType
       }
       this.settingService.save(data)
         .then((result: any) => {
