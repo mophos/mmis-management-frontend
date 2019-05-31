@@ -19,6 +19,7 @@ export class SettingsComponent implements OnInit {
   lat: any;
   lng: any;
   managerName: string;
+  managerPosition: string;
 
   constructor(
     private settingService: SettingService,
@@ -27,7 +28,6 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.getSysSetting();
-    // this.getSetting();
   }
 
   getSysSetting() {
@@ -47,30 +47,7 @@ export class SettingsComponent implements OnInit {
             this.lat = hospinfo['lat'];
             this.lng = hospinfo['lng'];
             this.managerName = hospinfo['managerName'];
-          }
-        } else {
-          console.log(result.error);
-          this.alertService.error();
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        this.alertService.serverError();
-      })
-  }
-
-  getSetting() {
-    this.settingService.getSetting()
-      .then((result: any) => {
-        if (result.ok) {
-          if (result.detail) {
-            this.hospcode = result.detail.hospcode;
-            this.hospname = result.detail.hospname;
-            this.address = result.detail.address;
-            this.fax = result.detail.fax;
-            this.telephone = result.detail.telephone;
-            this.taxId = result.detail.tax_id;
-            this.managerName = result.detail.manager_name;
+            this.managerPosition = hospinfo['managerPosition'];
           }
         } else {
           console.log(result.error);
@@ -96,7 +73,8 @@ export class SettingsComponent implements OnInit {
         province: this.province,
         lat: this.lat,
         lng: this.lng,
-        managerName: this.managerName
+        managerName: this.managerName,
+        managerPosition: this.managerPosition
       }
       this.settingService.save(data)
         .then((result: any) => {
