@@ -74,6 +74,7 @@ export class PeopleService {
     });
   }
 
+
   remove(peopleId: string) {
     return new Promise((resolve, reject) => {
       this.authHttp.delete(`${this.apiUrl}/people/${peopleId}`)
