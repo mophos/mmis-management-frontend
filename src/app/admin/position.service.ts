@@ -38,7 +38,8 @@ export class PositionService {
 
   update(positionId: any, positionName: string) {
     return new Promise((resolve, reject) => {
-      this.authHttp.put(`${this.apiUrl}/positions/${positionId}`, {
+      this.authHttp.put(`${this.apiUrl}/positions`, {
+        positionId: positionId,
         positionName: positionName
       })
         .map(res => res.json())
@@ -62,4 +63,57 @@ export class PositionService {
     });
   }
 
+  positionUnActive(peopleId: any) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.apiUrl}/positions/unactive`, {
+        peopleId: peopleId
+      })
+        .map(res => res.json())
+        .subscribe(d => {
+          resolve(d);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  log(peopleId: any) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.get(`${this.apiUrl}/positions/log?peopleId=${peopleId}`)
+        .map(res => res.json())
+        .subscribe(d => {
+          resolve(d);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  saveUserPosition(data: any) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.apiUrl}/positions/user`, {
+        data: data
+      })
+        .map(res => res.json())
+        .subscribe(d => {
+          resolve(d);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  editUserPosition(data: any) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.put(`${this.apiUrl}/positions/user`, {
+        data: data
+      })
+        .map(res => res.json())
+        .subscribe(d => {
+          resolve(d);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
 }
