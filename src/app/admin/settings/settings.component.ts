@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
   hospcode: string;
+  hospcodeNew: string;
   hospname: string;
   address: string;
   taxId: string;
@@ -37,6 +38,7 @@ export class SettingsComponent implements OnInit {
           if (result.rows) {
             const hospinfo = JSON.parse(result.rows[0].value);
             this.hospcode = hospinfo['hospcode'];
+            this.hospcodeNew = hospinfo['hospcodeNew'];
             this.hospname = hospinfo['hospname'];
             this.address = hospinfo['address'];
             this.ampur = hospinfo['ampur'];
@@ -65,6 +67,7 @@ export class SettingsComponent implements OnInit {
         if (result.ok) {
           if (result.detail) {
             this.hospcode = result.detail.hospcode;
+            this.hospcodeNew = result.detail.hospcodeNew;
             this.hospname = result.detail.hospname;
             this.address = result.detail.address;
             this.fax = result.detail.fax;
@@ -87,6 +90,7 @@ export class SettingsComponent implements OnInit {
     if (this.hospcode && this.hospname && this.address && this.managerName) {
       const data = {
         hospcode: this.hospcode,
+        hospcodeNew: this.hospcodeNew,
         hospname: this.hospname,
         address: this.address,
         fax: this.fax,
