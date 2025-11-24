@@ -1,3 +1,4 @@
+import { ToThaiDateTimePipe } from './to-thai-date-time.pipe';
 import { ModalsModule } from './../modals/modals.module';
 import { SerialService } from './serial.service';
 import { SettingService } from './setting.service';
@@ -84,6 +85,7 @@ import { LocationModalComponent } from './location-modal/location-modal.componen
     TitlesComponent,
     PositionsComponent,
     ToThaiDatePipe,
+    ToThaiDateTimePipe,
     ConfigComponent,
     PurchasingofficerComponent,
     CoBidComponent,
