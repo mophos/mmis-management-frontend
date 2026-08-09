@@ -113,6 +113,37 @@ export class UserService {
     });
   }
 
+  // ----- เครื่องมือความปลอดภัยสำหรับผู้ดูแลระบบ -----
+  // ทั้งสามตัวมีผลกับฐานข้อมูลทันทีที่เรียก ไม่ต้องกดบันทึกซ้ำ
+  // หน้าจอจึงต้องถามยืนยันก่อนเสมอ
+
+  private postAction(userId: any, action: string) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.post(`${this.apiUrl}/users/${userId}/${action}`, {})
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  /** ล้างค่า 2FA — ผู้ใช้จะต้องสแกน QR ใหม่ในการเข้าสู่ระบบครั้งถัดไป */
+  reset2fa(userId: any) {
+    return this.postAction(userId, 'reset-2fa');
+  }
+
+  /** ปลดล็อกบัญชีที่ถูกระงับจากการกรอกผิดเกินกำหนด โดยไม่ต้องรอครบเวลา */
+  unlockAccount(userId: any) {
+    return this.postAction(userId, 'unlock');
+  }
+
+  /** บังคับให้ผู้ใช้เปลี่ยนรหัสผ่านในการเข้าสู่ระบบครั้งถัดไป (รหัสเดิมยังใช้เข้าได้) */
+  forceChangePassword(userId: any) {
+    return this.postAction(userId, 'force-change-password');
+  }
+
   getPeoplesList() {
     return new Promise((resolve, reject) => {
       this.authHttp.get(`${this.apiUrl}/users/people/list`)

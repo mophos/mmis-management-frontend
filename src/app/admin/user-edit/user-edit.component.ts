@@ -197,10 +197,62 @@ export class UserEditComponent implements OnInit {
   }
 
 
+  // ----- เครื่องมือความปลอดภัย (ล้าง 2FA / ปลดล็อก / บังคับเปลี่ยนรหัส) -----
+  // security จะเป็น undefined ถ้าฐานข้อมูลยังไม่ได้รัน SQL migration ของงาน 2FA
+  // หน้าจอจะซ่อนกล่องนี้ทั้งก้อนในกรณีนั้น
+  security: any = null;
+  securityLoading = false;
+
+  /**
+   * ปุ่มในกล่องความปลอดภัยมีผลกับฐานข้อมูลทันที ไม่ได้รอกดบันทึกเหมือนฟอร์มด้านบน
+   * จึงต้องถามยืนยันทุกครั้ง แล้วโหลดสถานะใหม่หลังทำเสร็จเพื่อให้หน้าจอตรงกับความจริง
+   */
+  private runSecurityAction(confirmText: string, action: () => Promise<any>) {
+    this.alertService.confirm(confirmText)
+      .then(() => {
+        this.securityLoading = true;
+        return action();
+      })
+      .then((rs: any) => {
+        this.securityLoading = false;
+        if (rs && rs.ok) {
+          this.alertService.success();
+          this.getData();
+        } else if (rs) {
+          this.alertService.error(rs.error);
+        }
+      })
+      .catch((error) => {
+        // กด "ยกเลิก" ในกล่องยืนยันจะเข้ามาที่นี่ด้วย โดยไม่มี error object
+        this.securityLoading = false;
+        if (error) {
+          this.alertService.error(error.message || error);
+        }
+      });
+  }
+
+  doReset2fa() {
+    this.runSecurityAction(
+      'ล้างการยืนยัน 2 ขั้นตอนของผู้ใช้รายนี้? ผู้ใช้จะต้องสแกน QR ใหม่ในการเข้าสู่ระบบครั้งถัดไป',
+      () => this.userService.reset2fa(this.userId) as Promise<any>);
+  }
+
+  doUnlockAccount() {
+    this.runSecurityAction(
+      'ปลดล็อกบัญชีนี้ทันที?',
+      () => this.userService.unlockAccount(this.userId) as Promise<any>);
+  }
+
+  doForceChangePassword() {
+    this.runSecurityAction(
+      'บังคับให้ผู้ใช้รายนี้เปลี่ยนรหัสผ่านในการเข้าสู่ระบบครั้งถัดไป? (รหัสผ่านเดิมยังใช้เข้าระบบได้)',
+      () => this.userService.forceChangePassword(this.userId) as Promise<any>);
+  }
+
   getData() {
     this.userService.getDetail(this.userId)
       .then((result: any) => {
-        console.log(result);
+        this.security = result.detail ? result.detail.security : null;
 
         if (result.ok) {
           if (result.detail) {

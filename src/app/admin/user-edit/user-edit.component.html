@@ -123,6 +123,90 @@
   </div>
 
 </div>
+
+<!-- =====================================================================
+     เครื่องมือความปลอดภัย — แยกเป็นคนละ card กับฟอร์มด้านบนโดยตั้งใจ
+     เพราะปุ่มในนี้มีผลกับฐานข้อมูลทันทีที่กด ไม่ได้รอปุ่ม "บันทึก" ของฟอร์ม
+     ถ้าอยู่ card เดียวกันผู้ดูแลระบบจะเข้าใจผิดว่ายังยกเลิกได้
+
+     ซ่อนทั้งก้อนถ้า security เป็น null = ฐานข้อมูลยังไม่ได้รัน SQL migration
+     ===================================================================== -->
+<div class="card" *ngIf="security">
+  <div class="card-header">
+    ความปลอดภัย
+  </div>
+  <div class="card-block">
+    <div class="alert alert-warning" role="alert">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <clr-icon class="alert-icon" shape="exclamation-triangle"></clr-icon>
+          <span class="alert-text">ปุ่มในส่วนนี้มีผลทันทีเมื่อกดยืนยัน ไม่ต้องกดบันทึก</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="table table-vertical">
+      <tbody>
+        <tr>
+          <th>การยืนยัน 2 ขั้นตอน</th>
+          <td>
+            <span *ngIf="security.totp_enabled === 'Y'">
+              ตั้งค่าแล้ว
+              <span *ngIf="security.totp_confirmed_at">
+                ({{ security.totp_confirmed_at | date:'dd/MM/yyyy HH:mm' }})
+              </span>
+            </span>
+            <span *ngIf="security.totp_enabled !== 'Y'">ยังไม่ได้ตั้งค่า</span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline" [disabled]="security.totp_enabled !== 'Y' || securityLoading"
+                    (click)="doReset2fa()">ล้างค่า 2FA</button>
+          </td>
+        </tr>
+        <tr>
+          <th>สถานะบัญชี</th>
+          <td>
+            <span *ngIf="security.is_locked">
+              ถูกระงับถึง {{ security.locked_until | date:'dd/MM/yyyy HH:mm' }}
+            </span>
+            <span *ngIf="!security.is_locked">
+              ใช้งานได้ปกติ
+              <span *ngIf="security.failed_login_count > 0">
+                (กรอกผิดสะสม {{ security.failed_login_count }} ครั้ง)
+              </span>
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline" [disabled]="!security.is_locked || securityLoading"
+                    (click)="doUnlockAccount()">ปลดล็อกบัญชี</button>
+          </td>
+        </tr>
+        <tr>
+          <th>รหัสผ่าน</th>
+          <td>
+            <span *ngIf="security.must_change_password === 'Y'">ต้องเปลี่ยนรหัสผ่านในการเข้าสู่ระบบครั้งถัดไป</span>
+            <span *ngIf="security.must_change_password !== 'Y'">
+              <span *ngIf="security.password_changed_at">
+                เปลี่ยนล่าสุด {{ security.password_changed_at | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+              <span *ngIf="!security.password_changed_at">ยังไม่เคยเปลี่ยน</span>
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline" [disabled]="security.must_change_password === 'Y' || securityLoading"
+                    (click)="doForceChangePassword()">บังคับเปลี่ยนรหัสผ่าน</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="p6">
+      หากผู้ใช้ทำมือถือหายหรือเปลี่ยนเครื่อง ให้กด "ล้างค่า 2FA" แล้วผู้ใช้จะได้ QR ใหม่ในการเข้าสู่ระบบครั้งถัดไป ·
+      หากสงสัยว่ารหัสผ่านรั่วไหล ให้ตั้งรหัสผ่านใหม่ในฟอร์มด้านบนแทน เพราะการบังคับเปลี่ยนรหัสผ่านไม่ได้ยกเลิกรหัสเดิม
+    </p>
+  </div>
+</div>
+
 <um-loading #loading></um-loading>
 
 <clr-modal [(clrModalOpen)]="openModal" [clrModalSize]="'xl'" [clrModalClosable]="false">
