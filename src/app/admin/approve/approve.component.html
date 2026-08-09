@@ -10,9 +10,9 @@
     <clr-dg-column [style.width.px]="200" [clrDgField]="'action_name'">สิทธิ์การยืนยัน</clr-dg-column>
     <clr-dg-column [clrDgField]="'detail'">คำอธิบาย</clr-dg-column>
     <clr-dg-column [clrDgField]="'detail'">USER NAME</clr-dg-column>
-    <clr-dg-column [clrDgField]="'password'">
-        <ng-container *clrDgHideableColumn="{hidden: true}">รหัสผ่าน</ng-container>
-    </clr-dg-column>
+    <!-- คอลัมน์ "รหัสผ่าน" ถูกถอดออก — sys_approve.password เก็บเป็น plaintext
+         การแสดงบนหน้าจอทำให้รหัสผ่านหลุดไปอยู่ใน DevTools ของทุกคนที่เปิดหน้านี้
+         ฝั่ง backend เลิกส่งฟิลด์นี้มาแล้วด้วย (models/approve.ts getLits) -->
     <clr-dg-column [clrDgField]="'position_name'">
         <ng-container *clrDgHideableColumn="{hidden: true}">ชื่อผู้สร้าง</ng-container>
     </clr-dg-column>
@@ -33,7 +33,6 @@
         <clr-dg-cell>{{l.action_name}}</clr-dg-cell>
         <clr-dg-cell>{{l.detail}}</clr-dg-cell>
         <clr-dg-cell>{{l.username}}</clr-dg-cell>
-        <clr-dg-cell>{{l.password}}</clr-dg-cell>
         <clr-dg-cell>{{l.fname+" "+l.lname}}</clr-dg-cell>
         <clr-dg-cell>
             <div class="btn-group btn-primary">

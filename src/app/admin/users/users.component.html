@@ -12,6 +12,7 @@
   <clr-dg-column [style.width.%]="25" [clrDgField]="'position'">ตำแหน่ง</clr-dg-column>
   <!-- <clr-dg-column [style.width.%]="20" [clrDgField]="'group_name'">กลุ่มผู้ใช้งาน</clr-dg-column> -->
   <clr-dg-column [style.width.%]="10">สถานะการใช้งาน</clr-dg-column>
+  <clr-dg-column [style.width.%]="15">ความปลอดภัย</clr-dg-column>
   <clr-dg-placeholder>ไม่พบชื่อผู้ใช้งาน!</clr-dg-placeholder>
 
   <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
@@ -41,6 +42,15 @@
     <clr-dg-cell>
       <clr-icon *ngIf="user.is_active === 'Y'" shape="check" class="is-success"></clr-icon>
       <clr-icon *ngIf="user.is_active === 'N'" shape="close" class="is-error"></clr-icon>
+    </clr-dg-cell>
+    <!-- ป้ายสถานะความปลอดภัย ใช้ label แทนไอคอนเพราะชุดไอคอนของโปรเจกต์นี้ไม่มี shape
+         ที่สื่อความหมายครบ และข้อความอ่านง่ายกว่าเมื่อมีหลายสถานะพร้อมกัน
+         ทั้งหมดจะว่างเปล่าถ้าฐานข้อมูลยังไม่ได้รัน SQL migration -->
+    <clr-dg-cell>
+      <span class="label label-success" *ngIf="user.totp_enabled === 'Y'">2FA</span>
+      <span class="label" *ngIf="user.totp_enabled === 'N'">ไม่มี 2FA</span>
+      <span class="label label-danger" *ngIf="user.is_locked === 'Y'">ถูกล็อก</span>
+      <span class="label label-warning" *ngIf="user.must_change_password === 'Y'">ต้องเปลี่ยนรหัส</span>
     </clr-dg-cell>
   </clr-dg-row>
 
@@ -88,25 +98,29 @@
 
 <clr-modal [(clrModalOpen)]="openModalActionLogs" [clrModalStaticBackdrop]="true" [clrModalSize]="'xl'"
   [clrModalClosable]="false">
-  <h3 class="modal-title">ประวัติการใช้งาน</h3>
+  <h3 class="modal-title">ประวัติการใช้งาน <span *ngIf="logUsername">— {{logUsername}}</span></h3>
   <div class="modal-body">
     <clr-datagrid [clrDgLoading]="loading">
-      <clr-dg-column [style.width.px]="120">วันที่</clr-dg-column>
-      <clr-dg-column [style.width.px]="120">เวลา</clr-dg-column>
-      <clr-dg-column>ชื่อ-สกุล</clr-dg-column>
-      <clr-dg-column>ตำแหน่ง</clr-dg-column>
-      <clr-dg-column>System</clr-dg-column>
-      <clr-dg-column>Action</clr-dg-column>
-      <clr-dg-column>Remark</clr-dg-column>
+      <clr-dg-column [style.width.px]="110">วันที่</clr-dg-column>
+      <clr-dg-column [style.width.px]="90">เวลา</clr-dg-column>
+      <clr-dg-column [style.width.px]="200">การดำเนินการ</clr-dg-column>
+      <clr-dg-column [style.width.px]="120">IP</clr-dg-column>
+      <clr-dg-column [style.width.px]="150">อุปกรณ์</clr-dg-column>
+      <clr-dg-column [style.width.px]="70">ระบบ</clr-dg-column>
+      <clr-dg-column>รายละเอียด</clr-dg-column>
       <clr-dg-placeholder>ไม่พบข้อมูล!</clr-dg-placeholder>
 
       <clr-dg-row *clrDgItems="let l of logs" [clrDgItem]="l">
         <clr-dg-cell>{{l.date | toThaiDate}}</clr-dg-cell>
         <clr-dg-cell>{{l.time}}</clr-dg-cell>
-        <clr-dg-cell>{{l.people_fullname}}</clr-dg-cell>
-        <clr-dg-cell>{{l.position_name}}</clr-dg-cell>
+        <!-- เน้นสีแดงเฉพาะรายการที่ผิดปกติ (login ไม่ผ่าน / OTP ผิด / บัญชีถูกล็อก)
+             เพื่อให้กวาดตาหาเจอได้เร็วโดยไม่ต้องอ่านทีละบรรทัด -->
+        <clr-dg-cell>
+          <span [class.mmis-log-fail]="isFailedAction(l.action)">{{actionLabel(l.action)}}</span>
+        </clr-dg-cell>
+        <clr-dg-cell>{{l.ip_address || '-'}}</clr-dg-cell>
+        <clr-dg-cell>{{l.device || '-'}}</clr-dg-cell>
         <clr-dg-cell>{{l.system}}</clr-dg-cell>
-        <clr-dg-cell>{{l.action}}</clr-dg-cell>
         <clr-dg-cell>{{l.remark}}</clr-dg-cell>
       </clr-dg-row>
 
