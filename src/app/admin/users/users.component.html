@@ -100,6 +100,11 @@
   [clrModalClosable]="false">
   <h3 class="modal-title">ประวัติการใช้งาน <span *ngIf="logUsername">— {{logUsername}}</span></h3>
   <div class="modal-body">
+    <clr-tabs>
+      <clr-tab>
+        <button clrTabLink>ประวัติการใช้งาน</button>
+        <clr-tab-content>
+
     <clr-datagrid [clrDgLoading]="loading">
       <clr-dg-column [style.width.px]="110">วันที่</clr-dg-column>
       <clr-dg-column [style.width.px]="90">เวลา</clr-dg-column>
@@ -129,6 +134,67 @@
         <clr-dg-pagination #pagination3 [clrDgPageSize]="10"></clr-dg-pagination>
       </clr-dg-footer>
     </clr-datagrid>
+
+        </clr-tab-content>
+      </clr-tab>
+
+      <clr-tab>
+        <button clrTabLink>อุปกรณ์ที่จำไว้</button>
+        <clr-tab-content>
+
+          <!-- ยังไม่ได้รัน SQL ของฟีเจอร์นี้ — แจ้งให้รู้ว่าไม่ใช่ระบบพัง -->
+          <div class="mmis-device-note" *ngIf="!trustedDeviceAvailable">
+            <clr-icon shape="info-circle"></clr-icon>
+            ฐานข้อมูลนี้ยังไม่ได้ติดตั้งส่วนของการจดจำอุปกรณ์
+          </div>
+
+          <div class="mmis-device-note" *ngIf="trustedDeviceAvailable">
+            <clr-icon shape="info-circle"></clr-icon>
+            อุปกรณ์ในรายการนี้เข้าสู่ระบบได้โดยไม่ต้องกรอกรหัส 6 หลัก
+            จนกว่าจะถึงวันหมดอายุ
+          </div>
+
+          <clr-datagrid [clrDgLoading]="loadingDevices">
+            <clr-dg-column>อุปกรณ์</clr-dg-column>
+            <clr-dg-column [style.width.px]="130">IP ตอนลงทะเบียน</clr-dg-column>
+            <clr-dg-column [style.width.px]="160">ใช้ล่าสุด</clr-dg-column>
+            <clr-dg-column [style.width.px]="160">หมดอายุ</clr-dg-column>
+            <clr-dg-placeholder>ไม่มีอุปกรณ์ที่จำไว้</clr-dg-placeholder>
+
+            <clr-dg-row *clrDgItems="let d of trustedDevices" [clrDgItem]="d">
+              <clr-dg-cell>{{d.device_label || 'ไม่ทราบ'}}</clr-dg-cell>
+              <clr-dg-cell>{{d.created_ip || '-'}}</clr-dg-cell>
+              <clr-dg-cell>{{d.last_used_at ? (d.last_used_at | date:'dd/MM/yyyy HH:mm') : '-'}}</clr-dg-cell>
+              <!-- เครื่องที่หมดอายุแล้วยังค้างอยู่ในตารางจนกว่าจะถูกล้าง
+                   ทำตัวจางไว้ให้เห็นว่าไม่ได้ใช้ข้ามรหัสได้แล้ว -->
+              <clr-dg-cell>
+                <span [class.mmis-device-expired]="d.is_expired">
+                  {{d.expires_at | date:'dd/MM/yyyy HH:mm'}}
+                  <span *ngIf="d.is_expired">(หมดอายุแล้ว)</span>
+                </span>
+              </clr-dg-cell>
+            </clr-dg-row>
+
+            <clr-dg-footer>
+              {{pagination4.firstItem + 1}} - {{pagination4.lastItem + 1}} of {{pagination4.totalItems}} รายการ
+              <clr-dg-pagination #pagination4 [clrDgPageSize]="10"></clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+
+          <div class="mmis-device-actions">
+            <button type="button" class="btn btn-sm btn-danger-outline"
+                    (click)="revokeTrustedDevices()"
+                    [disabled]="!trustedDevices.length">
+              เพิกถอนทั้งหมด
+            </button>
+            <span class="mmis-device-count" *ngIf="trustedDevices.length">
+              ใช้งานได้อยู่ {{activeDeviceCount}} เครื่อง จากทั้งหมด {{trustedDevices.length}} รายการ
+            </span>
+          </div>
+
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="openModalActionLogs = false">ปิด</button>
