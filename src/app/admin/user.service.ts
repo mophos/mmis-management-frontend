@@ -144,6 +144,35 @@ export class UserService {
     return this.postAction(userId, 'force-change-password');
   }
 
+  /**
+   * รายการอุปกรณ์ที่ผู้ใช้สั่งให้จำไว้ (ข้าม OTP ได้)
+   * ถ้าฐานข้อมูลยังไม่ได้รัน migration ของฟีเจอร์นี้ backend จะตอบ available = false
+   */
+  getTrustedDevices(userId: any) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.get(`${this.apiUrl}/users/${userId}/trusted-devices`)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+  /** เพิกถอนอุปกรณ์ที่จำไว้ทั้งหมด — ผู้ใช้จะต้องกรอก OTP อีกครั้งทุกเครื่อง */
+  revokeTrustedDevices(userId: any) {
+    return new Promise((resolve, reject) => {
+      this.authHttp.delete(`${this.apiUrl}/users/${userId}/trusted-devices`)
+        .map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
   getPeoplesList() {
     return new Promise((resolve, reject) => {
       this.authHttp.get(`${this.apiUrl}/users/people/list`)

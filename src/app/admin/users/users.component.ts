@@ -91,16 +91,82 @@ export class UsersComponent implements OnInit {
   openActionLogs(user: any) {
     this.loadingLogs = true;
     this.logUsername = user.username;
+    this.logUserId = user.user_id;
     this.userService.getActionLogs(user.user_id)
       .then((result: any) => {
         if (result.ok) {
           this.logs = result.rows;
           this.openModalActionLogs = true;
+          // โหลดพร้อมกันตอนเปิดโมดัล ไม่ผูกกับการคลิกแท็บ
+          // เพราะถ้ารอคลิก แท็บจะว่างแวบหนึ่งทุกครั้งที่เปิด
+          this.loadTrustedDevices();
         } else {
           console.log(result.error);
           this.alertService.error();
         }
       })
+  }
+
+  // ----- อุปกรณ์ที่จำไว้ -----
+
+  logUserId: any = null;
+  trustedDevices: any[] = [];
+  trustedDeviceAvailable = true;
+  loadingDevices = false;
+
+  /** ยังไม่หมดอายุและใช้งานได้จริงกี่เครื่อง */
+  get activeDeviceCount(): number {
+    return this.trustedDevices.filter(d => !d.is_expired).length;
+  }
+
+  loadTrustedDevices() {
+    if (!this.logUserId) { return; }
+
+    this.loadingDevices = true;
+    this.trustedDevices = [];
+
+    this.userService.getTrustedDevices(this.logUserId)
+      .then((result: any) => {
+        this.loadingDevices = false;
+
+        if (result.ok) {
+          this.trustedDevices = result.rows || [];
+          // available = false แปลว่ายังไม่ได้รัน SQL ของฟีเจอร์นี้ ไม่ใช่ error
+          this.trustedDeviceAvailable = result.available !== false;
+        } else {
+          console.log(result.error);
+          this.alertService.error();
+        }
+      })
+      .catch(() => {
+        this.loadingDevices = false;
+        this.alertService.error();
+      });
+  }
+
+  /**
+   * sweetalert2 v6 ที่โปรเจกต์นี้ใช้จะ "reject" เมื่อผู้ใช้กดยกเลิก ไม่ใช่ resolve เป็น false
+   * จึงต้องเขียนแบบ .then() ตามที่หน้าอื่นในโปรเจกต์ทำ และปิดท้ายด้วย .catch()
+   * เพื่อไม่ให้การกดยกเลิกกลายเป็น unhandled rejection
+   */
+  revokeTrustedDevices() {
+    if (!this.logUserId || !this.trustedDevices.length) { return; }
+
+    this.alertService.confirm('เพิกถอนอุปกรณ์ที่จำไว้ทั้งหมด? ผู้ใช้จะต้องกรอกรหัส 6 หลักอีกครั้งในทุกเครื่อง')
+      .then(() => {
+        this.userService.revokeTrustedDevices(this.logUserId)
+          .then((result: any) => {
+            if (result.ok) {
+              this.alertService.success();
+              this.loadTrustedDevices();
+            } else {
+              console.log(result.error);
+              this.alertService.error(result.error);
+            }
+          })
+          .catch(() => this.alertService.error());
+      })
+      .catch(() => { /* ผู้ใช้กดยกเลิก ไม่ต้องทำอะไร */ });
   }
 
   // ----- ประวัติการใช้งาน -----
@@ -122,7 +188,9 @@ export class UsersComponent implements OnInit {
       '2FA_SETUP': 'ขอ QR ตั้งค่า 2FA',
       '2FA_CONFIRM': 'ตั้งค่า 2FA สำเร็จ',
       '2FA_VERIFY_FAIL': 'กรอกรหัส OTP ไม่ถูกต้อง',
-      '2FA_RESET': 'ผู้ดูแลล้างค่า 2FA'
+      '2FA_RESET': 'ผู้ดูแลล้างค่า 2FA',
+      LOGIN_TRUSTED: 'เข้าสู่ระบบสำเร็จ (เครื่องที่จำไว้)',
+      TRUSTED_DEVICE_REVOKE: 'ผู้ดูแลเพิกถอนอุปกรณ์ที่จำไว้'
     };
 
     return labels[action] || action;

@@ -5,3 +5,36 @@
     color: #c92100;
     font-weight: 500;
 }
+
+/* ----- แท็บอุปกรณ์ที่จำไว้ ----- */
+.mmis-device-note {
+    margin: 0.6rem 0;
+    padding: 0.4rem 0.5rem;
+    background: #eef6fb;
+    border-left: 3px solid #0079b8;
+    color: #31485c;
+    font-size: 0.55rem;
+}
+
+.mmis-device-note clr-icon {
+    margin-right: 0.2rem;
+}
+
+/* แถวที่หมดอายุแล้วยังแสดงอยู่จนกว่าจะถูกล้าง ทำให้จางไว้
+   จะได้ไม่เข้าใจผิดว่าเครื่องนั้นยังข้ามรหัส 6 หลักได้อยู่ */
+.mmis-device-expired {
+    color: #9a9a9a;
+    text-decoration: line-through;
+}
+
+.mmis-device-actions {
+    margin-top: 0.6rem;
+    display: flex;
+    align-items: center;
+}
+
+.mmis-device-count {
+    margin-left: 0.6rem;
+    font-size: 0.55rem;
+    color: #565656;
+}
